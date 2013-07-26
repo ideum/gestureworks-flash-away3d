@@ -10,9 +10,10 @@ package com.gestureworks.away3d
 	{		
 		public function Away3DTouchObject(target:*) 
 		{
-			super(target);
+			super(target);	
 			transform.matrix3D = target.transform;
-			transform3d = true;
+			transform3d = true;			
+			registerPoints = false;			
 		}
 				
 		public function updateTransform():void

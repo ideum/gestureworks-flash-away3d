@@ -26,29 +26,25 @@ package com.gestureworks.away3d
 		
 		private var view:View3D;
 		
-		public function init(view3D:View3D):void {			
+		public function Away3DTouchManager(view3D:View3D) {
 			view = view3D;
 			
 			view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
 			view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
 			view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
 			
-			
 			GestureWorks.application.addEventListener(GWEvent.ENTER_FRAME, onFrame);
 			touchBegin = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, 0, false);			
 			touchMove = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, 0, false);
 			touchEnd = new GWTouchEvent(null, GWTouchEvent.TOUCH_END, true, false, 0, false);
-			touchObjects = new Dictionary(true);
-			
+			touchObjects = new Dictionary(true);			
 		}
-		
-		
+				
 		public function registerTouchObject(t:*):Away3DTouchObject {
 			touchObjects[t] = new Away3DTouchObject(t);
 			t.addEventListener(TouchEvent3D.TOUCH_BEGIN, onTouchBegin);
 			return touchObjects[t];		
 		}
-		
 		
 		private function onTouchBegin( e:TouchEvent3D ):void {
 			touchBegin.touchPointID = e.touchPointID;
@@ -94,7 +90,7 @@ package com.gestureworks.away3d
 			touchMove.stageY = newY;
 			
 			touchMove.target = e.target;
-			TouchManager.onTouchMove(touchMove);
+			TouchManager.onTouchMove(touchMove, true);
 		}
 		
 		
@@ -108,7 +104,7 @@ package com.gestureworks.away3d
 			touchMove.stageX = x;
 			touchMove.stageY = y;
 			
-			TouchManager.onTouchUp(touchEnd);	
+			TouchManager.onTouchUp(touchEnd, true);	
 			touchObjects[e.target] = null;
 			delete touchObjects[e.target];
 		}			
