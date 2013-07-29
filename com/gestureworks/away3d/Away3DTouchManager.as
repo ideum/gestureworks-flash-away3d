@@ -20,7 +20,6 @@ package com.gestureworks.away3d
 		private var pMove:Point;
 		private var pEnd:Point;
 		private var vIn:Vector3D;
-		private var vOut:Vector3D;
 		private var mIn:Matrix3D;
 		private var mOut:Matrix3D;
 		
