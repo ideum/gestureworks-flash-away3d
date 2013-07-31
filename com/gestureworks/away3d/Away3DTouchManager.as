@@ -1,6 +1,8 @@
 package com.gestureworks.away3d
 {
 	import away3d.containers.*;
+	import away3d.core.math.MathConsts;
+	import away3d.entities.Mesh;
 	import away3d.events.*;
 	import com.gestureworks.core.*;
 	import com.gestureworks.events.*;
@@ -47,7 +49,7 @@ package com.gestureworks.away3d
 		
 		private function onTouchBegin(e:TouchEvent3D):void 
 		{
-			pBegin = formatScreenData(e.screenX, e.screenY, 1);											
+			pBegin = convertScreenData(e.screenX, e.screenY, 1);											
 			tBegin.stageX = pBegin.x;
 			tBegin.stageY = pBegin.y;
 			tBegin.touchPointID = e.touchPointID;			
@@ -59,7 +61,7 @@ package com.gestureworks.away3d
 
 		private function onTouchMove(e:TouchEvent3D):void 
 		{
-			pMove = formatScreenData(e.screenX, e.screenY, 1);			
+			pMove = convertScreenData(e.screenX, e.screenY, 1);			
 			tMove.stageX = pMove.x;
 			tMove.stageY = pMove.y;
 			tMove.touchPointID = e.touchPointID;			
@@ -70,7 +72,7 @@ package com.gestureworks.away3d
 		
 		private function onTouchEnd(e:TouchEvent3D):void 
 		{	
-			pEnd = formatScreenData(e.screenX, e.screenY, 1);								
+			pEnd = convertScreenData(e.screenX, e.screenY, 1);								
 			tEnd.stageX = pEnd.x;
 			tEnd.stageY = pEnd.y;
 			tEnd.touchPointID = e.touchPointID;			
@@ -81,7 +83,7 @@ package com.gestureworks.away3d
 			delete touchObjects[e.target];
 		}			
 		
-		private function formatScreenData(x:Number, y:Number, z:Number):Point
+		private function convertScreenData(x:Number, y:Number, z:Number):Point
 		{
 			vIn = view.unproject(x, y, z);
 			mIn.position = vIn;
@@ -92,13 +94,64 @@ package com.gestureworks.away3d
 			return new Point(mIn.position.x * vIn.length, mIn.position.y * vIn.length);
 		}
 		
-		public function formatGestureData(x:Number, y:Number, z:Number):Vector3D
+		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
 		{
-			mOut.position = new Vector3D(x, y, z);
+			var v:Vector3D = new Vector3D(dx, dy, dz);	
+			var len:Number = v.length;
+			v.normalize();		
+			
+			trace(view.camera.rotationX, view.camera.rotationY, view.camera.rotationZ);
+			
+			mOut.position = new Vector3D(v.x, v.y, v.z);		
+			
+			mOut.appendRotation(17, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
+			mOut.appendRotation(17, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
+			mOut.appendRotation(17, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
+			
 			mOut.appendRotation(view.camera.rotationX, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
 			mOut.appendRotation(view.camera.rotationY, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
-			mOut.appendRotation(view.camera.rotationZ, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
-			return mOut.position;
+			mOut.appendRotation(view.camera.rotationZ, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));
+
+			return new Vector3D(mOut.position.x * len, mOut.position.y * len, mOut.position.z * len);
+		}		
+		
+		public static function rotatePoint(aPoint:Vector3D, rotation:Vector3D):Vector3D
+		{				
+			var x1:Number;
+			var y1:Number;
+			
+			var rotx:Number = rotation.x;
+			var roty:Number = rotation.y;
+			var rotz:Number = rotation.z;
+			
+			var sinx:Number = Math.sin(rotx);
+			var cosx:Number = Math.cos(rotx);
+			var siny:Number = Math.sin(roty);
+			var cosy:Number = Math.cos(roty);
+			var sinz:Number = Math.sin(rotz);
+			var cosz:Number = Math.cos(rotz);
+			
+			var x:Number = aPoint.x;
+			var y:Number = aPoint.y;
+			var z:Number = aPoint.z;
+			
+			y1 = y;
+			y = y1*cosx + z* -sinx;
+			z = y1*sinx + z*cosx;
+			
+			x1 = x;
+			x = x1*cosy + z*siny;
+			z = x1* -siny + z*cosy;
+			
+			x1 = x;
+			x = x1*cosz + y* -sinz;
+			y = x1*sinz + y*cosz;
+			
+			aPoint.x = x;
+			aPoint.y = y;
+			aPoint.z = z;
+			
+			return aPoint;
 		}		
 		
 		private function onFrame(e:GWEvent):void 
