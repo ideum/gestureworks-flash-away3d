@@ -47,6 +47,13 @@ package com.gestureworks.away3d
 			return touchObjects[t];		
 		}
 		
+		public function deregisterTouchObject(t:*):void 
+		{
+			t.removeEventListener(TouchEvent3D.TOUCH_BEGIN, onTouchBegin);
+			touchObjects[t] = null;
+			delete touchObjects[t];
+		}		
+		
 		private function onTouchBegin(e:TouchEvent3D):void 
 		{
 			pBegin = convertScreenData(e.screenX, e.screenY, 1);											
@@ -79,8 +86,6 @@ package com.gestureworks.away3d
 			tEnd.type = "touchEnd";
 			tEnd.target = e.target;
 			TouchManager.onTouchUp(tEnd, true);	
-			touchObjects[e.target] = null;
-			delete touchObjects[e.target];
 		}			
 		
 		private function convertScreenData(x:Number, y:Number, z:Number):Point
@@ -99,9 +104,7 @@ package com.gestureworks.away3d
 			var v:Vector3D = new Vector3D(dx, dy, dz);	
 			var len:Number = v.length;
 			v.normalize();		
-			
-			trace(view.camera.rotationX, view.camera.rotationY, view.camera.rotationZ);
-			
+						
 			mOut.position = new Vector3D(v.x, v.y, v.z);		
 			
 			mOut.appendRotation(17, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
@@ -114,45 +117,7 @@ package com.gestureworks.away3d
 
 			return new Vector3D(mOut.position.x * len, mOut.position.y * len, mOut.position.z * len);
 		}		
-		
-		public static function rotatePoint(aPoint:Vector3D, rotation:Vector3D):Vector3D
-		{				
-			var x1:Number;
-			var y1:Number;
-			
-			var rotx:Number = rotation.x;
-			var roty:Number = rotation.y;
-			var rotz:Number = rotation.z;
-			
-			var sinx:Number = Math.sin(rotx);
-			var cosx:Number = Math.cos(rotx);
-			var siny:Number = Math.sin(roty);
-			var cosy:Number = Math.cos(roty);
-			var sinz:Number = Math.sin(rotz);
-			var cosz:Number = Math.cos(rotz);
-			
-			var x:Number = aPoint.x;
-			var y:Number = aPoint.y;
-			var z:Number = aPoint.z;
-			
-			y1 = y;
-			y = y1*cosx + z* -sinx;
-			z = y1*sinx + z*cosx;
-			
-			x1 = x;
-			x = x1*cosy + z*siny;
-			z = x1* -siny + z*cosy;
-			
-			x1 = x;
-			x = x1*cosz + y* -sinz;
-			y = x1*sinz + y*cosz;
-			
-			aPoint.x = x;
-			aPoint.y = y;
-			aPoint.z = z;
-			
-			return aPoint;
-		}		
+				
 		
 		private function onFrame(e:GWEvent):void 
 		{
