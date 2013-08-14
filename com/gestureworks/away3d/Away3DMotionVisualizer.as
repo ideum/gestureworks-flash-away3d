@@ -1,5 +1,6 @@
 package com.gestureworks.away3d
 {
+	import com.gestureworks.objects.MotionPointObject;
 	import flash.geom.Vector3D;
 	
 	import away3d.containers.*;
@@ -51,8 +52,9 @@ package com.gestureworks.away3d
 		public var cO:ClusterObject;
 		public var trO:TransformObject;
 		
-		var step:Number = 10*DEG_RAD;
-		
+		private var step:Number = 10 * DEG_RAD;
+		private var i:uint;
+
 		public function Away3DMotionVisualizer():void
 		{
 			trace("auto init 3d vis", ts);
@@ -77,7 +79,7 @@ package com.gestureworks.away3d
 			var sg10:SphereGeometry = new SphereGeometry(10);
 				
 			// fingertips	
-			for (var i:int = 0; i < 12; i++) 
+			for (i = 0; i < 12; i++) 
 			{
 				var sMat:ColorMaterial = new ColorMaterial(0x006600, 0.6);
 					sMat.alphaBlending = true;
@@ -90,10 +92,10 @@ package com.gestureworks.away3d
 			
 			// finger plane projections (12)
 			// knuckle points ()
-			var sMat2 = new ColorMaterial(0xFFFFFF,0.4);
+			var sMat2:ColorMaterial = new ColorMaterial(0xFFFFFF,0.4);
 				sMat2.alphaBlending = true;
 			
-			for (var i:int = 0; i < 14; i++) 
+			for (i = 0; i < 14; i++) 
 			{
 				var wsmesh:Mesh = new Mesh(sg2, sMat2);
 				var wball:ObjectContainer3D = new ObjectContainer3D();
@@ -103,7 +105,7 @@ package com.gestureworks.away3d
 			}
 			
 			// palm plane
-			for (var i:int = 0; i < 2; i++) 
+			for (i = 0; i < 2; i++) 
 			{
 				var plane:PlaneGeometry = new PlaneGeometry(180, 220, 1, 1, true, true);
 				var mat:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.1);
@@ -136,16 +138,14 @@ package com.gestureworks.away3d
 			//glines.alphaBlending = true;
 			addChild(glines);
 			
-			
-
-			for (var i:int = 0; i < 10; i++) 
+			for (i = 0; i < 10; i++) 
 			{
 					vlines.addSegment(new LineSegment(new Vector3D(0, 0, 0), new Vector3D(100, 100, 100), 0xFFFF33, 0xFFFF33, 2));
 					flines.addSegment(new LineSegment(new Vector3D(0, 0, 0), new Vector3D(100, 100, 100), 0xFFFF33, 0xFFFF33, 2));
 					glines.addSegment(new LineSegment(new Vector3D(0, 0, 0), new Vector3D(100, 100, 100), 0xFFFF33, 0xFFFF33, 2));
 			}
 			
-			for (var i:int = 0; i < 4; i++) 
+			for (i = 0; i < 4; i++) 
 			{
 					lines.addSegment(new LineSegment(new Vector3D(0, 0, 0), new Vector3D(100, 100, 100), 0xFFFF33, 0xFFFF33, 2));
 			}
@@ -157,17 +157,17 @@ package com.gestureworks.away3d
 			
 
 			// INTERACTION POINT///////////////////////////////////////////////////////////////////////////
-				for (var i:int = 0; i < 20; i++) 
+				for (i = 0; i < 20; i++) 
 				{
-					var iMat:ColorMaterial = new ColorMaterial(0x006600, 1);
-					var ismesh:Mesh = new Mesh(sg2, iMat);
+					var iMat1:ColorMaterial = new ColorMaterial(0x006600, 1);
+					var ismesh1:Mesh = new Mesh(sg2, iMat1);
 					var iball:ObjectContainer3D = new ObjectContainer3D();
-						iball.addChild(ismesh);
+						iball.addChild(ismesh1);
 						iballList.push(iball);
 					this.addChild(iball);
 				}
 				// interative point ring
-				for (var i:int = 0; i < 20; i++) 
+				for (i= 0; i < 20; i++) 
 				{
 					var iring:ObjectContainer3D = new ObjectContainer3D();
 					var ring0:SegmentSet = new SegmentSet();
@@ -191,12 +191,12 @@ package com.gestureworks.away3d
 			
 			
 			//GESTURE////////////////////////////////////////////////////////////////////
-			for (var i:int = 0; i < 10; i++) 
+			for (i = 0; i < 10; i++) 
 			{
-				var iMat:ColorMaterial = new ColorMaterial(0x6666FF, 0.6);
-				var ismesh:Mesh = new Mesh(sg10, iMat);
+				var iMat0:ColorMaterial = new ColorMaterial(0x6666FF, 0.6);
+				var ismesh0:Mesh = new Mesh(sg10, iMat0);
 				var gball:ObjectContainer3D = new ObjectContainer3D();
-					gball.addChild(ismesh);
+					gball.addChild(ismesh0);
 					gballList.push(gball);
 				this.addChild(gball);
 			}
@@ -206,7 +206,7 @@ package com.gestureworks.away3d
 	
 		private function clearHand():void
 		{
-			for (var i:int = 0; i < ballList.length; i++)
+			for (i = 0; i < ballList.length; i++)
 				{
 					ballList[i].x = 0;
 					ballList[i].y = 0;
@@ -214,7 +214,7 @@ package com.gestureworks.away3d
 					ballList[i].visible = false;
 				}
 				
-				for (var i:int = 0; i < wballList.length; i++)
+				for (i = 0; i < wballList.length; i++)
 				{
 					wballList[i].x = 0;
 					wballList[i].y = 0;
@@ -222,7 +222,7 @@ package com.gestureworks.away3d
 					wballList[i].visible = false;
 				}
 				
-				for (var i:int = 0; i < kballList.length; i++)
+				for ( i = 0; i < kballList.length; i++)
 				{
 					kballList[i].x = 0;
 					kballList[i].y = 0;
@@ -230,7 +230,7 @@ package com.gestureworks.away3d
 					kballList[i].visible = false;
 				}
 				
-				for (var i:int = 0; i < iballList.length; i++)
+				for ( i = 0; i < iballList.length; i++)
 				{
 					iballList[i].x = 0;
 					iballList[i].y = 0;
@@ -238,7 +238,7 @@ package com.gestureworks.away3d
 					iballList[i].visible = false;
 				}
 				
-				for (var i:int = 0; i < gballList.length; i++)
+				for ( i = 0; i < gballList.length; i++)
 				{
 					gballList[i].x = 0;
 					gballList[i].y = 0;
@@ -246,7 +246,7 @@ package com.gestureworks.away3d
 					gballList[i].visible = false;
 				}
 				
-				for (var i:int = 0; i < iringList.length; i++)
+				for ( i = 0; i < iringList.length; i++)
 				{
 					iringList[i].x = 0;
 					iringList[i].y = 0;
@@ -255,7 +255,7 @@ package com.gestureworks.away3d
 					iringList[i].getChildAt(0).removeAllSegments();
 				}
 				
-				for (var i:int = 0; i < palmList.length; i++)
+				for ( i = 0; i < palmList.length; i++)
 				{
 					palmList[i].visible = false;
 					ringList[i].visible = false;
@@ -276,7 +276,7 @@ package com.gestureworks.away3d
 				
 				//trace("seg index",vlines.numChildren,flines.numChildren,glines.numChildren)
 				
-				for (var i:int = 0; i < 10; i++) 
+				for ( i = 0; i < 10; i++) 
 				{
 					//vlines.getSegment(i).dispose;
 					vlines.removeSegmentByIndex(i);
@@ -284,7 +284,7 @@ package com.gestureworks.away3d
 					glines.removeSegmentByIndex(i);
 				}
 				
-				for (var i:int = 0; i < 4; i++) 
+				for ( i = 0; i < 4; i++) 
 				{
 					lines.removeSegmentByIndex(i);
 				}
@@ -309,21 +309,21 @@ package com.gestureworks.away3d
 			lines.visible = true;			
 		
 
-			var hn = cO.handList.length;
+			var hn:uint = cO.handList.length;
 			
 			for (var j:int = 0; j < hn ; j++) 
 			{
 			var hand:HandObject = cO.handList[j];
 		
 				
-				var n = 10+j //(hn*5 + (j+1));
+				var n:uint = 10+j //(hn*5 + (j+1));
 
 				//draw fav projection
 				wballList[n].visible = true;	
 				wballList[n].position  = cO.handList[j].projectedFingerAveragePosition;
 			
 			
-			for (var i:int = 0; i < cO.handList[j].fingerList.length; i++) 
+			for ( i = 0; i < cO.handList[j].fingerList.length; i++) 
 			{
 				
 				
@@ -332,7 +332,7 @@ package com.gestureworks.away3d
 				{
 					////////////////////////////////////////////////////////////////////////////
 					// draw fingers
-					var pt  = cO.handList[j].fingerList[i];
+					var pt:MotionPointObject  = cO.handList[j].fingerList[i];
 						
 						ballList[i+j*5].visible = true;	
 						ballList[i+j*5].position  = pt.position;
@@ -354,9 +354,9 @@ package com.gestureworks.away3d
 						//flines.getSegment(i + j * 5).updateSegment(cO.handList[j].position, v1d, new Vector3D(0,0,0),0xFFFFFF, 0xFFFFFF, 3);
 						//glines.getSegment(i + j * 5).updateSegment(cO.handList[j].palm.position, pt.palmplane_position, new Vector3D(0, 0, 0), 0xFFFFFF, 0xFFFFFF, 1);
 						
-						vlines.addSegment(new LineSegment(v1d, v000, 0xFFFFFF, 0xFFFFFF, 2));
-						flines.addSegment(new LineSegment(cO.handList[j].position, v1d,0xFFFFFF, 0xFFFFFF, 3));
-						glines.addSegment(new LineSegment(cO.handList[j].palm.position, pt.palmplane_position, 0xFFFFFF, 0xFFFFFF, 1));
+						vlines.addSegment(new LineSegment(v1d, v000, 0xFFFF00, 0xFFFF00, 1));
+						flines.addSegment(new LineSegment(cO.handList[j].position, v1d,0xFFFFFF, 0xFFFFFF, 1));
+						//glines.addSegment(new LineSegment(cO.handList[j].palm.position, pt.palmplane_position, 0xFFFFFF, 0xFFFFFF, 1));
 						
 						
 						//trace(cO.motionArray[i].palmplane_position.x,cO.motionArray[i].palmplane_position.y,cO.motionArray[i].palmplane_position.z);
@@ -376,7 +376,7 @@ package com.gestureworks.away3d
 											/////////////////////////////////////////////////////////////////////////////////
 											// draw palm data 
 											
-											var palm = cO.handList[j].palm;
+											var palm:MotionPointObject = cO.handList[j].palm;
 											
 											
 											
@@ -386,16 +386,16 @@ package com.gestureworks.away3d
 												palmList[j].position = cO.handList[j].position; 
 												
 												var d:int = 20;
-												var v0 = new Vector3D(palm.position.x * 1, palm.position.y * 1, palm.position.z * 1);
-												var v1 = new Vector3D(palm.direction.x * d, palm.direction.y * d, palm.direction.z * d);
-												var v2 = new Vector3D(palm.normal.x*d, palm.normal.y*d, palm.normal.z*d);
+												var v0:Vector3D = new Vector3D(palm.position.x * 1, palm.position.y * 1, palm.position.z * 1);
+												var v1:Vector3D = new Vector3D(palm.direction.x * d, palm.direction.y * d, palm.direction.z * d);
+												var v2:Vector3D = new Vector3D(palm.normal.x*d, palm.normal.y*d, palm.normal.z*d);
 												//var v1 = new Vector3D(v.x,v.y,v.y);
 												//var v2 = new Vector3D(100,100,100);
-												var v02 = v0.add(v2);
-												var v01 = v0.add(v1);
+												var v02:Vector3D = v0.add(v2);
+												var v01:Vector3D = v0.add(v1);
 												
-												lines.addSegment(new LineSegment(v0, v02, 0xFF0000, 0xFF0000, 5));
-												lines.addSegment(new LineSegment(v0, v01, 0xFF0000, 0xFF0000, 5));
+												lines.addSegment(new LineSegment(v0, v02, 0xFF0000, 0xFF0000, 1));
+												lines.addSegment(new LineSegment(v0, v01, 0xFF0000, 0xFF0000, 1));
 												
 												
 												
@@ -409,8 +409,8 @@ package com.gestureworks.away3d
 													
 													for (var theta0:Number = 0; theta0 < 360; theta0 += step) 
 													{
-														var vv1 = new Vector3D(r*Math.cos(theta0), 0, r*Math.sin(theta0));
-														var vv2 = new Vector3D(r * Math.cos(theta0 + step), 0, r * Math.sin(theta0 + step));
+														var vv1:Vector3D = new Vector3D(r*Math.cos(theta0), 0, r*Math.sin(theta0));
+														var vv2:Vector3D = new Vector3D(r * Math.cos(theta0 + step), 0, r * Math.sin(theta0 + step));
 														
 														//var vv12 = new Vector3D(r2*Math.cos(theta0), 0, r2*Math.sin(theta0));
 														//var vv22 = new Vector3D(r2*Math.cos(theta0+step), 0, r2*Math.sin(theta0+step));
@@ -440,7 +440,7 @@ package com.gestureworks.away3d
 		{
 	
 			// draw interaction points
-			for (var i:int = 0; i < cO.iPointArray.length; i++) 
+			for ( i = 0; i < cO.iPointArray.length; i++) 
 			{
 				//trace("ipoint", cO.iPointArray.length );
 				
@@ -513,9 +513,12 @@ package com.gestureworks.away3d
 					iringList[i].visible = true;	
 					iringList[i].position  = cO.iPointArray[i].position;
 					
-					var segset = iringList[i].getChildAt(0)
+					var segset:SegmentSet = iringList[i].getChildAt(0)
 					var s:Number = 20 * DEG_RAD;
 					var r0:Number = 6;
+					var t:Number = 0
+					var vv1:Vector3D;
+					var vv2:Vector3D;
 					
 					if (cO.iPointArray[i].type == "pinch") 
 					{
@@ -523,10 +526,10 @@ package com.gestureworks.away3d
 						r0 = 8
 						//iringList[i].getChildAt(0).material.color = 0x00FFFF; //orange 0xE3716B
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0x00FFFF, 0x00FFFF, 2));
 						}
 						
@@ -537,10 +540,10 @@ package com.gestureworks.away3d
 						//iringList[i].getChildAt(0).material.color = 0xFFFF00; // yellow
 						r0 = 9
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0xFFFF00, 0xFFFF00, 2));
 						}
 						
@@ -551,10 +554,10 @@ package com.gestureworks.away3d
 						//trace("trigger");
 						//iringList[i].getChildAt(0).material.color = 0xc44dbe; //pink
 						r0 = 10
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0xc44dbe, 0xc44dbe, 2));
 						}
 					}
@@ -564,10 +567,10 @@ package com.gestureworks.away3d
 						//iringList[i].getChildAt(0).material.color = 0x0000FF; //blue
 						r0 = 12
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0x0000FF, 0x0000FF, 2));
 						}
 					}
@@ -584,10 +587,10 @@ package com.gestureworks.away3d
 						r0 = 6;
 						//trace(iringList[i].getChildAt(0).getSegment(0).color0 = 0x000000);
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0x000000, 0x000000, 2));
 						}
 						
@@ -598,10 +601,10 @@ package com.gestureworks.away3d
 						r0 = 6;
 						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0xFFFFFF, 0xFFFFFF, 2));
 						}
 					}
@@ -615,10 +618,10 @@ package com.gestureworks.away3d
 						r0 = 5;
 						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0x00FF00, 0x00FF00, 2));
 						}
 					}
@@ -629,10 +632,10 @@ package com.gestureworks.away3d
 						r0 = 8;
 						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0xFF0000, 0xFF0000, 2));
 						}
 					}
@@ -643,10 +646,10 @@ package com.gestureworks.away3d
 						r0 = 12;
 						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
 						
-						for (var t:Number = 0; t < 360; t += s) 
+						for ( t = 0; t < 360; t += s) 
 						{
-							var vv1:Vector3D = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							var vv2:Vector3D = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
+							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
+							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
 							segset.addSegment(new LineSegment(vv1, vv2, 0xE3716B, 0xE3716B, 2));
 						}
 					}		
@@ -664,7 +667,7 @@ package com.gestureworks.away3d
 			clines.visible = true;
 			clines.removeAllSegments();
 			
-			var ipn = cO.iPointArray.length
+			var ipn:uint = cO.iPointArray.length
 			
 			//cluster web
 			for (var i:int = 0; i < ipn; i++) 
@@ -682,12 +685,12 @@ package com.gestureworks.away3d
 			//trace(this.cO.x,this.cO.x - this.cO.width);
 			
 			//cluster box
-			var v1x =  new Vector3D (cO.x -(cO.width * 0.5), cO.y, cO.z);
-			var v2x =  new Vector3D (cO.x + (cO.width * 0.5), cO.y, cO.z);
-			var v1y =  new Vector3D (cO.x, cO.y - (cO.height * 0.5), cO.z);
-			var v2y =  new Vector3D (cO.x, cO.y + (cO.height* 0.5),cO.z);
-			var v1z =  new Vector3D (cO.x, cO.y, cO.z - (cO.length * 0.5));
-			var v2z =  new Vector3D (cO.x, cO.y, cO.z + (cO.length * 0.5));
+			var v1x:Vector3D =  new Vector3D (cO.x -(cO.width * 0.5), cO.y, cO.z);
+			var v2x:Vector3D =  new Vector3D (cO.x + (cO.width * 0.5), cO.y, cO.z);
+			var v1y:Vector3D =  new Vector3D (cO.x, cO.y - (cO.height * 0.5), cO.z);
+			var v2y:Vector3D =  new Vector3D (cO.x, cO.y + (cO.height* 0.5),cO.z);
+			var v1z:Vector3D =  new Vector3D (cO.x, cO.y, cO.z - (cO.length * 0.5));
+			var v2z:Vector3D =  new Vector3D (cO.x, cO.y, cO.z + (cO.length * 0.5));
 			
 			clines.addSegment(new LineSegment(v1x, v2x , 0xFFFF33, 0xFFFF33, 2));
 			clines.addSegment(new LineSegment(v1y, v2y , 0xFFFF33, 0xFFFF33, 2));
@@ -704,7 +707,7 @@ package com.gestureworks.away3d
 			{
 				if (this.cO.history[h])
 				{
-				var gpn = this.cO.history[h].gPointArray.length
+				var gpn:uint = this.cO.history[h].gPointArray.length
 				
 					//gesture points
 					for (var i:int = 0; i < gpn; i++) 
