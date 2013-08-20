@@ -1,12 +1,12 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.CubeGeometry;
-	import com.gestureworks.cml.element.Element;
+	import com.gestureworks.cml.element.Container
 	
 	/**
 	 * ...
 	 */
-	public class Cube extends Element {
+	public class Cube extends Container {
 		private var _width:Number = 100;
 		private var _height:Number = 100;
 		private var _depth:Number = 100;

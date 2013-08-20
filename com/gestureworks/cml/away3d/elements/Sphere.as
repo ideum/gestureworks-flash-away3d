@@ -1,12 +1,12 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.SphereGeometry;
-	import com.gestureworks.cml.element.Element;
+	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * ...
 	 */
-	public class Sphere extends Element {
+	public class Sphere extends Container {
 		private var _radius:Number = 50;
 		private var _segmentsW:uint = 16;
 		private var _segmentsH:uint = 12;

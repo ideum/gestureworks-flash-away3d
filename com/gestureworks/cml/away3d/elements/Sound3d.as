@@ -1,4 +1,4 @@
-package com.gestureworks.cml.element.away3d 
+package com.gestureworks.cml.away3d.elements 
 {
 	import away3d.audio.Sound3D;
 	import away3d.containers.ObjectContainer3D;
@@ -9,13 +9,13 @@ package com.gestureworks.cml.element.away3d
 	 * ...
 	 * 
 	 */
-	public class Sound3d extends Container3D 
+	public class Sound3D extends Container3D 
 	{
-		private var s3d:Sound3D;
+		private var s3d:away3d.audio.Sound3D;
 		private var sound:Sound;
 		private var soundObj3D:ObjectContainer3D;
 		
-		public function Sound3d() 
+		public function Sound3D() 
 		{
 			super();
 		}

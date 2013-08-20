@@ -1,4 +1,4 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.lights.DirectionalLight;
 	import away3d.lights.LightBase;

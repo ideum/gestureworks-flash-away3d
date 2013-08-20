@@ -1,8 +1,8 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.lights.DirectionalLight;
 	import away3d.materials.lightpickers.StaticLightPicker;
 	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.element.Element;
+	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * LightPicker is used to apply single or multiple Lights to a Material.
@@ -12,7 +12,7 @@ package com.gestureworks.cml.element.away3d {
 	 * Lights can be shared by LightPickers and placed anywhere in the display list.
 	 *
 	 */
-	public class LightPicker extends Element {
+	public class LightPicker extends Container {
 		
 		private var _slp:StaticLightPicker;
 		private var _lightIDs:String;

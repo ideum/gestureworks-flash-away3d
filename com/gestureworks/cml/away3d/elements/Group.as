@@ -1,4 +1,4 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.events.TouchEvent3D;
 	import com.gestureworks.cml.element.away3d.Container3D;

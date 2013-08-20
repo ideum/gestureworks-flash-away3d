@@ -1,12 +1,12 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.CylinderGeometry;
-	import com.gestureworks.cml.element.Element;
+	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * ...
 	 */
-	public class Cylinder extends Element {
+	public class Cylinder extends Container {
 		private var _topRadius:Number = 50;
 		private var _bottomRadius:Number = 50;
 		private var _height:Number = 100;

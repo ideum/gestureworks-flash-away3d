@@ -1,13 +1,13 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.PlaneGeometry;
-	import com.gestureworks.cml.element.Element;
+	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * ...
 	 *
 	 */
-	public class Plane extends Element {
+	public class Plane extends Container {
 		private var _width:Number = 100;
 		private var _height:Number = 100;
 		private var _segmentsW:uint = 1;

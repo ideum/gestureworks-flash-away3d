@@ -1,4 +1,4 @@
-package com.gestureworks.cml.element.away3d {
+package com.gestureworks.cml.away3d.elements {
 	import away3d.lights.DirectionalLight;
 	import away3d.materials.ColorMaterial;
 	import away3d.materials.MaterialBase;
@@ -8,7 +8,6 @@ package com.gestureworks.cml.element.away3d {
 	import away3d.tools.utils.TextureUtils;
 	import away3d.utils.Cast;
 	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.element.Element;
 	import com.gestureworks.cml.element.Graphic;
 	import com.gestureworks.cml.element.Image;
 	import com.gestureworks.cml.element.Text;

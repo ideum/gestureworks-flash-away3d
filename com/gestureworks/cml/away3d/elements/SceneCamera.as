@@ -1,10 +1,9 @@
-package com.gestureworks.cml.element.away3d 
+package com.gestureworks.cml.away3d.elements 
 {
 	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.LensBase;
 	import away3d.cameras.lenses.OrthographicLens;
 	import away3d.cameras.lenses.PerspectiveLens;
-	import com.gestureworks.cml.element.Element;
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	
