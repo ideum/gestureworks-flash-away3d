@@ -107,9 +107,9 @@ package com.gestureworks.away3d
 						
 			mOut.position = new Vector3D(v.x, v.y, v.z);		
 			
-			mOut.appendRotation(17, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
-			mOut.appendRotation(17, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
-			mOut.appendRotation(17, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
+			//mOut.appendRotation(17, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
+			//mOut.appendRotation(17, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
+			//mOut.appendRotation(17, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
 			
 			mOut.appendRotation(view.camera.rotationX, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
 			mOut.appendRotation(view.camera.rotationY, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));

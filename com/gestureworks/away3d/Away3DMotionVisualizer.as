@@ -104,10 +104,11 @@ package com.gestureworks.away3d
 				this.addChild(wball);
 			}
 			
+			var plane:PlaneGeometry = new PlaneGeometry(180, 220, 1, 1, true, true);
+		
 			// palm plane
 			for (i = 0; i < 2; i++) 
-			{
-				var plane:PlaneGeometry = new PlaneGeometry(180, 220, 1, 1, true, true);
+			{		
 				var mat:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.1);
 					mat.bothSides = true;
 					mat.alphaBlending = true;
@@ -307,13 +308,12 @@ package com.gestureworks.away3d
 			flines.visible = true;
 			glines.visible = true;
 			lines.visible = true;			
-		
-
+			
 			var hn:uint = cO.handList.length;
 			
 			for (var j:int = 0; j < hn ; j++) 
 			{
-			var hand:HandObject = cO.handList[j];
+				var hand:HandObject = cO.handList[j];
 		
 				
 				var n:uint = 10+j //(hn*5 + (j+1));
@@ -324,10 +324,7 @@ package com.gestureworks.away3d
 			
 			
 			for ( i = 0; i < cO.handList[j].fingerList.length; i++) 
-			{
-				
-				
-				
+			{				
 				if (ballList[i+j*5]) 
 				{
 					////////////////////////////////////////////////////////////////////////////
