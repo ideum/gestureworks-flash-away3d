@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements
 	 * ...
 	 * 
 	 */
-	public class SceneCamera extends Group 
+	public class Camera extends Group 
 	{
 		private var _ortho:Boolean = false;
 		private var _fov:Number = 60;
@@ -24,7 +24,7 @@ package com.gestureworks.cml.away3d.elements
 		private var _camera:Camera3D;
 		private var _lens:LensBase;
 		
-		public function SceneCamera() 
+		public function Camera() 
 		{
 			super();
 			_camera = new Camera3D()
