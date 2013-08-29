@@ -16,7 +16,7 @@ package com.gestureworks.cml.away3d.elements {
 	 */
 	public class Model extends Group {
 		private var _src:String;
-		private var _lightPickerRef:String;
+		private var _lightPicker:String;
 		
 		public function Model() {
 			super();
@@ -51,8 +51,8 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if (e.asset is MaterialBase)
 			
-				if (this.lightPickerRef && CMLObjectList.instance.getId(this.lightPickerRef)) {
-					MaterialBase(e.asset).lightPicker = CMLObjectList.instance.getId(this.lightPickerRef).slp;
+				if (this.lightPicker && CMLObjectList.instance.getId(this.lightPicker)) {
+					MaterialBase(e.asset).lightPicker = CMLObjectList.instance.getId(this.lightPicker).slp;
 					
 					//if (e.asset is ColorMaterial)
 						//ColorMaterial(e.asset).shadowMethod = Light(CMLObjectList.instance.getId(this._lightRef)).shadowMethod;
@@ -88,12 +88,12 @@ package com.gestureworks.cml.away3d.elements {
 			_src = value;
 		}
 		
-		public function get lightPickerRef():String {
-			return _lightPickerRef;
+		public function get lightPicker():String {
+			return _lightPicker;
 		}
 		
-		public function set lightPickerRef(value:String):void {
-			_lightPickerRef = value;
+		public function set lightPicker(value:String):void {
+			_lightPicker = value;
 		}
 	
 	}

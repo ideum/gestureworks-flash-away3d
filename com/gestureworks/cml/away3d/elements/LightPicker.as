@@ -6,7 +6,7 @@ package com.gestureworks.cml.away3d.elements {
 	
 	/**
 	 * LightPicker is used to apply single or multiple Lights to a Material.
-	 * The Material references the LightPicker id by the Materials lightPickerRef.
+	 * The Material references the LightPicker id by the Materials lightPicker.
 	 * A Material can only have one light picker assigned.
 	 * LightPickers lightIDs reference the Lights id.
 	 * Lights can be shared by LightPickers and placed anywhere in the display list.

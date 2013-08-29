@@ -14,8 +14,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _geometry:Geometry;
 		private var _mesh:away3d.entities.Mesh;
 		private var _material:MaterialBase;
-		private var _geomRef:String = "";
-		private var _matRef:String = "";
+		private var _geometry:String = "";
+		private var _material:String = "";
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		private var _castsShadows:Boolean = true;
@@ -51,11 +51,11 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.scaleY = this.scaleY;
 			mesh.scaleZ = this.scaleZ;
 			
-			if (this._geomRef && CMLObjectList.instance.getId(this._geomRef))
-				geometry = CMLObjectList.instance.getId(this._geomRef).geometry;
+			if (this._geometry && CMLObjectList.instance.getId(this._geometry))
+				geometry = CMLObjectList.instance.getId(this._geometry).geometry;
 			
-			if (this._matRef && CMLObjectList.instance.getId(this._matRef))
-				material = CMLObjectList.instance.getId(this._matRef).material;
+			if (this._material && CMLObjectList.instance.getId(this._material))
+				material = CMLObjectList.instance.getId(this._material).material;
 			
 			if (this.parent is Scene)
 				Scene(this.parent).addChild3D(mesh);
@@ -118,27 +118,27 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Geom ref
+		 * Geometry
 		 * gets the geometry with matching id
 		 */
-		public function get geomRef():String {
-			return _geomRef;
+		public function get geometry():String {
+			return _geometry;
 		}
 		
-		public function set geomRef(value:String):void {
-			_geomRef = value;
+		public function set geometry(value:String):void {
+			_geometry = value;
 		}
 		
 		/**
-		 * Material ref
+		 * Material 
 		 * gets the material with matching id
 		 */
-		public function get matRef():String {
-			return _matRef;
+		public function get material():String {
+			return _material;
 		}
 		
-		public function set matRef(value:String):void {
-			_matRef = value;
+		public function set material(value:String):void {
+			_material = value;
 		}
 		
 		/*
