@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements
 	 */
 	public class Sound3D extends Container3D 
 	{
-		private var s3d:away3d.audio.Sound3D;
+		private var s3D:away3d.audio.Sound3D;
 		private var sound:Sound;
 		private var soundObj3D:ObjectContainer3D;
 		
@@ -36,28 +36,28 @@ package com.gestureworks.cml.away3d.elements
 			//TODO
 			/*
 			
-			s3d = new Sound3D(sound, soundObj3D, null, 1, 1000);
-			s3d.x = this.x;
-			s3d.y = this.y;
-			s3d.z = this.z;
-			s3d.pivotPoint = new Vector3D(this.pivot.split(",")[0], this.pivot.split(",")[1], this.pivot.split(",")[2]); 
-			s3d.rotationX = this.rotationX;
-			s3d.rotationY = this.rotationY;
-			s3d.rotationZ = this.rotationZ;
+			s3D = new Sound3D(sound, soundObj3D, null, 1, 1000);
+			s3D.x = this.x;
+			s3D.y = this.y;
+			s3D.z = this.z;
+			s3D.pivotPoint = new Vector3D(this.pivot.split(",")[0], this.pivot.split(",")[1], this.pivot.split(",")[2]); 
+			s3D.rotationX = this.rotationX;
+			s3D.rotationY = this.rotationY;
+			s3D.rotationZ = this.rotationZ;
 			if ( this.lookat) //overides any rotation above
-				s3d.lookAt(new Vector3D(this.lookat.split(",")[0], this.lookat.split(",")[1], this.lookat.split(",")[2]));
-			s3d.scaleX = this.scaleX;
-			s3d.scaleY = this.scaleY;
-			s3d.scaleZ = this.scaleZ;
+				s3D.lookAt(new Vector3D(this.lookat.split(",")[0], this.lookat.split(",")[1], this.lookat.split(",")[2]));
+			s3D.scaleX = this.scaleX;
+			s3D.scaleY = this.scaleY;
+			s3D.scaleZ = this.scaleZ;
 
 			if (this.parent is Scene)
-			Scene(this.parent).addChild3D(s3d);
+			Scene(this.parent).addChild3D(s3D);
 			
 			if (this.parent is Group)
-			Group(this.parent).addChild3D(s3d);
+			Group(this.parent).addChild3D(s3D);
 			
 			if (this.parent is Mesh)
-			Mesh(this.parent).addChild3D(s3d);
+			Mesh(this.parent).addChild3D(s3D);
 			*/
 		}
 		
