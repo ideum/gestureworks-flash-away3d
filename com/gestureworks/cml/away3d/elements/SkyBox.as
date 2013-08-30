@@ -43,9 +43,9 @@ package com.gestureworks.cml.away3d.elements {
 			//																						right										left							up							down							front							back
 			_skyBox = new away3d.primitives.SkyBox(bmCubeText);
 			
-			//find scene or camera tag?
-			if (this.parent is com.gestureworks.cml.element.away3d.Scene)
-				com.gestureworks.cml.element.away3d.Scene(this.parent).addChild3D(_skyBox);
+			//find scene or camera tag? 
+			if (this.parent is Scene) 
+				Scene(this.parent).addChild3D(_skyBox);
 			
 		}
 	}

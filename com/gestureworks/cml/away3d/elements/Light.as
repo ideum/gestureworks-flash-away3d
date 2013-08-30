@@ -8,7 +8,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.materials.methods.FilteredShadowMapMethod;
 	import away3d.materials.methods.NearShadowMapMethod;
 	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.element.Element;
+	//import com.gestureworks.cml.element.Element;
 	import flash.geom.Vector3D;
 	
 	/**

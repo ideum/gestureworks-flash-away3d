@@ -4,6 +4,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.entities.Mesh;
 	import away3d.events.TouchEvent3D;
 	import away3d.materials.MaterialBase;
+	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import flash.geom.Vector3D;
 	
@@ -14,8 +15,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _geometry:Geometry;
 		private var _mesh:away3d.entities.Mesh;
 		private var _material:MaterialBase;
-		private var _geometry:String = "";
-		private var _material:String = "";
+		private var _geometryId:String = "";
+		private var _materialId:String = "";
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		private var _castsShadows:Boolean = true;
@@ -51,11 +52,11 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.scaleY = this.scaleY;
 			mesh.scaleZ = this.scaleZ;
 			
-			if (this._geometry && CMLObjectList.instance.getId(this._geometry))
-				geometry = CMLObjectList.instance.getId(this._geometry).geometry;
+			if (this.geometryId && CMLObjectList.instance.getId(this.geometryId))
+				geometry = CMLObjectList.instance.getId(this.geometryId).geometry;
 			
-			if (this._material && CMLObjectList.instance.getId(this._material))
-				material = CMLObjectList.instance.getId(this._material).material;
+			if (this.materialId && CMLObjectList.instance.getId(this.materialId))
+				material = CMLObjectList.instance.getId(this.materialId).material;
 			
 			if (this.parent is Scene)
 				Scene(this.parent).addChild3D(mesh);
@@ -76,7 +77,8 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if (this._touchEnabled) {
 				//Need a way to search for the Gesture Tag so this can be set
-				var st:AwayTouchObject = new AwayTouchObject(this);
+				//var st:AwayTouchObject = new AwayTouchObject(this);
+				var st:Away3DTouchObject = new Away3DTouchObject(this);
 				st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
 				st.disableNativeTransform = false;
 				st.gestureReleaseInertia = false;
@@ -121,24 +123,24 @@ package com.gestureworks.cml.away3d.elements {
 		 * Geometry
 		 * gets the geometry with matching id
 		 */
-		public function get geometry():String {
-			return _geometry;
+		public function get geometryId():String {
+			return _geometryId;
 		}
 		
-		public function set geometry(value:String):void {
-			_geometry = value;
+		public function set geometryId(value:String):void {
+			_geometryId = value;
 		}
 		
 		/**
 		 * Material 
 		 * gets the material with matching id
 		 */
-		public function get material():String {
-			return _material;
+		public function get materialId():String {
+			return _materialId;
 		}
 		
-		public function set material(value:String):void {
-			_material = value;
+		public function set materialId(value:String):void {
+			_materialId = value;
 		}
 		
 		/*

@@ -12,11 +12,12 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.debug.Trident;
 	import away3d.events.Stage3DEvent;
 	import away3d.utils.Cast;
+	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.events.*;
 	import com.gestureworks.cml.kits.*;
 	import com.gestureworks.cml.utils.DefaultStage;
-	import com.gestureworks.cml.utils.DefaultStage3D;
+	//import com.gestureworks.cml.utils.DefaultStage3D;
 	import com.gestureworks.events.GWGestureEvent;
 	import com.gestureworks.managers.TouchManager;
 	import flash.display.BitmapData;
@@ -44,7 +45,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var stage3DProxy:Stage3DProxy;
 		private var lastRot:Number = 0;
 		private var curRot:Number;
-		private var camerasVct:Vector.<SceneCamera> = new Vector.<SceneCamera>;
+		private var camerasVct:Vector.<com.gestureworks.cml.away3d.elements.Camera> = new Vector.<com.gestureworks.cml.away3d.elements.Camera>;
 		private var _stageProxyColor:uint = 0x0;
 		
 		/**
@@ -70,8 +71,8 @@ package com.gestureworks.cml.away3d.elements {
 		override public function displayComplete():void {
 			
 			for (var i:uint = 0; i < this.numChildren; i++)
-				if (this.getChildAt(i) is SceneCamera)
-					camerasVct.push(SceneCamera(this.getChildAt(i)));
+				if (this.getChildAt(i) is com.gestureworks.cml.away3d.elements.Camera)
+					camerasVct.push(com.gestureworks.cml.away3d.elements.Camera(this.getChildAt(i)));
 			
 			if (camerasVct.length > 0)
 			{
@@ -88,7 +89,7 @@ package com.gestureworks.cml.away3d.elements {
 			scene.addChild(child);
 		}
 		
-		private function createView(sceneCamera:SceneCamera = null):void {
+		private function createView(sceneCamera:com.gestureworks.cml.away3d.elements.Camera = null):void {
 			var cam:Camera3D
 			if (sceneCamera)
 				cam = sceneCamera.getCamera();
@@ -125,16 +126,16 @@ package com.gestureworks.cml.away3d.elements {
 		//called from the SceneCamera
 		public function updateViewFromCamera():void {
 			for (var i:uint = 0; i < viewVct.length; i++) {
-				if (SceneCamera(camerasVct[i]).viewPos) {
-					View3D(viewVct[i]).x = SceneCamera(camerasVct[i]).viewPos.split(",")[0];
-					View3D(viewVct[i]).y = SceneCamera(camerasVct[i]).viewPos.split(",")[1];
+				if (com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos) {
+					View3D(viewVct[i]).x = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos.split(",")[0];
+					View3D(viewVct[i]).y = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos.split(",")[1];
 				}
 				
-				if (SceneCamera(camerasVct[i]).viewDim) {
-					View3D(viewVct[i]).width = SceneCamera(camerasVct[i]).viewDim.split(",")[0];
-					View3D(viewVct[i]).height = SceneCamera(camerasVct[i]).viewDim.split(",")[1];
+				if (com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim) {
+					View3D(viewVct[i]).width = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[0];
+					View3D(viewVct[i]).height = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[1];
 				}
-				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, SceneCamera(camerasVct[i]).viewBackgroundColor));
+				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBackgroundColor));
 			}
 		}
 		
@@ -151,7 +152,7 @@ package com.gestureworks.cml.away3d.elements {
 		private function tick(e:Event):void {
 			//Graphic gets automagically added to touch manager
 			for each (var to:* in TouchManager.touchObjects)
-			if (to is AwayTouchObject)
+			if (to is Away3DTouchObject)
 				to.updateTransform();
 			
 			for each (var v:View3D in viewVct) {

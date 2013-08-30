@@ -1,7 +1,7 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.events.TouchEvent3D;
-	import com.gestureworks.cml.element.away3d.Container3D;
+	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.core.VirtualTouchObject;
 	import com.gestureworks.events.GWTouchEvent;
 	import com.gestureworks.managers.TouchManager;
@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements {
 	 * ...
 	 *
 	 */
-	public class Group extends Container3D {
+	public class Group extends com.gestureworks.cml.away3d.elements.Container3D {
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		
@@ -21,7 +21,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		/**
 		 * Initialisation method
-		 */
+		*/ 
 		override public function init():void {
 			displayComplete();
 		}
@@ -58,8 +58,8 @@ package com.gestureworks.cml.away3d.elements {
 				Light(this.parent).addChild3D(groupObj3D);
 			
 			//Need a way to search for the Gesture Tag so this can be set
-			if (this._touchEnabled) {
-				var st:AwayTouchObject = new AwayTouchObject(this);
+			if (this._touchEnabled) { 
+				var st:Away3DTouchObject = new Away3DTouchObject(this);
 				st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
 				st.disableNativeTransform = false;
 				st.gestureReleaseInertia = false;
@@ -69,9 +69,10 @@ package com.gestureworks.cml.away3d.elements {
 			
 			//if (this._touchEnabled) {
 			if (cmlGestureList != undefined) {
-				var st:AwayTouchObject = new AwayTouchObject(this);
+				var st:Away3DTouchObject = new Away3DTouchObject(this);
 				//st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
-				st.makeGestureList(cmlGestureList);
+				//st.makeGestureList(cmlGestureList);
+				st.gestureList = cmlGestureList;
 				st.disableNativeTransform = true;
 				st.gestureReleaseInertia = true;
 				enableListeners();
@@ -90,7 +91,6 @@ package com.gestureworks.cml.away3d.elements {
 			_groupObj3D.addEventListener(TouchEvent3D.TOUCH_END, ontouch);
 		}
 		
-		private var cmlGestureList:XMLList;
 		override public function parseCML(cml:XMLList):XMLList {
 			if (cml.GestureList != undefined)
 				cmlGestureList = cml.GestureList;
@@ -141,11 +141,11 @@ package com.gestureworks.cml.away3d.elements {
 			_groupObj3D = value;
 		}
 		
-		public function get touchEnabled():Boolean {
+		override public function get touchEnabled():Boolean {
 			return _touchEnabled;
 		}
 		
-		public function set touchEnabled(value:Boolean):void {
+		override public function set touchEnabled(value:Boolean):void {
 			_touchEnabled = value;
 		}
 	

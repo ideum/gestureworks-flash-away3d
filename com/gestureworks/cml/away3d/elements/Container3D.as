@@ -2,9 +2,7 @@ package com.gestureworks.cml.away3d.elements
 {
 	import com.gestureworks.cml.core.*;
 	import com.gestureworks.cml.element.*;
-	import com.gestureworks.cml.factories.*;
 	import com.gestureworks.cml.interfaces.*;
-	import com.gestureworks.cml.loaders.*;
 	import com.gestureworks.cml.managers.*;
 	import flash.display.DisplayObject;
 	import flash.utils.Dictionary;
@@ -36,18 +34,18 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Sets the layout of the container
 		 */
-		public function get layout():* {return _layout;}
-		public function set layout(value:*):void 
+		override public function get layout():* {return _layout;}
+		override public function set layout(value:*):void 
 		{
 			_layout = value;
 		}
 		
-		private var _position:String;
+		private var _position:*;
 		/**
 		 * Sets the position 
 		 */
-		public function get position():String {return _position;}
-		public function set position(value:String):void 
+		override public function get position():* {return _position;}
+		override public function set position(value:*):void 
 		{
 			_position = value;
 			this.x = value.split(",")[0];
