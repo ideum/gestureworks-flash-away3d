@@ -1,6 +1,6 @@
 package com.gestureworks.cml.away3d.elements {
-	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.OrthographicLens;
+	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.OrthographicOffCenterLens;
 	import away3d.cameras.lenses.PerspectiveLens;
 	import away3d.containers.ObjectContainer3D;
@@ -45,7 +45,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var stage3DProxy:Stage3DProxy;
 		private var lastRot:Number = 0;
 		private var curRot:Number;
-		private var camerasVct:Vector.<com.gestureworks.cml.away3d.elements.Camera> = new Vector.<com.gestureworks.cml.away3d.elements.Camera>;
+		private var camerasVct:Vector.<com.gestureworks.cml.away3d.elements.Camera3D> = new Vector.<com.gestureworks.cml.away3d.elements.Camera3D>;
 		private var _stageProxyColor:uint = 0x0;
 		
 		/**
@@ -71,8 +71,8 @@ package com.gestureworks.cml.away3d.elements {
 		override public function displayComplete():void {
 			
 			for (var i:uint = 0; i < this.numChildren; i++)
-				if (this.getChildAt(i) is com.gestureworks.cml.away3d.elements.Camera)
-					camerasVct.push(com.gestureworks.cml.away3d.elements.Camera(this.getChildAt(i)));
+				if (this.getChildAt(i) is com.gestureworks.cml.away3d.elements.Camera3D)
+					camerasVct.push(com.gestureworks.cml.away3d.elements.Camera3D(this.getChildAt(i)));
 			
 			if (camerasVct.length > 0)
 			{
@@ -89,12 +89,12 @@ package com.gestureworks.cml.away3d.elements {
 			scene.addChild(child);
 		}
 		
-		private function createView(sceneCamera:com.gestureworks.cml.away3d.elements.Camera = null):void {
-			var cam:Camera3D
+		private function createView(sceneCamera:com.gestureworks.cml.away3d.elements.Camera3D = null):void {
+			var cam:away3d.cameras.Camera3D
 			if (sceneCamera)
 				cam = sceneCamera.getCamera();
 			else {
-				cam = new Camera3D((_ortho) ? new OrthographicLens(_projectionHeight) : new PerspectiveLens(_fov));
+				cam = new away3d.cameras.Camera3D((_ortho) ? new OrthographicLens(_projectionHeight) : new PerspectiveLens(_fov));
 				cam.lens.near = _clipping.split(",")[0];
 				cam.lens.far = _clipping.split(",")[1];
 			}
@@ -126,16 +126,16 @@ package com.gestureworks.cml.away3d.elements {
 		//called from the SceneCamera
 		public function updateViewFromCamera():void {
 			for (var i:uint = 0; i < viewVct.length; i++) {
-				if (com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos) {
-					View3D(viewVct[i]).x = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos.split(",")[0];
-					View3D(viewVct[i]).y = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewPos.split(",")[1];
+				if (com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewPos) {
+					View3D(viewVct[i]).x = com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewPos.split(",")[0];
+					View3D(viewVct[i]).y = com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewPos.split(",")[1];
 				}
 				
-				if (com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim) {
-					View3D(viewVct[i]).width = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[0];
-					View3D(viewVct[i]).height = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[1];
+				if (com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewDim) {
+					View3D(viewVct[i]).width = com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewDim.split(",")[0];
+					View3D(viewVct[i]).height = com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewDim.split(",")[1];
 				}
-				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBackgroundColor));
+				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera3D(camerasVct[i]).viewBackgroundColor));
 			}
 		}
 		

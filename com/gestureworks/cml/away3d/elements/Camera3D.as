@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements
 	 * ...
 	 * 
 	 */
-	public class Camera extends Group 
+	public class Camera3D extends Group
 	{
 		private var _ortho:Boolean = false;
 		private var _fov:Number = 60;
@@ -21,13 +21,13 @@ package com.gestureworks.cml.away3d.elements
 		private var _viewDim:String;//"wh"
 		private var _viewBackgroundColor:uint = 0xCCCCCC;
 		private var _transform3D:Matrix3D;
-		private var _camera:Camera3D;
+		private var _camera:away3d.cameras.Camera3D;
 		private var _lens:LensBase;
 		
-		public function Camera() 
+		public function Camera3D() 
 		{
 			super();
-			_camera = new Camera3D()
+			_camera = new away3d.cameras.Camera3D()
 		}
 		
 		/**
@@ -159,12 +159,12 @@ package com.gestureworks.cml.away3d.elements
 			_transform3D = value;
 		}
 		
-		public function getCamera():Camera3D 
+		public function getCamera():away3d.cameras.Camera3D
 		{
 			return _camera;
 		}
 		
-		public function set camera(value:Camera3D):void 
+		public function set camera(value:away3d.cameras.Camera3D):void 
 		{
 			_camera = value;
 		}

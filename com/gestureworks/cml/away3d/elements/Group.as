@@ -16,7 +16,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _touchEnabled:Boolean = false;
 		
 		public function Group() {
-			super();
+			super(null);
 		}
 		
 		/**

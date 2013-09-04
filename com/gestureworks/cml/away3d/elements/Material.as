@@ -34,7 +34,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _alphaThreshold:Number;
 		
 		public function Material() {
-			super();
+			super(null);
 		}
 		
 		/**
