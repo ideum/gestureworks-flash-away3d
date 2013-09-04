@@ -1,13 +1,10 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
-	import away3d.entities.Mesh;
 	import away3d.events.AssetEvent;
 	import away3d.events.LoaderEvent;
 	import away3d.library.AssetLibrary;
 	import away3d.loaders.parsers.Parsers;
-	import away3d.materials.ColorMaterial;
 	import away3d.materials.MaterialBase;
-	import away3d.materials.TextureMaterial;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import flash.net.URLRequest;
 	
@@ -38,14 +35,14 @@ package com.gestureworks.cml.away3d.elements {
 			//	trace(e.asset.name +"\t" + e.asset.assetType );
 			
 			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
-				if (this.parent is com.gestureworks.cml.element.away3d.Scene)
-					com.gestureworks.cml.element.away3d.Scene(this.parent).addChild3D(ObjectContainer3D(e.asset));
+				if (this.parent is Scene)
+					Scene(this.parent).addChild3D(ObjectContainer3D(e.asset));
 				
-				if (this.parent is com.gestureworks.cml.element.away3d.Group)
-					com.gestureworks.cml.element.away3d.Group(this.parent).addChild3D(ObjectContainer3D(e.asset));
+				if (this.parent is Group)
+					Group(this.parent).addChild3D(ObjectContainer3D(e.asset));
 				
-				if (this.parent is com.gestureworks.cml.element.away3d.Mesh)
-					com.gestureworks.cml.element.away3d.Mesh(this.parent).addChild3D(ObjectContainer3D(e.asset));
+				if (this.parent is Mesh)
+					Mesh(this.parent).addChild3D(ObjectContainer3D(e.asset));
 			}
 			
 			

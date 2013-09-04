@@ -2,7 +2,6 @@ package com.gestureworks.cml.away3d.elements
 {
 	import away3d.audio.Sound3D;
 	import away3d.containers.ObjectContainer3D;
-	import com.gestureworks.cml.element.away3d.Container3D;
 	import flash.geom.Vector3D;
 	import flash.media.Sound;
 	/**
@@ -12,7 +11,7 @@ package com.gestureworks.cml.away3d.elements
 	public class Sound3D extends Container3D 
 	{
 		private var s3D:away3d.audio.Sound3D;
-		private var sound:Sound;
+		private var snd:Sound;
 		private var soundObj3D:ObjectContainer3D;
 		
 		public function Sound3D() 

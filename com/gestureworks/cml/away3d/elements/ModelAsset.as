@@ -10,7 +10,6 @@ package com.gestureworks.cml.away3d.elements
 	import away3d.materials.methods.NearShadowMapMethod;
 	import away3d.materials.TextureMaterial;
 	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.element.away3d.Container3D;
 	import flash.geom.Vector3D;
 	/**
 	 * ... TODO MAY SPLIT INTO MESH/OBJ3D AND MATERIAL AS-SETS

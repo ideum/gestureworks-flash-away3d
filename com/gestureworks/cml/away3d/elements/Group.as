@@ -59,23 +59,23 @@ package com.gestureworks.cml.away3d.elements {
 			
 			//Need a way to search for the Gesture Tag so this can be set
 			if (this._touchEnabled) { 
-				var st:Away3DTouchObject = new Away3DTouchObject(this);
-				st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
-				st.disableNativeTransform = false;
-				st.gestureReleaseInertia = false;
-				enableListeners();
+				//var st:Away3DTouchObject = new Away3DTouchObject(this);
+				//st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
+				//st.disableNativeTransform = false;
+				//st.gestureReleaseInertia = false;
+				//enableListeners();
 			}
 			
 			
 			//if (this._touchEnabled) {
 			if (cmlGestureList != undefined) {
-				var st:Away3DTouchObject = new Away3DTouchObject(this);
+				//var st:Away3DTouchObject = new Away3DTouchObject(this);
 				//st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
 				//st.makeGestureList(cmlGestureList);
-				st.gestureList = cmlGestureList;
-				st.disableNativeTransform = true;
-				st.gestureReleaseInertia = true;
-				enableListeners();
+				//st.gestureList = cmlGestureList;
+				//st.disableNativeTransform = true;
+				//st.gestureReleaseInertia = true;
+				//enableListeners();
 			}			
 		
 		}
