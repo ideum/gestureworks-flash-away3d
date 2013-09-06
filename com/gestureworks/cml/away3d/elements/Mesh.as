@@ -15,8 +15,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _geometry:Geometry;
 		private var _mesh:away3d.entities.Mesh;
 		private var _material:MaterialBase;
-		private var _geometryId:String = "";
-		private var _materialId:String = "";
+		private var _gRef:String = "";
+		private var _mRef:String = "";
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		private var _castsShadows:Boolean = true;
@@ -52,11 +52,11 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.scaleY = this.scaleY;
 			mesh.scaleZ = this.scaleZ;
 			
-			if (this.geometryId && CMLObjectList.instance.getId(this.geometryId))
-				geometry = CMLObjectList.instance.getId(this.geometryId).geometry;
+			if (this.gRef && CMLObjectList.instance.getId(this.gRef))
+				geometry = CMLObjectList.instance.getId(this.gRef).geometry;
 			
-			if (this.materialId && CMLObjectList.instance.getId(this.materialId))
-				material = CMLObjectList.instance.getId(this.materialId).material;
+			if (this.mRef && CMLObjectList.instance.getId(this.mRef))
+				material = CMLObjectList.instance.getId(this.mRef).material;
 			
 			if (this.parent is Scene)
 				Scene(this.parent).addChild3D(mesh);
@@ -123,24 +123,24 @@ package com.gestureworks.cml.away3d.elements {
 		 * Geometry
 		 * gets the geometry with matching id
 		 */
-		public function get geometryId():String {
-			return _geometryId;
+		public function get gRef():String {
+			return _gRef;
 		}
 		
-		public function set geometryId(value:String):void {
-			_geometryId = value;
+		public function set gRef(value:String):void {
+			_gRef = value;
 		}
 		
 		/**
 		 * Material 
 		 * gets the material with matching id
 		 */
-		public function get materialId():String {
-			return _materialId;
+		public function get mRef():String {
+			return _mRef;
 		}
 		
-		public function set materialId(value:String):void {
-			_materialId = value;
+		public function set mRef(value:String):void {
+			_mRef = value;
 		}
 		
 		/*

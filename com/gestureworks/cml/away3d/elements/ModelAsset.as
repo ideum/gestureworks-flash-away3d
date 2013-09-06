@@ -16,7 +16,7 @@ package com.gestureworks.cml.away3d.elements
 	 */
 	public class ModelAsset extends Group 
 	{
-		private var _material:String;
+		private var _mRef:String;
 		
 		public function ModelAsset() 
 		{
@@ -60,8 +60,8 @@ package com.gestureworks.cml.away3d.elements
 				groupObj3D.scaleY = this.scaleY;
 				groupObj3D.scaleZ = this.scaleZ;
 				
-				if (this._material && CMLObjectList.instance.getId(this._material) && groupObj3D is away3d.entities.Mesh )
-				away3d.entities.Mesh(groupObj3D).material = CMLObjectList.instance.getId(this._material).material;
+				if (this._mRef && CMLObjectList.instance.getId(this._mRef) && groupObj3D is away3d.entities.Mesh )
+				away3d.entities.Mesh(groupObj3D).material = CMLObjectList.instance.getId(this._mRef).material;
 			}
 			
 			if (AssetLibrary.getAsset(this.id).assetType == "material")
@@ -81,14 +81,14 @@ package com.gestureworks.cml.away3d.elements
 			}
 		}
 		
-		public function get material():String 
+		public function get mRef():String 
 		{
-			return _material;
+			return _mRef;
 		}
 		
-		public function set material(value:String):void 
+		public function set mRef(value:String):void 
 		{
-			_material = value;
+			_mRef = value;
 		}
 		
 	}

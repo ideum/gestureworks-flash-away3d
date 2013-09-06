@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements {
 	 * ...
 	 *
 	 */
-	public class Group extends com.gestureworks.cml.away3d.elements.Container3D {
+	public class Group extends Container3D {
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		
