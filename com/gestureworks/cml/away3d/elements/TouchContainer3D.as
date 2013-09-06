@@ -20,10 +20,12 @@ package com.gestureworks.cml.away3d.elements
 		public function TouchContainer3D(target:*)
 		{
 			super();	
-			transform.matrix3D = target.transform;
+			this.target = target;
+			if(target)
+				transform.matrix3D = target.transform;
 			transform3d = true;			
 			registerPoints = false;	
-			away3d = true;			
+			away3d = true;	
 		}	
 		
 		public function updateTransform():void

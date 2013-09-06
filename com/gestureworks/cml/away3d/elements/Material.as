@@ -1,4 +1,4 @@
-package com.gestureworks.cml.away3d.elements {
+package com.gestureworks.cml.away3d.elements  {
 	import away3d.lights.DirectionalLight;
 	import away3d.materials.ColorMaterial;
 	import away3d.materials.MaterialBase;
@@ -12,6 +12,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.element.Image;
 	import com.gestureworks.cml.element.Text;
 	import com.gestureworks.cml.managers.FileManager;
+	import com.greensock.loading.ImageLoader;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
 	import flash.geom.Matrix;
@@ -52,10 +53,10 @@ package com.gestureworks.cml.away3d.elements {
 			if (color) {
 				material = new ColorMaterial(_color, alpha);
 			}
-			if (this._src) {
-				var fileData:Loader = (FileManager.fileList.getKey(this.src)) as flash.display.Loader;
-				_bitmapData = new BitmapData(fileData.width, fileData.height, true, 0x000000);
-				_bitmapData.draw(fileData.content);
+			if (this._src) { 
+				var fileData:ImageLoader = ImageLoader(FileManager.media.getLoader(this._src));
+				_bitmapData = new BitmapData(fileData.rawContent.width, fileData.rawContent.height, true, 0x000000);
+				_bitmapData.draw(fileData.rawContent);
 				this.material = new TextureMaterial(new BitmapTexture(_bitmapData, _mipmap));
 				updateTM();
 			}
