@@ -88,7 +88,7 @@ package com.gestureworks.away3d
 			TouchManager.onTouchUp(tEnd, true);	
 		}			
 		
-		private function convertScreenData(x:Number, y:Number, z:Number):Point
+		public function convertScreenData(x:Number, y:Number, z:Number=1):Point
 		{
 			vIn = view.unproject(x, y, z);
 			mIn.position = vIn;
