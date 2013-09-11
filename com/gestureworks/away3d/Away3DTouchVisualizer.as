@@ -1,19 +1,5 @@
 package com.gestureworks.away3d
 {
-	import away3d.events.TouchEvent3D;
-	import away3d.lights.PointLight;
-	import com.gestureworks.cml.away3d.elements.Sphere;
-	import com.gestureworks.cml.utils.ArrayUtils;
-	import com.gestureworks.core.GestureWorks;
-	import com.gestureworks.objects.MotionPointObject;
-	import com.gestureworks.objects.PointObject;
-	import flash.display.Stage;
-	import flash.events.Event;
-	import flash.events.TouchEvent;
-	import flash.geom.Point;
-	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
-	
 	import away3d.containers.*;
 	import away3d.entities.*;
 	import away3d.materials.*;
@@ -21,32 +7,34 @@ package com.gestureworks.away3d
 	import away3d.materials.methods.*;
 	import away3d.primitives.*;
 	import away3d.utils.*;
-	import away3d.primitives.LineSegment;
-	import away3d.entities.SegmentSet;
-	
-	import com.gestureworks.core.TouchSprite;
-	import com.gestureworks.objects.ClusterObject;
-	import com.gestureworks.objects.TransformObject;
-	import com.gestureworks.objects.HandObject;
+	import com.gestureworks.cml.utils.ArrayUtils;
+	import com.gestureworks.cml.utils.List;
+	import com.gestureworks.core.*;
+	import com.gestureworks.objects.*;
+	import flash.display.*;
+	import flash.events.*;
+	import flash.geom.*;
+	import flash.utils.*;
 	
 	public class Away3DTouchVisualizer extends ObjectContainer3D
 	{
+		public var maxPoints:int = 10;
+		public var maxTrails:int = 60;
+		
 		private var ts:TouchSprite;
 		private var view:View3D;
+		private var stage:Stage;		
 		private var lightPicker:StaticLightPicker;
-		private var stage:Stage;
 		private var manager:Away3DTouchManager;
 		
-		private var spheres:Dictionary;
-		private var trails:Array;
-		private var history:Dictionary;
-		private var historyArray:Array;
-		private var mat:ColorMaterial;
-		private var matTrails:ColorMaterial;
-		private var geom:SphereGeometry;
-		private var maxPoints:int = 10;
-		private var maxTrails:int = 60;
-		private var hist:int = 0;
+		private var points:Array;
+		private var trails:Array;		
+		private var activePoints:Dictionary;	
+		private var activeTrails:Dictionary;	
+
+		private var geom:SphereGeometry;		
+		private var sphereMat:ColorMaterial;
+		private var trailMat:ColorMaterial;
 	
 		public function Away3DTouchVisualizer(view3D:View3D, stage2D:Stage, lightPick:StaticLightPicker) 
 		{
@@ -56,49 +44,50 @@ package com.gestureworks.away3d
 			stage = stage2D;
 			lightPicker = lightPick;
 			
-			spheres = new Dictionary(true);
-			history = new Dictionary(true);
-			historyArray = new Array;
+			points = new Array;
 			trails = new Array;
-			
-			manager = new Away3DTouchManager(view);
-			mat = new ColorMaterial();
-			mat.alphaBlending = true;
-			mat.alpha = 1;
-			mat.color = 0xFFAE1F;
-			mat.lightPicker = lightPicker;
-			mat.smooth = true;
-			
-
-			
+			activePoints = new Dictionary;
+			activeTrails = new Dictionary;
 			
 			geom = new SphereGeometry;
 			geom.radius = 15;
 			geom.segmentsH = 50;
 			geom.segmentsW = 50;
 			
+			manager = new Away3DTouchManager(view);
+			sphereMat = new ColorMaterial;
+			sphereMat.alphaBlending = true;
+			sphereMat.alpha = 1;
+			sphereMat.color = 0xFFAE1F;
+			sphereMat.lightPicker = lightPicker;
+			sphereMat.smooth = true;
+			
+			// preload touch points
+			for (var i:int = 0; i < maxPoints; i++) { 
+				var m:Mesh = new Mesh(geom);
+				m.material = sphereMat;
+				points.push(m);
+			}			
+			
+			// preload touch trails
 			for (var i:int = 0; i < maxPoints; i++) { 
 				trails.push(new Array());				
 				for (var j:int = 0; j < maxTrails; j++) {
 					var m:Mesh = new Mesh(geom);	
-				
-					trails[i].push(m);
-
-					matTrails = new ColorMaterial();
-					matTrails.alphaBlending = true;
-					matTrails.alpha = 1;
-					matTrails.color = 0x9BD6EA;
-					matTrails.lightPicker = lightPicker;
-					matTrails.smooth = true;	
-					m.material = matTrails;
+					trailMat = new ColorMaterial();
+					trailMat.alphaBlending = true;
+					trailMat.alpha = 1;
+					trailMat.color = 0x9BD6EA;
+					trailMat.lightPicker = lightPicker;
+					trailMat.smooth = true;	
+					m.material = trailMat;
+					trails[i].push(m);					
 				}
 			}
 			
-			
-			// add options to overide externally
 			ts = new TouchSprite();
 			ts.graphics.beginFill(0xFFFFFF, 0);
-			ts.graphics.drawRect(0, 0, 1920, 1080);
+			ts.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 			ts.graphics.endFill();
 			ts.gestureList = { "n-drag":true, "n-tap":true };
 			stage.addChild(ts);
@@ -110,80 +99,93 @@ package com.gestureworks.away3d
 				
 		private function onTouchBegin(e:TouchEvent):void 
 		{
-			var m:Mesh = new Mesh(geom);
-			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);				
+			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);			
+			var m:Mesh = points[0];
 			m.x = pt.x;
-			m.y = pt.y;
-			m.material = mat;
+			m.y = pt.y;			
 			addChild(m);
-			
-			spheres[e.touchPointID] = m;	
-			
-			//trace("touch begin");						
+			activePoints[e.touchPointID] = m;
+			activeTrails[e.touchPointID] = trails[0];
 		}		
 
 		private function onTouchMove(e:TouchEvent):void 
 		{
-			var m:Mesh = spheres[e.touchPointID];
-			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);
+			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);			
+			var m:Mesh = activePoints[e.touchPointID];
 			m.x = pt.x;
 			m.y = pt.y;
-			//trace("touch move");
 		}
 		
 		private function onTouchEnd(e:TouchEvent):void 
-		{
-			removeChild(spheres[e.touchPointID]);
-			delete spheres[e.touchPointID];
+		{			
+			var m:Mesh = activePoints[e.touchPointID];
+			var i:int = points.indexOf(m);
+			ArrayUtils.remove(points, i);
+			points.unshift(m);
 			
-			//trace("touch end");
+			var arr:Array = activeTrails[e.touchPointID];
+			
+			for (var j:int = 0; j < trails[i].length; j++) {					
+				trails[i][j].material.alpha = 1;
+				trails[i][j].z = 0;
+				if (contains(trails[i][j]))
+					removeChild(trails[i][j]);
+			}	
+			
+			ArrayUtils.remove(trails, i);
+			trails.unshift(arr);
+			
+			if (contains(activePoints[e.touchPointID]))
+				removeChild(activePoints[e.touchPointID]);
+				
+			delete activePoints[e.touchPointID];
+			delete activeTrails[e.touchPointID];			
 		}		
 		
 		public function update():void
 		{
+			var i:int;
+			var j:int;
+			var newPt:Point;
+			var hist:int;
+			var pt:PointObject;
 			var n:int = (ts.N <= maxPoints) ? ts.N : maxPoints;
 			
-			var i:int;			
-			var newPt:Point;			
-			
 			for (i = 0; i < n; i++) {			
-				var pt:PointObject = ts.cO.pointArray[i];
-				
+				pt = ts.cO.pointArray[i];
 				hist = pt.history.length;
 				
-				if (hist < 0) hist = 0;
 				
-				var k:int = 0;
 				var num:int = (hist <= maxTrails) ? hist : maxTrails;
 				
-				for (k = 0; k < num; k++) {	
+				for (j = hist-1; j >= 0; j--) {	
 					//newPt = manager.convertScreenData(pt.history[0].x, pt.history[0].y);
-					newPt = manager.convertScreenData(pt.history[k].x, pt.history[k].y);
-					trails[i][k].x = newPt.x;
-					trails[i][k].y = newPt.y;				
-					trails[i][k].z += 1 * k;					
-					trails[i][k].material.alpha -= .001 * k;
-					addChild(trails[i][k]);	
+					newPt = manager.convertScreenData(pt.history[j].x, pt.history[j].y);
+					trails[i][j].x = newPt.x;
+					trails[i][j].y = newPt.y;				
+					trails[i][j].z = j*50+50;					
+					trails[i][j].material.alpha = 1 - (1 / 60) * j;
+					addChild(trails[i][j]);	
 				}			
 				
 			}			
 			
+			
 			for (var i:int = 0; i < trails.length; i++) {
 				for (var j:int = 0; j < trails[i].length; j++) {					
 					if (trails[i][j].material.alpha <= 0) {
+						var m:Mesh = trails[i][j];
 						trails[i][j].material.alpha = 1;
-						trails[i][j].z = 0;		
+						trails[i][j].z = 0;
 						if (contains(trails[i][j]))
-							removeChild(trails[i][j]);						
+							removeChild(trails[i][j]);
+						ArrayUtils.remove(trails[i], j);
+						trails[i].push(m);
 					}
 				}	
 			}
-			
-			
-			
-			
+					
 		}	
-		
-
+	
 	}
 }
