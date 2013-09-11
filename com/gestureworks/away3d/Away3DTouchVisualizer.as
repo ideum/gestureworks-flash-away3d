@@ -29,8 +29,6 @@ package com.gestureworks.away3d
 		
 		private var points:Array;
 		private var trails:Array;		
-		private var activePoints:Dictionary;	
-		private var activeTrails:Dictionary;	
 
 		private var geom:SphereGeometry;		
 		private var sphereMat:ColorMaterial;
@@ -46,8 +44,6 @@ package com.gestureworks.away3d
 			
 			points = new Array;
 			trails = new Array;
-			activePoints = new Dictionary;
-			activeTrails = new Dictionary;
 			
 			geom = new SphereGeometry;
 			geom.radius = 15;
@@ -99,92 +95,82 @@ package com.gestureworks.away3d
 				
 		private function onTouchBegin(e:TouchEvent):void 
 		{
-			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);			
-			var m:Mesh = points[0];
-			m.x = pt.x;
-			m.y = pt.y;			
-			addChild(m);
-			activePoints[e.touchPointID] = m;
-			activeTrails[e.touchPointID] = trails[0];
+			
 		}		
 
 		private function onTouchMove(e:TouchEvent):void 
 		{
-			var pt:Point = manager.convertScreenData(e.stageX, e.stageY);			
-			var m:Mesh = activePoints[e.touchPointID];
-			m.x = pt.x;
-			m.y = pt.y;
 		}
 		
 		private function onTouchEnd(e:TouchEvent):void 
-		{			
-			var m:Mesh = activePoints[e.touchPointID];
-			var i:int = points.indexOf(m);
-			ArrayUtils.remove(points, i);
-			points.unshift(m);
-			
-			var arr:Array = activeTrails[e.touchPointID];
-			
-			for (var j:int = 0; j < trails[i].length; j++) {					
-				trails[i][j].material.alpha = 1;
-				trails[i][j].z = 0;
-				if (contains(trails[i][j]))
-					removeChild(trails[i][j]);
-			}	
-			
-			ArrayUtils.remove(trails, i);
-			trails.unshift(arr);
-			
-			if (contains(activePoints[e.touchPointID]))
-				removeChild(activePoints[e.touchPointID]);
-				
-			delete activePoints[e.touchPointID];
-			delete activeTrails[e.touchPointID];			
+		{
+
 		}		
+		
+	
 		
 		public function update():void
 		{
 			var i:int;
 			var j:int;
 			var newPt:Point;
-			var hist:int;
+			var histLength:int;
 			var pt:PointObject;
-			var n:int = (ts.N <= maxPoints) ? ts.N : maxPoints;
+			var n:int = (ts.N <= maxPoints) ? ts.N : maxPoints;			
+			var m:Mesh;
+			var ptData:Point;
+			var num:int;
 			
+			// POINTS
+			
+			// clear
+			for (i = 0; i < maxPoints; i++) {
+				m = points[i];
+				if (contains(m))
+					removeChild(m);
+			}				
+			
+			// add
+			for (i = 0; i < n; i++) {
+				ptData = manager.convertScreenData(ts.pointArray[i].x, ts.pointArray[i].y);			
+				m = points[i];
+				m.x = ptData.x;
+				m.y = ptData.y;
+				addChild(m);
+			}				
+			
+			
+			// TRAILS	
+			
+			// fade out
+			for (i = 0; i < maxPoints; i++) {
+				for (j = 0; j < trails[i].length; j++) {					
+					trails[i][j].material.alpha -= .1;
+					if (trails[i][j].material.alpha <= 0) {
+						if (contains(trails[i][j])) {
+							removeChild(trails[i][j]);
+						}
+					}
+				}
+			}	
+			
+			// add
 			for (i = 0; i < n; i++) {			
-				pt = ts.cO.pointArray[i];
-				hist = pt.history.length;
+				pt = ts.cO.pointArray[i];								
 				
+				histLength = pt.history.length;
+				num = (histLength <= maxTrails) ? histLength : maxTrails;
 				
-				var num:int = (hist <= maxTrails) ? hist : maxTrails;
-				
-				for (j = hist-1; j >= 0; j--) {	
-					//newPt = manager.convertScreenData(pt.history[0].x, pt.history[0].y);
+				for (j = histLength-1; j >= 0; j--) {	
 					newPt = manager.convertScreenData(pt.history[j].x, pt.history[j].y);
 					trails[i][j].x = newPt.x;
 					trails[i][j].y = newPt.y;				
 					trails[i][j].z = j*50+50;					
 					trails[i][j].material.alpha = 1 - (1 / 60) * j;
-					addChild(trails[i][j]);	
-				}			
-				
+					addChild(trails[i][j]);
+				}
 			}			
 			
-			
-			for (var i:int = 0; i < trails.length; i++) {
-				for (var j:int = 0; j < trails[i].length; j++) {					
-					if (trails[i][j].material.alpha <= 0) {
-						var m:Mesh = trails[i][j];
-						trails[i][j].material.alpha = 1;
-						trails[i][j].z = 0;
-						if (contains(trails[i][j]))
-							removeChild(trails[i][j]);
-						ArrayUtils.remove(trails[i], j);
-						trails[i].push(m);
-					}
-				}	
-			}
-					
 		}	
 	
 	}
