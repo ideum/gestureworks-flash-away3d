@@ -89,9 +89,12 @@ package com.gestureworks.away3d
 		}			
 		
 		public function convertScreenData(x:Number, y:Number, z:Number=1):Point
-		{
+		{			
 			vIn = view.unproject(x, y, z);
 			mIn.position = vIn;
+			
+			trace(vIn);
+			
 			mIn.appendTranslation(-view.camera.position.x, -view.camera.position.y, -view.camera.position.z);			
 			mIn.appendRotation(-view.camera.rotationX, new Vector3D(mIn.rawData[0], mIn.rawData[1], mIn.rawData[2]));
 			mIn.appendRotation(-view.camera.rotationY, new Vector3D(mIn.rawData[4], mIn.rawData[5], mIn.rawData[6]));
@@ -101,30 +104,58 @@ package com.gestureworks.away3d
 		
 		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
 		{
-			var v:Vector3D = new Vector3D(dx, dy, dz);	
-			var len:Number = v.length;
-			v.normalize();		
-						
-			mOut.position = new Vector3D(v.x, v.y, v.z);		
+			var v:Vector3D = new Vector3D(dx, -dy, dz);	
 			
-			//mOut.appendRotation(17, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
-			//mOut.appendRotation(17, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
-			//mOut.appendRotation(17, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
+			var cam:Vector3D = view.camera.position;
+			cam.normalize();
+			
+			mOut.position = new Vector3D(v.x, v.y, v.z);	
+			
+			var sph:Vector3D = cartesianToSpherical( cam );						
+			
+			//mOut.appendRotation(sph.x * MathConsts.RADIANS_TO_DEGREES, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
+			//mOut.appendRotation(sph.y * MathConsts.RADIANS_TO_DEGREES, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
+			//mOut.appendRotation(sph.z * MathConsts.RADIANS_TO_DEGREES, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));	
 			
 			mOut.appendRotation(view.camera.rotationX, new Vector3D(mOut.rawData[0], mOut.rawData[1], mOut.rawData[2]));
 			mOut.appendRotation(view.camera.rotationY, new Vector3D(mOut.rawData[4], mOut.rawData[5], mOut.rawData[6]));
 			mOut.appendRotation(view.camera.rotationZ, new Vector3D(mOut.rawData[8], mOut.rawData[9], mOut.rawData[10]));
-
-			return new Vector3D(mOut.position.x * len, mOut.position.y * len, mOut.position.z * len);
+			
+			return new Vector3D(mOut.position.x, mOut.position.y, mOut.position.z);
 		}		
 				
 		
 		private function onFrame(e:GWEvent):void 
 		{
 			for each (var to:Away3DTouchObject in touchObjects) {
-				if (!to.disableNativeTransform)
+				if (to.nativeTransform)
 					to.updateTransform();						
 			}		
-		}		
+		}
+		
+		
+		public function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D
+		{
+			var cartesianCoords:Vector3D = new Vector3D();
+			var r:Number = sphericalCoords.z;
+			cartesianCoords.y = r*Math.sin(-sphericalCoords.y);
+			var cosE:Number = Math.cos(-sphericalCoords.y);
+			cartesianCoords.x = r*cosE*Math.sin(sphericalCoords.x);
+			cartesianCoords.z = r*cosE*Math.cos(sphericalCoords.x);
+			return cartesianCoords;
+		}
+		public function cartesianToSpherical(cartesianCoords:Vector3D):Vector3D
+		{
+			var cartesianFromCenter:Vector3D = new Vector3D();
+			cartesianFromCenter.x = cartesianCoords.x;
+			cartesianFromCenter.y = cartesianCoords.y;
+			cartesianFromCenter.z = cartesianCoords.z;
+			var sphericalCoords:Vector3D = new Vector3D();
+			sphericalCoords.z = cartesianFromCenter.length;
+			sphericalCoords.x = Math.atan2(cartesianFromCenter.x, cartesianFromCenter.z);
+			sphericalCoords.y = -Math.asin((cartesianFromCenter.y) / sphericalCoords.z);
+			return sphericalCoords;
+		}
+		
 	}
 }

@@ -28,7 +28,8 @@ package com.gestureworks.away3d
 		private var manager:Away3DTouchManager;
 		
 		private var points:Array;
-		private var trails:Array;		
+		private var trails:Array;
+		private var trailList:Dictionary;		
 
 		private var geom:SphereGeometry;		
 		private var sphereMat:ColorMaterial;
@@ -44,6 +45,7 @@ package com.gestureworks.away3d
 			
 			points = new Array;
 			trails = new Array;
+			trailList = new Dictionary(true);
 			
 			geom = new SphereGeometry;
 			geom.radius = 15;
@@ -58,19 +60,22 @@ package com.gestureworks.away3d
 			sphereMat.lightPicker = lightPicker;
 			sphereMat.smooth = true;
 			
+			var i:int;
+			var j:int;
+			var m:Mesh;
+			
 			// preload touch points
-			for (var i:int = 0; i < maxPoints; i++) { 
-				var m:Mesh = new Mesh(geom);
+			for (i = 0; i < maxPoints; i++) { 
+				m = new Mesh(geom);
 				m.material = sphereMat;
 				points.push(m);
 			}			
 			
 			// preload touch trails
-			for (var i:int = 0; i < maxPoints; i++) { 
-				trailList[i] = null;
+			for (i = 0; i < maxPoints; i++) { 
 				trails.push(new Array());				
-				for (var j:int = 0; j < maxTrails; j++) {
-					var m:Mesh = new Mesh(geom);	
+				for (j = 0; j < maxTrails; j++) {
+					m = new Mesh(geom);	
 					trailMat = new ColorMaterial();
 					trailMat.alphaBlending = true;
 					trailMat.alpha = 1;
@@ -98,7 +103,6 @@ package com.gestureworks.away3d
 				
 		private function onTouchBegin(e:TouchEvent):void 
 		{
-			
 		}		
 
 		private function onTouchMove(e:TouchEvent):void 
@@ -107,15 +111,10 @@ package com.gestureworks.away3d
 		
 		private function onTouchEnd(e:TouchEvent):void 
 		{
-			var i:int = 0;
-			for (i = 0; i < maxPoints; i++) {
-			 if (trailList[i] == null)
-				//trailList[i] = e.touchPointID;
-				break;
-			}
+			trace("touch end", e.touchPointID);
+			
 		}		
 		
-		private var trailList:Array = [];
 		
 		public function update():void
 		{
@@ -150,25 +149,10 @@ package com.gestureworks.away3d
 			
 			// TRAILS	
 			
-			// fade out
-			for (i = 0; i < maxPoints; i++) {
-				for (j = 0; j < trails[i].length; j++) {					
-					trails[i][j].material.alpha -= .1;
-					if (trails[i][j].material.alpha <= 0) {
-						if (contains(trails[i][j])) {
-							removeChild(trails[i][j]);
-							trailList[i] = null;
-						}
-					}
-				}
-			}	
 			
 			// add
 			for (i = 0; i < n; i++) {					
 				pt = ts.cO.pointArray[i];								
-				
-				if (trailList[i].search(pt.touchPointID) > -1)
-					continue;
 				
 				histLength = pt.history.length;
 				num = (histLength <= maxTrails) ? histLength : maxTrails;
@@ -180,8 +164,25 @@ package com.gestureworks.away3d
 					trails[i][j].z = j*50+50;					
 					trails[i][j].material.alpha = 1 - (1 / 60) * j;
 					addChild(trails[i][j]);
+				}				
+			}	
+
+			
+			// fade out
+			for (i = n; i < maxPoints; i++) {
+				for (j = 0; j < trails[i].length; j++) {					
+					trails[i][j].material.alpha -= .1;
+					
+					// removal
+					if (trails[i][j].material.alpha <= 0) {
+						if (contains(trails[i][j])) {
+							removeChild(trails[i][j]);
+						}
+					}
+					
 				}
-			}			
+			} 				
+			
 			
 		}	
 	
