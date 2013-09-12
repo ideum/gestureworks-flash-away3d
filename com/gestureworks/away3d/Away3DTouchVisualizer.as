@@ -67,6 +67,7 @@ package com.gestureworks.away3d
 			
 			// preload touch trails
 			for (var i:int = 0; i < maxPoints; i++) { 
+				trailList[i] = null;
 				trails.push(new Array());				
 				for (var j:int = 0; j < maxTrails; j++) {
 					var m:Mesh = new Mesh(geom);	
@@ -91,6 +92,8 @@ package com.gestureworks.away3d
 			stage.addEventListener(TouchEvent.TOUCH_BEGIN, onTouchBegin);
 			stage.addEventListener(TouchEvent.TOUCH_MOVE, onTouchMove);
 			stage.addEventListener(TouchEvent.TOUCH_END, onTouchEnd); 
+			
+
 		}
 				
 		private function onTouchBegin(e:TouchEvent):void 
@@ -104,10 +107,15 @@ package com.gestureworks.away3d
 		
 		private function onTouchEnd(e:TouchEvent):void 
 		{
-
+			var i:int = 0;
+			for (i = 0; i < maxPoints; i++) {
+			 if (trailList[i] == null)
+				//trailList[i] = e.touchPointID;
+				break;
+			}
 		}		
 		
-	
+		private var trailList:Array = [];
 		
 		public function update():void
 		{
@@ -149,14 +157,18 @@ package com.gestureworks.away3d
 					if (trails[i][j].material.alpha <= 0) {
 						if (contains(trails[i][j])) {
 							removeChild(trails[i][j]);
+							trailList[i] = null;
 						}
 					}
 				}
 			}	
 			
 			// add
-			for (i = 0; i < n; i++) {			
+			for (i = 0; i < n; i++) {					
 				pt = ts.cO.pointArray[i];								
+				
+				if (trailList[i].search(pt.touchPointID) > -1)
+					continue;
 				
 				histLength = pt.history.length;
 				num = (histLength <= maxTrails) ? histLength : maxTrails;
