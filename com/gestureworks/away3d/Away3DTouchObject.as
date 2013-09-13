@@ -29,9 +29,7 @@ package com.gestureworks.away3d
 	
 	
 	public class Away3DTouchObject extends VirtualTouchObject
-	{
-		
-		
+	{		
 		public function Away3DTouchObject(target:*) 
 		{
 			super(target);	
@@ -39,7 +37,6 @@ package com.gestureworks.away3d
 			transform3d = true;			
 			registerPoints = false;	
 			away3d = true;
-			
 		}
 				
 		public function updateTransform():void
