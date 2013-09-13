@@ -18,16 +18,15 @@ package com.gestureworks.away3d
 		private var tBegin:GWTouchEvent;
 		private var tMove:GWTouchEvent;
 		private var tEnd:GWTouchEvent;
-		private var pBegin:Point;
-		private var pMove:Point;
-		private var pEnd:Point;
 		private var vIn:Vector3D;
 		private var mIn:Matrix3D;
 		private var mOut:Matrix3D;
 		
+		public var touch3d:Boolean = true;
+		
 		public function Away3DTouchManager(view3D:View3D) 
 		{
-			view = view3D;			
+			view = view3D;
 			view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
 			view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
 			//view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
@@ -55,34 +54,38 @@ package com.gestureworks.away3d
 		}		
 		
 		private function onTouchBegin(e:TouchEvent3D):void 
-		{
-			//pBegin = convertScreenData(e.screenX, e.screenY, 1);											
-			//tBegin.stageX = e.scenePosition.x;
-			//tBegin.stageY = e.scenePosition.y;
-			//tBegin.stageZ = e.scenePosition.z;
-			
-			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
-			tBegin.stageX = v.x;
-			tBegin.stageY = v.y;
-			tBegin.stageZ = v.z;					
+		{			
+			if (touch3d) {
+				tBegin.stageX = e.scenePosition.x;
+				tBegin.stageY = e.scenePosition.y;
+				tBegin.stageZ = e.scenePosition.z;
+			}
+			else {
+				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+				tBegin.stageX = v.x;
+				tBegin.stageY = v.y;
+				tBegin.stageZ = v.z;						
+			}
 			tBegin.touchPointID = e.touchPointID;			
 			tBegin.type = "touchBegin";
-			tBegin.target = e.target;
-			tBegin.eventPhase = 2;			
-			touchObjects[e.target].onTouchDown(tBegin);
+			tBegin.target = ITouchObject(touchObjects[e.target]);
+			tBegin.eventPhase = 3;				
+			TouchManager.onTouchDown(tBegin, null, true);
 		}		
 
 		private function onTouchMove(e:TouchEvent3D):void 
 		{
-			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
-			
-			//tMove.stageX = e.scenePosition.x;
-			//tMove.stageY = e.scenePosition.y;
-			//tMove.stageZ = e.scenePosition.z;
-			
-			tMove.stageX = v.x;
-			tMove.stageY = v.y;
-			tMove.stageZ = v.z;		
+			if (touch3d) {
+				tMove.stageX = e.scenePosition.x;
+				tMove.stageY = e.scenePosition.y;
+				tMove.stageZ = e.scenePosition.z;
+			}
+			else {
+				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+				tMove.stageX = v.x;
+				tMove.stageY = v.y;
+				tMove.stageZ = v.z;					
+			}
 			tMove.touchPointID = e.touchPointID;			
 			tMove.type = "touchMove";
 			tMove.target = e.target;
@@ -90,20 +93,18 @@ package com.gestureworks.away3d
 		}
 		
 		private function onTouchEnd(e:TouchEvent3D):void 
-		{	
-			//pEnd = convertScreenData(e.screenX, e.screenY, 1);	
-			
-			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
-
-			//
-			//tEnd.stageX = e.scenePosition.x;
-			//tEnd.stageY = e.scenePosition.y;
-			//tEnd.stageZ = e.scenePosition.z;
-			
-			tMove.stageX = v.x;
-			tMove.stageY = v.y;
-			tMove.stageZ = v.z;		
-			
+		{
+			if (touch3d) {
+				tEnd.stageX = e.scenePosition.x;
+				tEnd.stageY = e.scenePosition.y;
+				tEnd.stageZ = e.scenePosition.z;
+			}
+			else {
+				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);				
+				tEnd.stageX = v.x;
+				tEnd.stageY = v.y;
+				tEnd.stageZ = v.z;					
+			}	
 			tEnd.touchPointID = e.touchPointID;			
 			tEnd.type = "touchEnd";
 			tEnd.target = e.target;
@@ -119,8 +120,8 @@ package com.gestureworks.away3d
 			//mIn.appendRotation(-view.camera.rotationX, new Vector3D(mIn.rawData[0], mIn.rawData[1], mIn.rawData[2]));
 			//mIn.appendRotation(-view.camera.rotationY, new Vector3D(mIn.rawData[4], mIn.rawData[5], mIn.rawData[6]));
 			//mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));
-			
-			return new Vector3D(mIn.position.x * vIn.length, mIn.position.y * vIn.length, mIn.position.z);
+	
+			return new Vector3D(mIn.position.x * vIn.length, mIn.position.y * vIn.length, mIn.position.z * vIn.length);
 		}
 		
 		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
