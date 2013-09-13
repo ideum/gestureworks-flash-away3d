@@ -220,9 +220,9 @@ package com.gestureworks.away3d
 		 *    @param     x        [optional] Number. x coordinate.
 		 *    @param     y        [optional] Number. y coordinate.
 		 */
-		public function getIntersect(x:Number = NaN, y:Number = NaN):Vector3D
+		public function getIntersect(x:Number = NaN, y:Number = NaN, z:Number = NaN):Vector3D
 		{
-			intersect(x, y);
+			intersect(x, y, z);
 			
 			return _intersect;
 		}
@@ -231,7 +231,7 @@ package com.gestureworks.away3d
 		 * if an ObjectContainer3D is set this handler will calculate the mouse intersection on given plane and will update position
 		 * and rotations of the ObjectContainer3D set accordingly
 		 */
-		public function updateDrag(newX:Number, newY:Number):void
+		public function updateDrag(newX:Number=NaN, newY:Number=NaN, newZ:Number=NaN):void
 		{
 			var localIntersect:Vector3D;
 			
@@ -241,7 +241,7 @@ package com.gestureworks.away3d
 			if (_debug)
 				updateDebug();
 			
-			intersect(newX, newY);
+			intersect(newX, newY, newZ);
 			
 			// TODO: Optimize this? Matrix3D.transformVector() creates a new vector - unnuecessary.
 			localIntersect = _object3d.parent.inverseSceneTransform.transformVector(_intersect);
@@ -378,9 +378,13 @@ package com.gestureworks.away3d
 			}
 		}
 		
-		private function intersect(x:Number = NaN, y:Number = NaN):void
+		private function intersect(x:Number = NaN, y:Number = NaN, z:Number = NaN):void
 		{
-			var pMouse:Vector3D = (isNaN(x) && isNaN(y))? _view.unproject(_view.mouseX, _view.mouseY, 1) : _view.unproject(x, y, 1);
+			//var pMouse:Vector3D = (isNaN(x) && isNaN(y))? _view.unproject(_view.mouseX, _view.mouseY, 1) : _view.unproject(x, y, 1);
+			var pMouse:Vector3D = new Vector3D();
+			pMouse.x = x;
+			pMouse.y = y;
+			pMouse.z = z;
 			
 			var cam:Vector3D = _view.camera.position;
 			var d0:Number = _np.x*cam.x + _np.y*cam.y + _np.z*cam.z - _d;

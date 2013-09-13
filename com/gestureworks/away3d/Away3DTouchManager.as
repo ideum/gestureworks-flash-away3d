@@ -30,7 +30,7 @@ package com.gestureworks.away3d
 			view = view3D;			
 			view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
 			view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
-			view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
+			//view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
 			touchObjects = new Dictionary(true);			
 			tBegin = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, 0, false);			
 			tMove = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, 0, false);
@@ -56,9 +56,15 @@ package com.gestureworks.away3d
 		
 		private function onTouchBegin(e:TouchEvent3D):void 
 		{
-			pBegin = convertScreenData(e.screenX, e.screenY, 1);											
-			tBegin.stageX = pBegin.x;
-			tBegin.stageY = pBegin.y;
+			//pBegin = convertScreenData(e.screenX, e.screenY, 1);											
+			//tBegin.stageX = e.scenePosition.x;
+			//tBegin.stageY = e.scenePosition.y;
+			//tBegin.stageZ = e.scenePosition.z;
+			
+			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+			tBegin.stageX = v.x;
+			tBegin.stageY = v.y;
+			tBegin.stageZ = v.z;					
 			tBegin.touchPointID = e.touchPointID;			
 			tBegin.type = "touchBegin";
 			tBegin.target = e.target;
@@ -68,9 +74,15 @@ package com.gestureworks.away3d
 
 		private function onTouchMove(e:TouchEvent3D):void 
 		{
-			pMove = convertScreenData(e.screenX, e.screenY, 1);			
-			tMove.stageX = pMove.x;
-			tMove.stageY = pMove.y;
+			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+			
+			//tMove.stageX = e.scenePosition.x;
+			//tMove.stageY = e.scenePosition.y;
+			//tMove.stageZ = e.scenePosition.z;
+			
+			tMove.stageX = v.x;
+			tMove.stageY = v.y;
+			tMove.stageZ = v.z;		
 			tMove.touchPointID = e.touchPointID;			
 			tMove.type = "touchMove";
 			tMove.target = e.target;
@@ -79,32 +91,41 @@ package com.gestureworks.away3d
 		
 		private function onTouchEnd(e:TouchEvent3D):void 
 		{	
-			pEnd = convertScreenData(e.screenX, e.screenY, 1);								
-			tEnd.stageX = pEnd.x;
-			tEnd.stageY = pEnd.y;
+			//pEnd = convertScreenData(e.screenX, e.screenY, 1);	
+			
+			var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+
+			//
+			//tEnd.stageX = e.scenePosition.x;
+			//tEnd.stageY = e.scenePosition.y;
+			//tEnd.stageZ = e.scenePosition.z;
+			
+			tMove.stageX = v.x;
+			tMove.stageY = v.y;
+			tMove.stageZ = v.z;		
+			
 			tEnd.touchPointID = e.touchPointID;			
 			tEnd.type = "touchEnd";
 			tEnd.target = e.target;
 			TouchManager.onTouchUp(tEnd, true);	
 		}			
 		
-		public function convertScreenData(x:Number, y:Number, z:Number=1):Point
+		public function convertScreenData(x:Number, y:Number, z:Number=1, target:TouchSprite=null):Vector3D
 		{			
 			vIn = view.unproject(x, y, z);
 			mIn.position = vIn;
 			
-			trace(vIn);
+			//mIn.appendTranslation(-view.camera.position.x, -view.camera.position.y, -view.camera.position.z);			
+			//mIn.appendRotation(-view.camera.rotationX, new Vector3D(mIn.rawData[0], mIn.rawData[1], mIn.rawData[2]));
+			//mIn.appendRotation(-view.camera.rotationY, new Vector3D(mIn.rawData[4], mIn.rawData[5], mIn.rawData[6]));
+			//mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));
 			
-			mIn.appendTranslation(-view.camera.position.x, -view.camera.position.y, -view.camera.position.z);			
-			mIn.appendRotation(-view.camera.rotationX, new Vector3D(mIn.rawData[0], mIn.rawData[1], mIn.rawData[2]));
-			mIn.appendRotation(-view.camera.rotationY, new Vector3D(mIn.rawData[4], mIn.rawData[5], mIn.rawData[6]));
-			mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));	
-			return new Point(mIn.position.x * vIn.length, mIn.position.y * vIn.length);
+			return new Vector3D(mIn.position.x * vIn.length, mIn.position.y * vIn.length, mIn.position.z);
 		}
 		
 		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
 		{
-			var v:Vector3D = new Vector3D(dx, -dy, dz);	
+			var v:Vector3D = new Vector3D(dx, dy, dz);	
 			
 			var cam:Vector3D = view.camera.position;
 			cam.normalize();
