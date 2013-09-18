@@ -22,7 +22,7 @@ package com.gestureworks.away3d
 		private var mIn:Matrix3D;
 		private var mOut:Matrix3D;
 		
-		public var touch3d:Boolean = true;
+		public var touch3d:Boolean = false;
 		
 		public function Away3DTouchManager(view3D:View3D) 
 		{
@@ -70,7 +70,7 @@ package com.gestureworks.away3d
 			tBegin.type = "touchBegin";
 			tBegin.target = ITouchObject(touchObjects[e.target]);
 			tBegin.eventPhase = 3;				
-			TouchManager.onTouchDown(tBegin, null, true);
+			TouchManager.onTouchDown(tBegin, true);
 		}		
 
 		private function onTouchMove(e:TouchEvent3D):void 
@@ -81,11 +81,13 @@ package com.gestureworks.away3d
 				tMove.stageZ = e.scenePosition.z;
 			}
 			else {
-				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
+				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);
+				//trace(v.x, v.y, v.z);
 				tMove.stageX = v.x;
 				tMove.stageY = v.y;
 				tMove.stageZ = v.z;					
 			}
+			trace(tMove.stageX, tMove.stageY, tMove.stageZ);
 			tMove.touchPointID = e.touchPointID;			
 			tMove.type = "touchMove";
 			tMove.target = e.target;
@@ -114,14 +116,19 @@ package com.gestureworks.away3d
 		public function convertScreenData(x:Number, y:Number, z:Number=1, target:TouchSprite=null):Vector3D
 		{			
 			vIn = view.unproject(x, y, z);
-			mIn.position = vIn;
 			
+			var len:Number = vIn.length;
+			
+			//vIn.normalize();
+			
+			//trace(vIn.length, vIn.x, vIn.y, vIn.z);
+			return new Vector3D(vIn.x, vIn.y, vIn.z);
+			
+			//mIn.position = vIn;
 			//mIn.appendTranslation(-view.camera.position.x, -view.camera.position.y, -view.camera.position.z);			
 			//mIn.appendRotation(-view.camera.rotationX, new Vector3D(mIn.rawData[0], mIn.rawData[1], mIn.rawData[2]));
 			//mIn.appendRotation(-view.camera.rotationY, new Vector3D(mIn.rawData[4], mIn.rawData[5], mIn.rawData[6]));
-			//mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));
-	
-			return new Vector3D(mIn.position.x * vIn.length, mIn.position.y * vIn.length, mIn.position.z * vIn.length);
+			//mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));			
 		}
 		
 		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
