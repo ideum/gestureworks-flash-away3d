@@ -61,20 +61,10 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		private function initObjects(e:LoaderEvent):void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
-			//trace("### Model  displayComplete ###");
-			
 			for (var i:uint = 0; i < this.numChildren; i++) {
 				if (this.getChildAt(i) is ModelAsset)
 					ModelAsset(this.getChildAt(i)).update()
 			}
-		
 		}
 		
 		public function get src():String {

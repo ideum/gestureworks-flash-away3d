@@ -24,14 +24,6 @@ package com.gestureworks.cml.away3d.elements
 		 */
 		override public function init():void
 		{
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void
-		{
 			//TODO
 			/*
 			

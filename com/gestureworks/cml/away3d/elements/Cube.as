@@ -24,19 +24,10 @@ package com.gestureworks.cml.away3d.elements {
 		 * Initialisation method
 		 */
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
-			
 			_geometry = new CubeGeometry(_width, _height, _depth, _segmentsW, segmentsH, segmentsD);
 			
 			if (this.parent is Mesh)
 				Mesh(this.parent).geometry = _geometry;
-		
 		}
 		
 		/**

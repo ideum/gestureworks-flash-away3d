@@ -57,18 +57,11 @@ package com.gestureworks.cml.away3d.elements {
 			
 			//stage3DProxy = DefaultStage3D.getInstance(stage).stage3DProxy;
 		}
-		
+
 		/**
 		 * Initialisation method
 		 */
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
 			
 			for (var i:uint = 0; i < this.numChildren; i++)
 				if (this.getChildAt(i) is com.gestureworks.cml.away3d.elements.Camera3D)

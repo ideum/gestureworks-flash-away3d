@@ -30,13 +30,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * Initialisation method
 		 */
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
 			//trace("### Mesh  displayComplete ###")
 			mesh.name = this.id;
 			mesh.x = this.x;

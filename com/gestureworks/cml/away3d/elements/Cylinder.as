@@ -27,14 +27,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * Initialisation method
 		 */
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
-			
 			_geometry = new CylinderGeometry(_topRadius, _bottomRadius, _height, _segmentsW, _segmentsH, _topClosed, _bottomClosed, _surfaceClosed, _yUp); 
 			
 			if (this.parent is Mesh)

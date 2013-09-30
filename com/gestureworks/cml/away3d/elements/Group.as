@@ -23,13 +23,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * Initialisation method
 		*/ 
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
 			groupObj3D = new ObjectContainer3D();
 			groupObj3D.name = this.id;
 			groupObj3D.x = this.x;
@@ -109,7 +102,8 @@ package com.gestureworks.cml.away3d.elements {
 							event.stageY = e.screenY;
 							event.eventPhase = 2;
 							event.target = vto;
-							vto.onTouchDown(event);
+							TouchManager.onTouchDown(event);
+							
 						}
 					}
 					break;

@@ -37,15 +37,8 @@ package com.gestureworks.cml.away3d.elements {
 		
 		/**
 		 * Initialisation method
-		 */
+		*/ 
 		override public function init():void {
-			displayComplete();
-		}
-		
-		/**
-		 * CML callback Initialisation
-		 */
-		override public function displayComplete():void {
 			
 			if (_light) {
 				_light.ambient = _ambient;
