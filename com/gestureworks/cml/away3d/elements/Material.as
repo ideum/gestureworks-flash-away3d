@@ -25,7 +25,7 @@ package com.gestureworks.cml.away3d.elements  {
 		private var _src:String;
 		private var _color:uint = 0xCCCCCC;
 		private var _material:MaterialBase;
-		private var _lRef:String;
+		private var lref:String;
 		private var _mipmap:Boolean = true;
 		private var _blendmode:String = "normal";
 		private var _repeat:Boolean = false;
@@ -91,7 +91,7 @@ package com.gestureworks.cml.away3d.elements  {
 			this.material.repeat = _repeat;
 			this.material.bothSides = _bothSides;
 			
-			if(lRef && material.lightPicker ==null)
+			if(lref && material.lightPicker ==null)
 			updateLightPicker();
 			
 			if (this.parent is Mesh)
@@ -108,23 +108,23 @@ package com.gestureworks.cml.away3d.elements  {
 			
 			//trace("######### MATERIAL set the lightpicker")
 			
-			if (lRef && material.lightPicker ==null)
+			if (lref && material.lightPicker ==null)
 			{
-				if (CMLObjectList.instance.getId(this.lRef))
+				if (CMLObjectList.instance.getId(this.lref))
 				{
-					this.material.lightPicker = CMLObjectList.instance.getId(this.lRef).slp;
+					this.material.lightPicker = CMLObjectList.instance.getId(this.lref).slp;
 					
 				}
 				else
-					throw new Error("id "+ lRef+" LightPicker not found")
+					throw new Error("id "+ lref+" LightPicker not found")
 				
 				
-				if (material.lightPicker && DirectionalLight(CMLObjectList.instance.getId(this.lRef).shadowLight)) {
+				if (material.lightPicker && DirectionalLight(CMLObjectList.instance.getId(this.lref).shadowLight)) {
 					//Could add other shadow types
 					if (material is TextureMaterial)
-						TextureMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(this.lRef).shadowLight));
+						TextureMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(this.lref).shadowLight));
 					else
-						ColorMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(this.lRef).shadowLight));
+						ColorMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(this.lref).shadowLight));
 				}
 			}
 		}
@@ -144,12 +144,12 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Reference to the LightPicker to enable lights on this material.
 		 */
-		public function get lRef():String {
-			return _lRef;
+		public function get lref():String {
+			return lref;
 		}
 		
-		public function set lRef(value:String):void {
-			_lRef = value;
+		public function set lref(value:String):void {
+			lref = value;
 		}
 		
 		/**

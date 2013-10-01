@@ -17,7 +17,7 @@ package com.gestureworks.cml.away3d.elements {
 	public class Light extends Group {
 		public static const DIRECTIONAL:String = "directional";
 		public static const POINT:String = "point";
-		private var _lRef:String;
+		private var _lref:String;
 		private var _type:String;
 		private var _fallOff:Number = 100000;
 		private var _radius:Number = 90000;
@@ -187,12 +187,12 @@ package com.gestureworks.cml.away3d.elements {
 				_castsShadows = value;
 		}
 		
-		public function get lRef():String {
-			return _lRef;
+		public function get lref():String {
+			return _lref;
 		}
 		
-		public function set lRef(value:String):void {
-			_lRef = value;
+		public function set lref(value:String):void {
+			_lref = value;
 		}
 		
 		override public function addChild3D(child:ObjectContainer3D):void {
