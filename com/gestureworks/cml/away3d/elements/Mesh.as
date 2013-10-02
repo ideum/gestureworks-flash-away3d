@@ -24,6 +24,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Mesh() {
 			super();
 			mesh = new away3d.entities.Mesh(null, null);
+			target = mesh;
 		}
 		
 		/**
@@ -66,28 +67,7 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.castsShadows = _castsShadows;
 			
 			mesh.mouseEnabled = true;
-			mesh.mouseChildren = true;
-			
-			if (this._touchEnabled) {
-				//Need a way to search for the Gesture Tag so this can be set
-				//var st:AwayTouchObject = new AwayTouchObject(this);
-				//var st:Away3DTouchObject = new Away3DTouchObject(mesh);
-				//st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
-				//st.disableNativeTransform = false;
-				//st.gestureReleaseInertia = false;
-				//
-				//enableListeners();
-			}
-		
-		}
-		
-		private function enableListeners():void {
-			//trace("Mesh enablelisteners")
-			//SEE GROUP CLASS
-			
-			mesh.addEventListener(TouchEvent3D.TOUCH_BEGIN, ontouch);
-			mesh.addEventListener(TouchEvent3D.TOUCH_MOVE, ontouch);
-			mesh.addEventListener(TouchEvent3D.TOUCH_END, ontouch);
+			mesh.mouseChildren = true;		
 		}
 		
 		/*

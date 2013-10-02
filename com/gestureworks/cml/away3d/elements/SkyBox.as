@@ -14,7 +14,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _skyBox:away3d.primitives.SkyBox;
 		
 		public function SkyBox() {
-			super(null);
+			super();
 		}
 		
 		/**

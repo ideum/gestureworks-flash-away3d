@@ -25,7 +25,7 @@ package com.gestureworks.cml.away3d.elements  {
 		private var _src:String;
 		private var _color:uint = 0xCCCCCC;
 		private var _material:MaterialBase;
-		private var lref:String;
+		private var _lref:String;
 		private var _mipmap:Boolean = true;
 		private var _blendmode:String = "normal";
 		private var _repeat:Boolean = false;
@@ -35,7 +35,7 @@ package com.gestureworks.cml.away3d.elements  {
 		private var _alphaThreshold:Number;
 		
 		public function Material() {
-			super(null);
+			super();
 		}
 		
 		/**
@@ -145,11 +145,11 @@ package com.gestureworks.cml.away3d.elements  {
 		 * Reference to the LightPicker to enable lights on this material.
 		 */
 		public function get lref():String {
-			return lref;
+			return _lref;
 		}
 		
 		public function set lref(value:String):void {
-			lref = value;
+			_lref = value;
 		}
 		
 		/**

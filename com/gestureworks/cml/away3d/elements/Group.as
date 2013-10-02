@@ -16,7 +16,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _touchEnabled:Boolean = false;
 		
 		public function Group() {
-			super(null);
+			super();
 		}
 		
 		/**
@@ -56,71 +56,24 @@ package com.gestureworks.cml.away3d.elements {
 				st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
 				st.disableNativeTransform = false;
 				st.gestureReleaseInertia = false;
-				enableListeners();
 			}
-			
-			
-			//if (this._touchEnabled) {
+						
 			if (cmlGestureList != undefined) {
 				var st:Away3DTouchObject = new Away3DTouchObject(groupObj3D);
 				st.gestureList = {"n-drag": true, "n-rotate": true, "n-scale": true};
 				st.gestureList = cmlGestureList;
 				st.disableNativeTransform = true;
 				st.gestureReleaseInertia = true;
-				enableListeners();
 			}			
 		
 		}
 		
-		
-		private function enableListeners():void {
-			//trace("enableListeners")
-			_groupObj3D.mouseEnabled = true;
-			_groupObj3D.mouseChildren = true;
-			
-			_groupObj3D.addEventListener(TouchEvent3D.TOUCH_BEGIN, ontouch);
-			_groupObj3D.addEventListener(TouchEvent3D.TOUCH_MOVE, ontouch);
-			_groupObj3D.addEventListener(TouchEvent3D.TOUCH_END, ontouch);
-		}
 		
 		override public function parseCML(cml:XMLList):XMLList {
 			if (cml.GestureList != undefined)
 				cmlGestureList = cml.GestureList;
 			return super.parseCML(cml);
 		}		
-		
-		public function ontouch(e:TouchEvent3D):void {
-			e.stopPropagation();
-			var event:GWTouchEvent
-			switch (e.type) {
-				case TouchEvent3D.TOUCH_BEGIN: 
-					for each (var vto:VirtualTouchObject in TouchManager.touchObjects) {
-						if (e.object == vto.target.groupObj3D)
-						{
-							event = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, e.touchPointID, false);
-							event.stageX = e.screenX;
-							event.stageY = e.screenY;
-							event.eventPhase = 2;
-							event.target = vto;
-							TouchManager.onTouchDown(event);
-							
-						}
-					}
-					break;
-				case TouchEvent3D.TOUCH_MOVE: 
-					event = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, e.touchPointID, false);
-					event.stageX = e.screenX;
-					event.stageY = e.screenY;
-					TouchManager.onTouchMove(event);
-					break;
-				case TouchEvent3D.TOUCH_END: 
-					event = new GWTouchEvent(null, GWTouchEvent.TOUCH_END, true, false, e.touchPointID, false);
-					event.stageX = e.screenX;
-					event.stageY = e.screenY;
-					TouchManager.onTouchUp(event);
-					break;
-			}
-		}
 		
 		public function addChild3D(child:ObjectContainer3D):void {
 			groupObj3D.addChild(child);

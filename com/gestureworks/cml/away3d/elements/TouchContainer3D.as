@@ -12,17 +12,13 @@ package com.gestureworks.cml.away3d.elements
 	{		
 		private var _lookat:String;
 		private var _pivot:String = "0,0,0";
-		public var target:*;
 		
 		/**
 		 * Constructor
 		 */
-		public function TouchContainer3D(target:*)
+		public function TouchContainer3D()
 		{
 			super();	
-			this.target = target;
-			if(target)
-				transform.matrix3D = target.transform;
 			transform3d = true;			
 			registerPoints = false;	
 			away3d = true;	
@@ -30,8 +26,19 @@ package com.gestureworks.cml.away3d.elements
 		
 		public function updateTransform():void
 		{
-			target.transform = transform.matrix3D;			
-		}		
+			if(target)
+				target.transform = transform.matrix3D;			
+		}
+		
+		private var _target:*;
+		/**
+		 * Sets the transformation target
+		 */
+		public function get target():* { return _target; }
+		public function set target(tgt:*):void {
+			_target = tgt;
+			transform.matrix3D = _target.transform;
+		}
 		
 		private var _position:*;
 		/**

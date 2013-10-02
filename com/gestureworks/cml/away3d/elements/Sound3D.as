@@ -16,7 +16,7 @@ package com.gestureworks.cml.away3d.elements
 		
 		public function Sound3D() 
 		{
-			super(null);
+			super();
 		}
 		
 		/**

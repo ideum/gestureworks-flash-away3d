@@ -12,9 +12,9 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Constructor
 		 */
-		public function Container3D(target:*)
+		public function Container3D()
 		{
-			super(target);
+			super();
 			mouseChildren = true;
 		}			
 	}

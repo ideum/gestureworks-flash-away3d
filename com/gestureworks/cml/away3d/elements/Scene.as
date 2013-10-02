@@ -1,24 +1,18 @@
 package com.gestureworks.cml.away3d.elements {
-	import away3d.cameras.lenses.OrthographicLens;
 	import away3d.cameras.Camera3D;
-	import away3d.cameras.lenses.OrthographicOffCenterLens;
+	import away3d.cameras.lenses.OrthographicLens;
 	import away3d.cameras.lenses.PerspectiveLens;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;
 	import away3d.containers.View3D;
-	import away3d.core.managers.Stage3DManager;
 	import away3d.core.managers.Stage3DProxy;
 	import away3d.core.pick.PickingType;
-	import away3d.debug.Trident;
-	import away3d.events.Stage3DEvent;
 	import away3d.utils.Cast;
+	import com.gestureworks.away3d.Away3DTouchManager;
 	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.events.*;
 	import com.gestureworks.cml.kits.*;
-	import com.gestureworks.cml.utils.DefaultStage;
-	//import com.gestureworks.cml.utils.DefaultStage3D;
-	import com.gestureworks.events.GWGestureEvent;
 	import com.gestureworks.managers.TouchManager;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
@@ -92,7 +86,7 @@ package com.gestureworks.cml.away3d.elements {
 				cam.lens.far = _clipping.split(",")[1];
 			}
 			
-			var view:View3D = new View3D(scene, cam);
+			var view:View3D = new View3D(scene, cam);			
 			if (_viewPos) {
 				view.x = _viewPos.split(",")[0];
 				view.y = _viewPos.split(",")[1];
