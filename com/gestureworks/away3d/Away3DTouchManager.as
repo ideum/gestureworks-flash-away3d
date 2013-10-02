@@ -1,7 +1,9 @@
 package com.gestureworks.away3d
 {
 	import away3d.containers.*;
-	import away3d.core.math.MathConsts;
+	import away3d.core.pick.IPicker;
+	import away3d.core.pick.PickingCollisionVO;
+	import away3d.core.pick.PickingType;
 	import away3d.entities.Mesh;
 	import away3d.events.*;
 	import com.gestureworks.cml.away3d.elements.TouchContainer3D;
@@ -21,7 +23,9 @@ package com.gestureworks.away3d
 		private static var vIn:Vector3D;
 		private static var mIn:Matrix3D;
 		private static var mOut:Matrix3D;
-		private static var touchObjects:Dictionary;	
+		private static var touchPicker:IPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;  
+		private static var touchObjects:Dictionary = new Dictionary(true);	
+		private static var collider:PickingCollisionVO; 
 		
 		public static var touch3d:Boolean = false;
 		
@@ -60,8 +64,23 @@ package com.gestureworks.away3d
 			delete touchObjects[t];
 		}	
 		
-		private static function point3DListener(e:GWTouchEvent):void {
-			trace(e);
+		private static function point3DListener(e:GWTouchEvent):GWTouchEvent {
+			
+			if (e.target && e.target.parent is View3D) {
+				
+				//get view from hit field			
+				view = e.target.parent as View3D;
+				collider = touchPicker.getViewCollision(e.stageX, e.stageY, view);
+				if (collider) {
+					e.target = touchObjects[collider.entity];
+					var v:Vector3D = convertScreenData(e.stageX, e.stageY, 1);	
+					var length:Number = view.camera.project(collider.entity.scenePosition).length;
+					e.stageX = v.x * length;
+					e.stageY = v.y * length;
+					e.stageZ = v.z * length;
+				}
+			}
+			return e;
 		}
 		
 		private static function onTouchBegin(e:TouchEvent3D):void 
