@@ -4,6 +4,7 @@ package com.gestureworks.away3d
 	import away3d.core.math.MathConsts;
 	import away3d.entities.Mesh;
 	import away3d.events.*;
+	import com.gestureworks.cml.away3d.elements.TouchContainer3D;
 	import com.gestureworks.core.*;
 	import com.gestureworks.events.*;
 	import com.gestureworks.managers.*;
@@ -13,47 +14,57 @@ package com.gestureworks.away3d
 	
 	public class Away3DTouchManager
 	{
-		private var view:View3D;
-		private var touchObjects:Dictionary;		
-		private var tBegin:GWTouchEvent;
-		private var tMove:GWTouchEvent;
-		private var tEnd:GWTouchEvent;
-		private var vIn:Vector3D;
-		private var mIn:Matrix3D;
-		private var mOut:Matrix3D;
+		private static var view:View3D;	
+		private static var tBegin:GWTouchEvent;
+		private static var tMove:GWTouchEvent;
+		private static var tEnd:GWTouchEvent;
+		private static var vIn:Vector3D;
+		private static var mIn:Matrix3D;
+		private static var mOut:Matrix3D;
+		private static var touchObjects:Dictionary;	
 		
-		public var touch3d:Boolean = false;
+		public static var touch3d:Boolean = false;
 		
-		public function Away3DTouchManager(view3D:View3D) 
-		{
-			view = view3D;
-			view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
-			view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
+		//public function Away3DTouchManager(view3D:View3D) 
+		//{
+			//view = view3D;
+			//view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
+			//view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
 			//view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
-			touchObjects = new Dictionary(true);			
-			tBegin = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, 0, false);			
-			tMove = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, 0, false);
-			tEnd = new GWTouchEvent(null, GWTouchEvent.TOUCH_END, true, false, 0, false);
-			mIn = new Matrix3D;
-			mOut = new Matrix3D;
-			GestureWorks.application.addEventListener(GWEvent.ENTER_FRAME, onFrame);			
+			//touchObjects = new Dictionary(true);			
+			//tBegin = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, 0, false);			
+			//tMove = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, 0, false);
+			//tEnd = new GWTouchEvent(null, GWTouchEvent.TOUCH_END, true, false, 0, false);
+			//mIn = new Matrix3D;
+			//mOut = new Matrix3D;
+			//GestureWorks.application.addEventListener(GWEvent.ENTER_FRAME, onFrame);			
+		//}
+		
+		public static function initialize():void {
+			TouchManager.registerHook(point3DListener);
 		}
 				
-		public function registerTouchObject(t:*):Away3DTouchObject 
+		public static function registerTouchObject(t:*):Away3DTouchObject 
 		{
-			touchObjects[t] = new Away3DTouchObject(t);
-			t.addEventListener(TouchEvent3D.TOUCH_BEGIN, onTouchBegin);
+			if (t is TouchContainer3D){
+				touchObjects[t.target] = t;
+				return null; 
+			}
+			else
+				touchObjects[t] = new Away3DTouchObject(t);
 			return touchObjects[t];		
 		}
 		
-		public function deregisterTouchObject(t:*):void 
+		public static function deregisterTouchObject(t:*):void 
 		{
-			t.removeEventListener(TouchEvent3D.TOUCH_BEGIN, onTouchBegin);
-			touchObjects[t] = null;
 			delete touchObjects[t];
-		}		
+		}	
 		
-		private function onTouchBegin(e:TouchEvent3D):void 
+		private static function point3DListener(e:GWTouchEvent):void {
+			trace(e);
+		}
+		
+		private static function onTouchBegin(e:TouchEvent3D):void 
 		{			
 			if (touch3d) {
 				tBegin.stageX = e.scenePosition.x;
@@ -73,7 +84,7 @@ package com.gestureworks.away3d
 			TouchManager.onTouchDown(tBegin, true);
 		}		
 
-		private function onTouchMove(e:TouchEvent3D):void 
+		private static function onTouchMove(e:TouchEvent3D):void 
 		{
 			if (touch3d) {
 				tMove.stageX = e.scenePosition.x;
@@ -87,14 +98,13 @@ package com.gestureworks.away3d
 				tMove.stageY = v.y;
 				tMove.stageZ = v.z;					
 			}
-			trace(tMove.stageX, tMove.stageY, tMove.stageZ);
 			tMove.touchPointID = e.touchPointID;			
 			tMove.type = "touchMove";
 			tMove.target = e.target;
 			TouchManager.onTouchMove(tMove, true);
 		}
 		
-		private function onTouchEnd(e:TouchEvent3D):void 
+		private static function onTouchEnd(e:TouchEvent3D):void 
 		{
 			if (touch3d) {
 				tEnd.stageX = e.scenePosition.x;
@@ -113,7 +123,7 @@ package com.gestureworks.away3d
 			TouchManager.onTouchUp(tEnd, true);	
 		}			
 		
-		public function convertScreenData(x:Number, y:Number, z:Number=1, target:TouchSprite=null):Vector3D
+		public static function convertScreenData(x:Number, y:Number, z:Number=1, target:TouchSprite=null):Vector3D
 		{			
 			vIn = view.unproject(x, y, z);
 			
@@ -131,7 +141,7 @@ package com.gestureworks.away3d
 			//mIn.appendRotation(-view.camera.rotationZ, new Vector3D(mIn.rawData[8], mIn.rawData[9], mIn.rawData[10]));			
 		}
 		
-		public function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
+		public static function alignToCamera(obj:Mesh, dx:Number, dy:Number, dz:Number):Vector3D
 		{
 			var v:Vector3D = new Vector3D(dx, dy, dz);	
 			
@@ -154,7 +164,7 @@ package com.gestureworks.away3d
 		}		
 				
 		
-		private function onFrame(e:GWEvent):void 
+		private static function onFrame(e:GWEvent):void 
 		{
 			for each (var to:Away3DTouchObject in touchObjects) {
 				if (to.nativeTransform)
@@ -163,7 +173,7 @@ package com.gestureworks.away3d
 		}
 		
 		
-		public function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D
+		public static function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D
 		{
 			var cartesianCoords:Vector3D = new Vector3D();
 			var r:Number = sphericalCoords.z;
@@ -173,7 +183,7 @@ package com.gestureworks.away3d
 			cartesianCoords.z = r*cosE*Math.cos(sphericalCoords.x);
 			return cartesianCoords;
 		}
-		public function cartesianToSpherical(cartesianCoords:Vector3D):Vector3D
+		public static function cartesianToSpherical(cartesianCoords:Vector3D):Vector3D
 		{
 			var cartesianFromCenter:Vector3D = new Vector3D();
 			cartesianFromCenter.x = cartesianCoords.x;

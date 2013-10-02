@@ -1,5 +1,6 @@
 package com.gestureworks.cml.away3d.elements
 {
+	import com.gestureworks.away3d.Away3DTouchManager;
 	import com.gestureworks.cml.core.*;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.interfaces.*;
@@ -37,7 +38,14 @@ package com.gestureworks.cml.away3d.elements
 		public function get target():* { return _target; }
 		public function set target(tgt:*):void {
 			_target = tgt;
-			transform.matrix3D = _target.transform;
+			if(_target){
+				transform.matrix3D = _target.transform;
+				Away3DTouchManager.registerTouchObject(this);
+			}
+			else {
+				transform.matrix3D = null;
+				Away3DTouchManager.deregisterTouchObject(this);
+			}
 		}
 		
 		private var _position:*;
