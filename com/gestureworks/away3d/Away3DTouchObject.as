@@ -35,7 +35,6 @@ package com.gestureworks.away3d
 			super(target);	
 			transform.matrix3D = target.transform;
 			transform3d = true;			
-			registerPoints = false;	
 			away3d = true;
 		}
 				

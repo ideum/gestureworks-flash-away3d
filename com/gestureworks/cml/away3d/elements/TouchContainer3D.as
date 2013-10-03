@@ -21,7 +21,6 @@ package com.gestureworks.cml.away3d.elements
 		{
 			super();	
 			transform3d = true;			
-			registerPoints = false;	
 			away3d = true;	
 		}	
 		
