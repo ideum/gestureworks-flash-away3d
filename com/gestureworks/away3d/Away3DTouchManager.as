@@ -26,26 +26,15 @@ package com.gestureworks.away3d
 		private static var touchPicker:IPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;  
 		private static var touchObjects:Dictionary = new Dictionary(true);	
 		private static var collider:PickingCollisionVO; 
+		private static var pointTargets:Dictionary = new Dictionary();
 		
 		public static var touch3d:Boolean = false;
 		
-		//public function Away3DTouchManager(view3D:View3D) 
-		//{
-			//view = view3D;
-			//view.scene.addEventListener(TouchEvent3D.TOUCH_MOVE, onTouchMove);
-			//view.scene.addEventListener(TouchEvent3D.TOUCH_END, onTouchEnd);
-			//view.scene.addEventListener(TouchEvent3D.TOUCH_OUT, onTouchEnd);
-			//touchObjects = new Dictionary(true);			
-			//tBegin = new GWTouchEvent(null, GWTouchEvent.TOUCH_BEGIN, true, false, 0, false);			
-			//tMove = new GWTouchEvent(null, GWTouchEvent.TOUCH_MOVE, true, false, 0, false);
-			//tEnd = new GWTouchEvent(null, GWTouchEvent.TOUCH_END, true, false, 0, false);
-			//mIn = new Matrix3D;
-			//mOut = new Matrix3D;
-			//GestureWorks.application.addEventListener(GWEvent.ENTER_FRAME, onFrame);			
-		//}
-		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
+			mIn = new Matrix3D();
+			mOut = new Matrix3D();
+			//GestureWorks.application.addEventListener(GWEvent.ENTER_FRAME, onFrame);	
 		}
 				
 		public static function registerTouchObject(t:*):Away3DTouchObject 
@@ -65,81 +54,67 @@ package com.gestureworks.away3d
 		}	
 		
 		private static function point3DListener(e:GWTouchEvent):GWTouchEvent {
-			
+			switch(e.type) {
+				case "gwTouchBegin":
+					return onTouchBegin(e);
+				case "gwTouchMove":
+					return onTouchMove(e);
+				case "gwTouchEnd":
+					return onTouchEnd(e);
+				default:
+					return e;
+			}
+		}
+		
+		private static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
+		{		
 			if (e.target && e.target.parent is View3D) {
 				
-				//get view from hit field			
+				//get view from hit field
 				view = e.target.parent as View3D;
 				collider = touchPicker.getViewCollision(e.stageX, e.stageY, view);
 				if (collider) {
 					e.target = touchObjects[collider.entity];
+					pointTargets[e.touchPointID] = e.target;
+					if (touch3d) {
+						e.stageX = e.target.scenePosition.x;
+						e.stageY = e.target.scenePosition.y;
+						e.stageZ = e.target.scenePosition.z;
+					}
+					else {
+						var v:Vector3D = convertScreenData(e.stageX, e.stageY, 1);	
+						e.stageX = v.x;
+						e.stageY = v.y;
+						e.stageZ = v.z;
+					}			
+				}
+			}
+			return e;
+		}		
+
+		private static function onTouchMove(e:GWTouchEvent):GWTouchEvent
+		{
+			if (pointTargets.hasOwnProperty(e.touchPointID)) {
+				e.target = pointTargets[e.touchPointID];	
+				if (touch3d) {
+					e.stageX = e.target.scenePosition.x;
+					e.stageY = e.target.scenePosition.y;
+					e.stageZ = e.target.scenePosition.z;
+				}
+				else {
 					var v:Vector3D = convertScreenData(e.stageX, e.stageY, 1);	
-					var length:Number = view.camera.project(collider.entity.scenePosition).length;
-					e.stageX = v.x * length;
-					e.stageY = v.y * length;
-					e.stageZ = v.z * length;
+					e.stageX = v.x;
+					e.stageY = v.y;
+					e.stageZ = v.z;
 				}
 			}
 			return e;
 		}
 		
-		private static function onTouchBegin(e:TouchEvent3D):void 
-		{			
-			if (touch3d) {
-				tBegin.stageX = e.scenePosition.x;
-				tBegin.stageY = e.scenePosition.y;
-				tBegin.stageZ = e.scenePosition.z;
-			}
-			else {
-				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);	
-				tBegin.stageX = v.x;
-				tBegin.stageY = v.y;
-				tBegin.stageZ = v.z;						
-			}
-			tBegin.touchPointID = e.touchPointID;			
-			tBegin.type = "touchBegin";
-			tBegin.target = ITouchObject(touchObjects[e.target]);
-			tBegin.eventPhase = 3;				
-			TouchManager.onTouchDown(tBegin, true);
-		}		
-
-		private static function onTouchMove(e:TouchEvent3D):void 
+		private static function onTouchEnd(e:GWTouchEvent):GWTouchEvent
 		{
-			if (touch3d) {
-				tMove.stageX = e.scenePosition.x;
-				tMove.stageY = e.scenePosition.y;
-				tMove.stageZ = e.scenePosition.z;
-			}
-			else {
-				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);
-				//trace(v.x, v.y, v.z);
-				tMove.stageX = v.x;
-				tMove.stageY = v.y;
-				tMove.stageZ = v.z;					
-			}
-			tMove.touchPointID = e.touchPointID;			
-			tMove.type = "touchMove";
-			tMove.target = e.target;
-			TouchManager.onTouchMove(tMove, true);
-		}
-		
-		private static function onTouchEnd(e:TouchEvent3D):void 
-		{
-			if (touch3d) {
-				tEnd.stageX = e.scenePosition.x;
-				tEnd.stageY = e.scenePosition.y;
-				tEnd.stageZ = e.scenePosition.z;
-			}
-			else {
-				var v:Vector3D = convertScreenData(e.screenX, e.screenY, 1);				
-				tEnd.stageX = v.x;
-				tEnd.stageY = v.y;
-				tEnd.stageZ = v.z;					
-			}	
-			tEnd.touchPointID = e.touchPointID;			
-			tEnd.type = "touchEnd";
-			tEnd.target = e.target;
-			TouchManager.onTouchUp(tEnd, true);	
+			delete pointTargets[e.touchPointID];
+			return e;
 		}			
 		
 		public static function convertScreenData(x:Number, y:Number, z:Number=1, target:TouchSprite=null):Vector3D
