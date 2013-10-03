@@ -22,7 +22,7 @@ package com.gestureworks.away3d
 	 */	 
 	public class CML_Away3D { }
 
-	import com.gestureworks.cml.away3d.elements.Camera3D; Camera3D;
+	import com.gestureworks.cml.away3d.elements.Camera; Camera;
 	import com.gestureworks.cml.away3d.elements.Container3D; Container3D;
 	import com.gestureworks.cml.away3d.elements.Cube; Cube;
 	import com.gestureworks.cml.away3d.elements.Cylinder; Cylinder;
