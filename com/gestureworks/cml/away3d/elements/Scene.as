@@ -22,7 +22,7 @@ package com.gestureworks.cml.away3d.elements {
 	/**
 	 *
 	 */
-	public class Scene extends Group {
+	public class Scene extends TouchContainer3D {
 		private var _ortho:Boolean = false;
 		private var _fov:Number = 60;
 		private var _projectionHeight:Number = 500;

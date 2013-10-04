@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements
 	 * ...
 	 * 
 	 */
-	public class Camera extends Group
+	public class Camera extends TouchContainer3D
 	{
 		private var _ortho:Boolean = false;
 		private var _fov:Number = 60;

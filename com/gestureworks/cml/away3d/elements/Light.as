@@ -14,7 +14,7 @@ package com.gestureworks.cml.away3d.elements {
 	/**
 	 * ...
 	 */
-	public class Light extends Group {
+	public class Light extends TouchContainer3D {
 		public static const DIRECTIONAL:String = "directional";
 		public static const POINT:String = "point";
 		private var _lightPicker:String;
@@ -55,8 +55,8 @@ package com.gestureworks.cml.away3d.elements {
 				if (this.parent is Scene)
 					Scene(this.parent).addChild3D(_light);
 				
-				if (this.parent is Group)
-					Group(this.parent).addChild3D(_light);
+				if (this.parent is TouchContainer3D)
+					TouchContainer3D(this.parent).addChild3D(_light);
 				
 				if (this.parent is Mesh)
 					Mesh(this.parent).addChild3D(_light);

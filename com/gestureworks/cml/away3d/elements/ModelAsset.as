@@ -14,7 +14,7 @@ package com.gestureworks.cml.away3d.elements
 	/**
 	 * ... TODO MAY SPLIT INTO MESH/OBJ3D AND MATERIAL AS-SETS
 	 */
-	public class ModelAsset extends Group 
+	public class ModelAsset extends TouchContainer3D 
 	{
 		private var _material:String;
 		

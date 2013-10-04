@@ -12,7 +12,7 @@ package com.gestureworks.cml.away3d.elements {
 	/**
 	 * ...
 	 */
-	public class Mesh extends Group {
+	public class Mesh extends TouchContainer3D {
 		private var _mesh:away3d.entities.Mesh;
 		private var gref:XML;
 		private var mref:XML;
@@ -54,8 +54,8 @@ package com.gestureworks.cml.away3d.elements {
 			if (this.parent is Scene)
 				Scene(this.parent).addChild3D(mesh);
 			
-			if (this.parent is Group)
-				Group(this.parent).addChild3D(mesh);
+			if (this.parent is TouchContainer3D)
+				TouchContainer3D(this.parent).addChild3D(mesh);
 			
 			if (this.parent is Mesh)
 				Mesh(this.parent).addChild3D(mesh);

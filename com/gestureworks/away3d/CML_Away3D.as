@@ -26,7 +26,6 @@ package com.gestureworks.away3d
 	import com.gestureworks.cml.away3d.elements.Container3D; Container3D;
 	import com.gestureworks.cml.away3d.elements.Cube; Cube;
 	import com.gestureworks.cml.away3d.elements.Cylinder; Cylinder;
-	import com.gestureworks.cml.away3d.elements.Group; Group;
 	import com.gestureworks.cml.away3d.elements.Light; Light;
 	import com.gestureworks.cml.away3d.elements.LightPicker; LightPicker;
 	import com.gestureworks.cml.away3d.elements.Material; Material;

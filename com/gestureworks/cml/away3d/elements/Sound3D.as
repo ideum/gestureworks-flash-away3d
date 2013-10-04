@@ -44,8 +44,8 @@ package com.gestureworks.cml.away3d.elements
 			if (this.parent is Scene)
 			Scene(this.parent).addChild3D(s3D);
 			
-			if (this.parent is Group)
-			Group(this.parent).addChild3D(s3D);
+			if (this.parent is TouchContainer3D)
+			TouchContainer3D(this.parent).addChild3D(s3D);
 			
 			if (this.parent is Mesh)
 			Mesh(this.parent).addChild3D(s3D);

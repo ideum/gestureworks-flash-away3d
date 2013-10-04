@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.elements {
 	/**
 	 * ...
 	 */
-	public class Model extends Group {
+	public class Model extends TouchContainer3D {
 		private var _src:String;
 		private var _lightPicker:String;
 		
@@ -38,8 +38,8 @@ package com.gestureworks.cml.away3d.elements {
 				if (this.parent is Scene)
 					Scene(this.parent).addChild3D(ObjectContainer3D(e.asset));
 				
-				if (this.parent is Group)
-					Group(this.parent).addChild3D(ObjectContainer3D(e.asset));
+				if (this.parent is TouchContainer3D)
+					TouchContainer3D(this.parent).addChild3D(ObjectContainer3D(e.asset));
 				
 				if (this.parent is Mesh)
 					Mesh(this.parent).addChild3D(ObjectContainer3D(e.asset));
