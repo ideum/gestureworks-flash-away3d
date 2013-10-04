@@ -138,9 +138,9 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private function tick(e:Event):void {
 			//Graphic gets automagically added to touch manager
-			for each (var to:* in TouchManager.touchObjects)
-			if (to is Away3DTouchObject)
-				to.updateTransform();
+			//for each (var to:* in TouchManager.touchObjects)
+			//if (to is Away3DTouchObject)
+				//to.updateTransform();
 			
 			for each (var v:View3D in viewVct) {
 				v.render();
