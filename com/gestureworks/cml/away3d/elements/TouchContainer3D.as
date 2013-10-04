@@ -22,7 +22,12 @@ package com.gestureworks.cml.away3d.elements
 			super();	
 			transform3d = true;			
 			away3d = true;	
-		}	
+		}
+		
+		override public function updateTarget():void 
+		{
+			target.transform = transform.matrix3D;
+		}
 		
 		private var _target:*;
 		/**
