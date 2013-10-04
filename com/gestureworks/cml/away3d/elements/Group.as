@@ -2,7 +2,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.events.TouchEvent3D;
 	import com.gestureworks.away3d.Away3DTouchObject;
-	import com.gestureworks.core.VirtualTouchObject;
 	import com.gestureworks.events.GWTouchEvent;
 	import com.gestureworks.managers.TouchManager;
 	import flash.geom.Vector3D;
