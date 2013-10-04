@@ -24,18 +24,12 @@ package com.gestureworks.cml.away3d.elements
 			away3d = true;	
 		}	
 		
-		public function updateTransform():void
-		{
-			if(target)
-				target.transform = transform.matrix3D;			
-		}
-		
 		private var _target:*;
 		/**
 		 * Sets the transformation target
 		 */
-		public function get target():* { return _target; }
-		public function set target(tgt:*):void {
+		override public function get target():Object { return _target; }
+		override public function set target(tgt:Object):void {
 			_target = tgt;
 			if(_target){
 				transform.matrix3D = _target.transform;
