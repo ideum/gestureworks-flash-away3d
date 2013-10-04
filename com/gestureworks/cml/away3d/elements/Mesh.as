@@ -6,17 +6,16 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.materials.MaterialBase;
 	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.cml.core.CMLObjectList;
+	import com.gestureworks.cml.utils.document;
 	import flash.geom.Vector3D;
 	
 	/**
 	 * ...
 	 */
 	public class Mesh extends Group {
-		private var _geometry:Geometry;
 		private var _mesh:away3d.entities.Mesh;
-		private var _material:MaterialBase;
-		private var _gref:String = "";
-		private var _mref:String = "";
+		private var gref:XML;
+		private var mref:XML;
 		private var _groupObj3D:ObjectContainer3D;
 		private var _touchEnabled:Boolean = false;
 		private var _castsShadows:Boolean = true;
@@ -46,11 +45,11 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.scaleY = this.scaleY;
 			mesh.scaleZ = this.scaleZ;
 			
-			if (this.gref && CMLObjectList.instance.getId(this.gref))
-				geometry = CMLObjectList.instance.getId(this.gref).geometry;
+			if (!(gref is Geometry))
+				geometry = gref;
 			
-			if (this.mref && CMLObjectList.instance.getId(this.mref))
-				material = CMLObjectList.instance.getId(this.mref).material;
+			if(!(mref is MaterialBase))	
+				material = mref;
 			
 			if (this.parent is Scene)
 				Scene(this.parent).addChild3D(mesh);
@@ -73,48 +72,29 @@ package com.gestureworks.cml.away3d.elements {
 		/*
 		 * Away3D Geometry
 		 */
-		public function get geometry():Geometry {
-			return mesh.geometry;
-		}
-		
-		public function set geometry(geom:Geometry):void {
-			mesh.geometry = geom;
+		public function get geometry():* { return mesh.geometry; }	
+		public function set geometry(geom:*):void {
+			if (geom is XML) {
+				gref = geom;
+				geom = document.getElementById(geom).geometry
+			}
+			if(geom is Geometry)
+				mesh.geometry = geom;
 		}
 		
 		/*
 		 * Away3D material
 		 */
-		public function get material():MaterialBase {
-			return mesh.material;
+		public function get material():* { return mesh.material; }		
+		public function set material(mat:*):void { 
+			if (mat is XML) {
+				mref = mat;
+				mat = document.getElementById(mat).material;				
+			}
+			if(mat is MaterialBase)
+				mesh.material = mat; 
 		}
 		
-		public function set material(mat:MaterialBase):void {
-			mesh.material = mat;
-		}
-		
-		/**
-		 * Geometry
-		 * gets the geometry with matching id
-		 */
-		public function get gref():String {
-			return _gref;
-		}
-		
-		public function set gref(value:String):void {
-			_gref = value;
-		}
-		
-		/**
-		 * Material 
-		 * gets the material with matching id
-		 */
-		public function get mref():String {
-			return _mref;
-		}
-		
-		public function set mref(value:String):void {
-			_mref = value;
-		}
 		
 		/*
 		 * Away3d mesh.
@@ -132,13 +112,6 @@ package com.gestureworks.cml.away3d.elements {
 			return _mesh;
 		}
 		
-		public override function get touchEnabled():Boolean {
-			return _touchEnabled;
-		}
-		
-		public override function set touchEnabled(value:Boolean):void {
-			_touchEnabled = value;
-		}
 		/**
 		 * Whether this mesh casts shadows
 		 * @default true
@@ -152,16 +125,6 @@ package com.gestureworks.cml.away3d.elements {
 		{
 			_castsShadows = value;
 		}
-		
-		/*public function get touchEnabled():Boolean
-		   {
-		   return _touchEnabled;
-		   }
-		
-		   public function set touchEnabled(value:Boolean):void
-		   {
-		   _touchEnabled = value;
-		 }*/
 		
 		override public function addChild3D(child:ObjectContainer3D):void {
 			mesh.addChild(child);
