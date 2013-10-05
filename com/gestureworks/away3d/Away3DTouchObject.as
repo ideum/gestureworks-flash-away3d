@@ -19,7 +19,7 @@ package com.gestureworks.away3d
 		 */
 		public function get distance():Number 
 		{ 
-			_distance = View3D(view).camera.project(target.scenePosition).length;
+			//_distance = View3D(view).camera.project(target.scenePosition).length;
 			return _distance; 
 		}
 		

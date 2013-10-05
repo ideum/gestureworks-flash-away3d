@@ -113,8 +113,6 @@ package com.gestureworks.away3d
 					}
 				}
 			}
-			
-			trace(e.stageX, e.stageY, e.stageZ);
 			return e;
 		}
 		
