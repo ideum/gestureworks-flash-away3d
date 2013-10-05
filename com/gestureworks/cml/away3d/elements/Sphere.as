@@ -1,12 +1,14 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.SphereGeometry;
+	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+	import com.gestureworks.cml.core.CMLObject;
 	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * ...
 	 */
-	public class Sphere extends Container {
+	public class Sphere extends CMLObject implements IGeometry {
 		private var _radius:Number = 50;
 		private var _segmentsW:uint = 16;
 		private var _segmentsH:uint = 12;
@@ -20,13 +22,8 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Initialisation method
 		 */
-		override public function init():void {
-			
-			_geometry = new SphereGeometry(_radius,  _segmentsW, _segmentsH, _yUp);
-			
-			if (this.parent is Mesh)
-				Mesh(this.parent).geometry = _geometry;
-		
+		public function init():void {			
+			_geometry = new SphereGeometry(_radius,  _segmentsW, _segmentsH, _yUp);		
 		}
 		
 		/**
@@ -78,7 +75,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Away3d Geometry
+		 * @inheritDoc
 		 */
 		public function get geometry():Geometry {
 			return _geometry;

@@ -2,10 +2,9 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.core.base.Geometry;
 	import away3d.entities.Mesh;
-	import away3d.events.TouchEvent3D;
 	import away3d.materials.MaterialBase;
-	import com.gestureworks.away3d.Away3DTouchObject;
-	import com.gestureworks.cml.core.CMLObjectList;
+	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.utils.document;
 	import flash.geom.Vector3D;
 	
@@ -67,6 +66,34 @@ package com.gestureworks.cml.away3d.elements {
 			
 			mesh.mouseEnabled = true;
 			mesh.mouseChildren = true;		
+		}
+		
+		/**
+		 * Custer CML parse routine to add local Geometry and Material
+		 * @param	cml
+		 * @return
+		 */
+		override public function parseCML(cml:XMLList):XMLList {
+			var node:XML = XML(cml);
+			var obj:Object;
+			
+			for each(var item:XML in node.*) {
+				if (isGeometry(item.name())) {
+					obj = CMLParser.instance.createObject(item.name());
+					CMLParser.instance.attrLoop(obj, XMLList(item));
+					obj.updateProperties();
+					obj.init();
+					geometry = obj.geometry;
+					delete cml[item.name()];
+				}					
+			}
+			
+			CMLParser.instance.parseCML(this, cml);
+			return cml.*;
+		}
+		
+		private static function isGeometry(tag:String):Boolean {
+			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.elements."]) is IGeometry; 
 		}
 		
 		/*

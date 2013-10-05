@@ -1,12 +1,14 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.CylinderGeometry;
+	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+	import com.gestureworks.cml.core.CMLObject;
 	import com.gestureworks.cml.element.Container;
 	
 	/**
 	 * ...
 	 */
-	public class Cylinder extends Container {
+	public class Cylinder extends CMLObject implements IGeometry {
 		private var _topRadius:Number = 50;
 		private var _bottomRadius:Number = 50;
 		private var _height:Number = 100;
@@ -26,11 +28,8 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Initialisation method
 		 */
-		override public function init():void {
+		public function init():void {
 			_geometry = new CylinderGeometry(_topRadius, _bottomRadius, _height, _segmentsW, _segmentsH, _topClosed, _bottomClosed, _surfaceClosed, _yUp); 
-			
-			if (this.parent is Mesh)
-				Mesh(this.parent).geometry = _geometry
 		}
 		
 		/**
@@ -61,11 +60,11 @@ package com.gestureworks.cml.away3d.elements {
 		 * The height of the cylinder.
 		 *  @default 100
 		 */
-		public override function get height():Number {
+		public function get height():Number {
 			return _height;
 		}
 		
-		public override function set height(value:Number):void {
+		public function set height(value:Number):void {
 			_height = value;
 		}
 		

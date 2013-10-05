@@ -1,12 +1,14 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.CubeGeometry;
+	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+	import com.gestureworks.cml.core.CMLObject;
 	import com.gestureworks.cml.element.Container
 	
 	/**
 	 * ...
 	 */
-	public class Cube extends Container {
+	public class Cube extends CMLObject implements IGeometry {
 		private var _width:Number = 100;
 		private var _height:Number = 100;
 		private var _depth:Number = 100;
@@ -23,22 +25,19 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Initialisation method
 		 */
-		override public function init():void {
+		public function init():void {
 			_geometry = new CubeGeometry(_width, _height, _depth, _segmentsW, segmentsH, segmentsD);
-			
-			if (this.parent is Mesh)
-				Mesh(this.parent).geometry = _geometry;
 		}
 		
 		/**
 		 * The size of the cube along its X-axis.
 		 *  @default 100
 		 */
-		public override function get width():Number {
+		public function get width():Number {
 			return _width;
 		}
 		
-		public override function set width(value:Number):void {
+		public function set width(value:Number):void {
 			_width = value;
 		}
 		
@@ -46,11 +45,11 @@ package com.gestureworks.cml.away3d.elements {
 		 * The size of the cube along its Y-axis.
 		 *  @default 100
 		 */
-		public override function get height():Number {
+		public function get height():Number {
 			return _height;
 		}
 		
-		public override function set height(value:Number):void {
+		public function set height(value:Number):void {
 			_height = value;
 		}
 		
@@ -103,12 +102,9 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Away3d Geometry
+		 * @inheritDoc
 		 */
-		public function get geometry():Geometry {
-			return _geometry;
-		}
-		
+		public function get geometry():Geometry { return _geometry; }		
 		public function set geometry(value:Geometry):void {
 			if (_geometry != value)
 				_geometry = value;
