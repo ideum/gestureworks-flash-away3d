@@ -60,7 +60,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Custer CML parse routine to add local Geometry and Material
+		 * Custom CML parse routine to add local Geometry and Material
 		 * @param	cml
 		 * @return
 		 */
