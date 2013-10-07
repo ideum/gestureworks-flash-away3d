@@ -6,6 +6,7 @@ package com.gestureworks.away3d
 	import away3d.core.pick.PickingType;
 	import away3d.entities.Mesh;
 	import away3d.events.*;
+	import com.gestureworks.cml.away3d.elements.Scene;
 	import com.gestureworks.cml.away3d.elements.TouchContainer3D;
 	import com.gestureworks.core.*;
 	import com.gestureworks.events.*;
@@ -34,6 +35,7 @@ package com.gestureworks.away3d
 			TouchManager.registerHook(point3DListener);
 			mIn = new Matrix3D();
 			mOut = new Matrix3D();
+			touchPicker.onlyMouseEnabled = false;
 		}
 				
 		public static function registerTouchObject(t:*):Away3DTouchObject 
@@ -52,6 +54,12 @@ package com.gestureworks.away3d
 			delete touchObjects[t];
 		}	
 		
+		private static function validTarget(obj:Object):Object {
+			if (touchObjects[obj])
+				return touchObjects[obj];
+			return validTarget(obj.parent);
+		}
+		
 		private static function point3DListener(e:GWTouchEvent):GWTouchEvent {
 			switch(e.type) {
 				case "gwTouchBegin":
@@ -67,12 +75,21 @@ package com.gestureworks.away3d
 		
 		private static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
 		{		
-			if (e.target && e.target.parent is View3D) {			
-				var view:View3D = e.target.parent as View3D;
-				e.view = view as DisplayObjectContainer;
-				collider = touchPicker.getViewCollision(e.stageX, e.stageY, view);
+			var sceneTouch:Boolean = e.target is Scene
+			var viewTouch:Boolean = e.target && e.target.parent is View3D;
+			if (sceneTouch || viewTouch) {
+				
+				if (sceneTouch) {
+					//collider = touchPicker.getSceneCollision(e.stageX, e.stageY, Scene(e.target.));					
+				}
+				else {
+					var view:View3D = e.target.parent as View3D;
+					e.view = view as DisplayObjectContainer;
+					collider = touchPicker.getViewCollision(e.stageX, e.stageY, view);
+				}
+				
 				if (collider) {
-					e.target = touchObjects[collider.entity];
+					e.target = validTarget(collider.entity);
 					pointTargets[e.touchPointID] = e.target;
 					if (touch3d) {
 						e.stageX = e.target.scenePosition.x;
