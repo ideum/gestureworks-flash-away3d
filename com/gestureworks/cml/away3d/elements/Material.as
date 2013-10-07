@@ -12,6 +12,7 @@ package com.gestureworks.cml.away3d.elements  {
 	import com.gestureworks.cml.element.Image;
 	import com.gestureworks.cml.element.Text;
 	import com.gestureworks.cml.managers.FileManager;
+	import com.gestureworks.cml.utils.document;
 	import com.greensock.loading.ImageLoader;
 	import flash.display.BitmapData;
 	import flash.display.Loader;
@@ -25,7 +26,7 @@ package com.gestureworks.cml.away3d.elements  {
 		private var _src:String;
 		private var _color:uint = 0xCCCCCC;
 		private var _material:MaterialBase;
-		private var _lightPicker:String;
+		private var _lightPicker:LightPicker;
 		private var _mipmap:Boolean = true;
 		private var _blendmode:String = "normal";
 		private var _repeat:Boolean = false;
@@ -107,28 +108,24 @@ package com.gestureworks.cml.away3d.elements  {
 			
 			if (lightPicker && material.lightPicker ==null)
 			{
-				if (CMLObjectList.instance.getId(lightPicker))
-				{
-					this.material.lightPicker = CMLObjectList.instance.getId(lightPicker).slp;
-					
-				}
-				else
-					throw new Error("id "+ lightPicker+" LightPicker not found")
+				material.lightPicker = lightPicker.slp;
 				
-				
-				if (material.lightPicker && DirectionalLight(CMLObjectList.instance.getId(lightPicker).shadowLight)) {
+				if (material.lightPicker && DirectionalLight(lightPicker.shadowLight)) {
 					//Could add other shadow types
 					if (material is TextureMaterial)
-						TextureMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(lightPicker).shadowLight));
+						TextureMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(lightPicker.shadowLight));
 					else
-						ColorMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(CMLObjectList.instance.getId(lightPicker).shadowLight));
+						ColorMaterial(material).shadowMethod = new SoftShadowMapMethod(DirectionalLight(lightPicker.shadowLight));
 				}
 			}
 		}
 		
-		public function get lightPicker():String { return _lightPicker; }
-		public function set lightPicker(l:String):void {
-			_lightPicker = l;
+		public function get lightPicker():* { return _lightPicker; }
+		public function set lightPicker(l:*):void {
+			if (l is XML) 
+				l = document.getElementById(l);
+			if (l is LightPicker)
+				_lightPicker = l;
 		}
 		
 		/**
