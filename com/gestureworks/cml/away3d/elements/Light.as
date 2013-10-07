@@ -52,17 +52,8 @@ package com.gestureworks.cml.away3d.elements {
 					PointLight(_light).fallOff = _fallOff;
 				}
 				
-				if (this.parent is Scene)
-					Scene(this.parent).addChild3D(_light);
-				
 				if (this.parent is TouchContainer3D)
 					TouchContainer3D(this.parent).addChild3D(_light);
-				
-				if (this.parent is Mesh)
-					Mesh(this.parent).addChild3D(_light);
-				
-				if (this.parent is Light)
-					Light(this.parent).addChild3D(_light);
 				
 				light.x = this.x;
 				light.y = this.y;
@@ -85,26 +76,20 @@ package com.gestureworks.cml.away3d.elements {
 		
 		}
 		
-		public static function createLight(lightClass:Light):void {
-			if (lightClass.type == POINT)
-				var light:LightBase = new PointLight();
-			
-			else if (lightClass.type == DIRECTIONAL)
-				light = new DirectionalLight(lightClass.direction.split(",")[0], lightClass.direction.split(",")[1], lightClass.direction.split(",")[2]);
-			
-			else
-				throw Error("Unrecognised Light.type \"" + lightClass.type + "\" . Use directional or point");
-			
-			light.name = lightClass.id;
-			lightClass.light = light;
-		}
-		
 		public function get type():String {
 			return _type;
 		}
 		
 		public function set type(value:String):void {
-			_type = value;
+			_type = value;			
+			if (_type == POINT)
+				light = new PointLight();
+			
+			else if (type == DIRECTIONAL)
+				light = new DirectionalLight(direction.split(",")[0], direction.split(",")[1], direction.split(",")[2]);
+			
+			if(light)
+				light.name = id;			
 		}
 		
 		public function get direction():String {

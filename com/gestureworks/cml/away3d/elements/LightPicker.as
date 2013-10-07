@@ -2,7 +2,9 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.lights.DirectionalLight;
 	import away3d.materials.lightpickers.StaticLightPicker;
 	import com.gestureworks.cml.core.CMLObjectList;
+	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.element.Container;
+	import com.gestureworks.cml.utils.document;
 	
 	/**
 	 * LightPicker is used to apply single or multiple Lights to a Material.
@@ -15,7 +17,7 @@ package com.gestureworks.cml.away3d.elements {
 	public class LightPicker extends Container {
 		
 		private var _slp:StaticLightPicker;
-		private var _lightIDs:String;
+		private var _lights:Vector.<Light> = new Vector.<Light>();
 		private var lightPickerLightsArr:Array = [];
 		private var _shadowLight:DirectionalLight;
 		
@@ -26,56 +28,61 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Initialisation method
 		*/ 
-		override public function init():void {
+		override public function init():void {			
 			
-			var lightClass:Light;
-			var lightID:String;
-			
-			for each (lightID in this._lightIDs.split(",")) {
-				lightClass = CMLObjectList.instance.getId(lightID);
-				if (!lightClass)
-					throw Error("Light with id = \"" + lightID + "\" not found in cml.");
-				
-				if (lightClass.light == null)
-					Light.createLight(lightClass);
-					
-				if (lightClass.castsShadows && lightClass.type == Light.DIRECTIONAL )
-					shadowLight = DirectionalLight(CMLObjectList.instance.getId(lightClass.id).light);
-				
-				lightPickerLightsArr.push(CMLObjectList.instance.getId(lightClass.id).light);
-				//lightPickerLightsArr.push(lightClass.light);
+			for each(var light:Light in lights){
+				if (light.castsShadows && light.type == Light.DIRECTIONAL )
+					shadowLight = DirectionalLight(light.light);				
+				lightPickerLightsArr.push(light.light);
 			}
 			
 			_slp = new StaticLightPicker(lightPickerLightsArr);
 		}
 		
-		public function get slp():StaticLightPicker {
-			return _slp;
-		}
-		
+		public function get slp():StaticLightPicker { return _slp; }	
 		public function set slp(value:StaticLightPicker):void {
 			_slp = value;
 		}
 		
-		public function get lightIDs():String {
-			return _lightIDs;
+		public function get lights():Vector.<Light> { return _lights; }
+		public function set lights(value:*):void {
+			if (value is XML) {
+				var reg:RegExp = /[\s\r\n]*/gim;
+				value = value.replace(reg, '');				
+				for each(var id:String in String(value).split(","))
+					_lights.push(document.getElementById(id));
+			}
 		}
 		
-		public function set lightIDs(value:String):void {
-			var reg:RegExp = /[\s\r\n]*/gim;
-			value = value.replace(reg, '');
-			_lightIDs = value;
-		}
-		
-		public function get shadowLight():DirectionalLight 
-		{
-			return _shadowLight;
-		}
-		
-		public function set shadowLight(value:DirectionalLight):void 
-		{
+		public function get shadowLight():DirectionalLight { return _shadowLight; }		
+		public function set shadowLight(value:DirectionalLight):void {
 			_shadowLight = value;
 		}
+		
+		/**
+		 * Custom CML parse routine to add local Light 
+		 * @param	cml
+		 * @return
+		 */
+		override public function parseCML(cml:XMLList):XMLList {
+			var node:XML = XML(cml);
+			var obj:Object;
+			
+			for each(var item:XML in node.*) {
+				
+				if (item.name() == "Light") {					
+					obj = CMLParser.instance.createObject(item.name());
+					CMLParser.instance.attrLoop(obj, XMLList(item)); 
+					obj.updateProperties();
+					obj.init();
+					delete cml[item.name()];
+					lights.push(obj);
+				}					
+			}
+			
+			CMLParser.instance.parseCML(this, cml);
+			return cml.*;
+		}		
 	
 	}
 
