@@ -93,9 +93,6 @@ package com.gestureworks.cml.away3d.elements  {
 			
 			if(lightPicker && material.lightPicker ==null)
 			updateLightPicker();
-			
-			if (this.parent is Mesh)
-				Mesh(this.parent).material = material;
 		}
 		
 		private function updateTM():void {

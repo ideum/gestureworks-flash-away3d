@@ -49,18 +49,9 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if(!(mref is MaterialBase))	
 				material = mref;
-			
-			if (this.parent is Scene)
-				Scene(this.parent).addChild3D(mesh);
-			
+
 			if (this.parent is TouchContainer3D)
 				TouchContainer3D(this.parent).addChild3D(mesh);
-			
-			if (this.parent is Mesh)
-				Mesh(this.parent).addChild3D(mesh);
-			
-			if (this.parent is Light)
-				Light(this.parent).addChild3D(mesh);
 				
 			mesh.castsShadows = _castsShadows;
 			
@@ -76,15 +67,25 @@ package com.gestureworks.cml.away3d.elements {
 		override public function parseCML(cml:XMLList):XMLList {
 			var node:XML = XML(cml);
 			var obj:Object;
+			var tag:String;
+			var isGeo:Boolean;
 			
 			for each(var item:XML in node.*) {
-				if (isGeometry(item.name())) {
+				
+				tag = item.name();
+				isGeo = isGeometry(tag);
+				
+				if (isGeo || tag=="Material") {					
 					obj = CMLParser.instance.createObject(item.name());
 					CMLParser.instance.attrLoop(obj, XMLList(item));
 					obj.updateProperties();
 					obj.init();
-					geometry = obj.geometry;
 					delete cml[item.name()];
+					
+					if(isGeo)
+						geometry = obj.geometry;
+					else
+						material = obj.material;
 				}					
 			}
 			
@@ -92,6 +93,11 @@ package com.gestureworks.cml.away3d.elements {
 			return cml.*;
 		}
 		
+		/**
+		 * Determines if CML object is a Geometry instance
+		 * @param	tag
+		 * @return
+		 */
 		private static function isGeometry(tag:String):Boolean {
 			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.elements."]) is IGeometry; 
 		}
