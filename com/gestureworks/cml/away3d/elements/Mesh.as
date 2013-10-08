@@ -72,21 +72,15 @@ package com.gestureworks.cml.away3d.elements {
 			
 			for each(var item:XML in node.*) {
 				
-				tag = item.name();
-				isGeo = isGeometry(tag);
-				
-				if (isGeo || tag=="Material") {					
+				if (isGeometry(item.name())) {					
 					obj = CMLParser.instance.createObject(item.name());
 					CMLParser.instance.attrLoop(obj, XMLList(item));
 					obj.updateProperties();
-					obj.init();
+					obj.init();					
+					geometry = obj.geometry;
 					delete cml[item.name()];
-					
-					if(isGeo)
-						geometry = obj.geometry;
-					else
-						material = obj.material;
 				}					
+				
 			}
 			
 			CMLParser.instance.parseCML(this, cml);
