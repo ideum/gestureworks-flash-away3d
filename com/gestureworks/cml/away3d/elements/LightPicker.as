@@ -46,9 +46,10 @@ package com.gestureworks.cml.away3d.elements {
 		public function set lights(value:*):void {
 			if (value is XML) {
 				var reg:RegExp = /[\s\r\n]*/gim;
-				value = value.replace(reg, '');				
-				for each(var id:String in String(value).split(","))
+				for each(var id:String in String(value).split(",")) {
+					id = id.replace(reg, '');				
 					_lights.push(document.getElementById(id));
+				}
 			}
 		}
 		
