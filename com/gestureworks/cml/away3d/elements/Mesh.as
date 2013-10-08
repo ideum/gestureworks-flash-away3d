@@ -44,10 +44,10 @@ package com.gestureworks.cml.away3d.elements {
 			mesh.scaleY = this.scaleY;
 			mesh.scaleZ = this.scaleZ;
 			
-			if (!(gref is Geometry))
+			if (gref)
 				geometry = gref;
 			
-			if(!(mref is MaterialBase))	
+			if(mref)	
 				material = mref;
 
 			if (this.parent is TouchContainer3D)
@@ -132,30 +132,20 @@ package com.gestureworks.cml.away3d.elements {
 		/*
 		 * Away3d mesh.
 		 */
-		public function get mesh():away3d.entities.Mesh {
-			return _mesh;
-		}
-		
+		public function get mesh():away3d.entities.Mesh { return _mesh; }		
 		public function set mesh(value:away3d.entities.Mesh):void {
 			_mesh = value;
 			_groupObj3D = value;
 		}
 		
-		public override function get groupObj3D():ObjectContainer3D {
-			return _mesh;
-		}
+		public override function get groupObj3D():ObjectContainer3D { return _mesh; }
 		
 		/**
 		 * Whether this mesh casts shadows
 		 * @default true
 		 */
-		public function get castsShadows():Boolean 
-		{
-			return _castsShadows;
-		}
-		
-		public function set castsShadows(value:Boolean):void 
-		{
+		public function get castsShadows():Boolean { return _castsShadows; }		
+		public function set castsShadows(value:Boolean):void {
 			_castsShadows = value;
 		}
 		

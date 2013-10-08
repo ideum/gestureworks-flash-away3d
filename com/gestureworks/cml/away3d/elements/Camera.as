@@ -38,135 +38,79 @@ package com.gestureworks.cml.away3d.elements
 		{
 			//trace("###SCENE CAMERA displayComplete ###")
 			if (_ortho)
-			{
 				_lens = new OrthographicLens(_projectionHeight);
-			}
 			else
-			_lens = new PerspectiveLens(_fov);
+				_lens = new PerspectiveLens(_fov);
 			
 			_lens.near = _clipping.split(",")[0];
 			_lens.far = clipping.split(",")[1];
 			
 			_camera.lens = _lens;
-			_camera.x = this.x;
-			_camera.y = this.y;
-			_camera.z = this.z;
+			_camera.x = x;
+			_camera.y = y;
+			_camera.z = z;
 			
-			_camera.rotationX = this.rotationX;
-			_camera.rotationY = this.rotationY;
-			_camera.rotationZ = this.rotationZ;
+			_camera.rotationX = rotationX;
+			_camera.rotationY = rotationY;
+			_camera.rotationZ = rotationZ;
 			
-			if (this.lookat) //overides any rotation above
-				_camera.lookAt(new Vector3D(this.lookat.split(",")[0], this.lookat.split(",")[1], this.lookat.split(",")[2]));
+			if (lookat) //overides any rotation above
+				_camera.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
 			
-			_camera.scaleX = this.scaleX;
-			_camera.scaleY = this.scaleY;
-			_camera.scaleZ = this.scaleZ;
+			_camera.scaleX = scaleX;
+			_camera.scaleY = scaleY;
+			_camera.scaleZ = scaleZ;
 			
-			if (this.parent is Scene)
-			{
-				Scene(this.parent).updateViewFromCamera();
-			}
+			if (parent is Scene)
+				Scene(parent).updateViewFromCamera();
 		}
 
-		public function get ortho():Boolean 
-		{
-			return _ortho;
-		}
-		
-		public function set ortho(value:Boolean):void 
-		{
+		public function get ortho():Boolean { return _ortho; }	
+		public function set ortho(value:Boolean):void {
 			_ortho = value;
 		}
 		
-		public function get fov():Number 
-		{
-			return _fov;
-		}
+		public function get fov():Number { return _fov; }		
+		public function set fov(value:Number):void { _fov = value; }
 		
-		public function set fov(value:Number):void 
-		{
-			_fov = value;
-		}
-		
-		public function get projectionHeight():Number 
-		{
-			return _projectionHeight;
-		}
-		
-		public function set projectionHeight(value:Number):void 
-		{
+		public function get projectionHeight():Number { return _projectionHeight; }		
+		public function set projectionHeight(value:Number):void {
 			_projectionHeight = value;
 		}
 		
-		public function get clipping():String 
-		{
-			return _clipping;
-		}
-		
-		public function set clipping(value:String):void 
-		{
+		public function get clipping():String { return _clipping; }
+		public function set clipping(value:String):void { 
 			_clipping = value;
 		}
 		
-		public function get viewPos():String 
-		{
-			return _viewPos;
-		}
-		
-		public function set viewPos(value:String):void 
-		{
+		public function get viewPos():String { return _viewPos; }		
+		public function set viewPos(value:String):void {
 			if (value !="")
 			_viewPos = value;
 		}
 		
-		public function get viewDim():String 
-		{
-			return _viewDim;
-		}
-		
-		public function set viewDim(value:String):void 
-		{
+		public function get viewDim():String { return _viewDim; }		
+		public function set viewDim(value:String):void {
 			_viewDim = value;
 		}
 		
-		public function get viewBackgroundColor():uint 
-		{
-			return _viewBackgroundColor;
-		}
-		
-		public function set viewBackgroundColor(value:uint):void 
-		{
+		public function get viewBackgroundColor():uint { return _viewBackgroundColor; }		
+		public function set viewBackgroundColor(value:uint):void { 
 			_viewBackgroundColor = value;
 		}
 		
-		public function get transform3D():Matrix3D 
-		{
-			return _transform3D;
-		}
-		
-		public function set transform3D(value:Matrix3D):void 
-		{
+		public function get transform3D():Matrix3D { return _transform3D; }		
+		public function set transform3D(value:Matrix3D):void {
 			_transform3D = value;
 		}
 		
-		public function getCamera():away3d.cameras.Camera3D
-		{
-			return _camera;
-		}
-		
-		public function set camera(value:away3d.cameras.Camera3D):void 
-		{
+		public function getCamera():away3d.cameras.Camera3D{ return _camera; }		
+		public function set camera(value:away3d.cameras.Camera3D):void {
 			_camera = value;
 		}
 		
-		public function get lens():LensBase 
-		{
-			return _lens;
-		}
-		
-		public function set lens(value:LensBase):void 
-		{
+		public function get lens():LensBase { return _lens; }		
+		public function set lens(value:LensBase):void {
 			_lens = value;
 		}
 		

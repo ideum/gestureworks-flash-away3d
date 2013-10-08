@@ -152,82 +152,52 @@ package com.gestureworks.cml.away3d.elements {
 			}
 		}
 		
-		public function get ortho():Boolean {
-			return _ortho;
-		}
-		
+		public function get ortho():Boolean { return _ortho; }		
 		public function set ortho(value:Boolean):void {
 			_ortho = value;
 		}
 		
-		public function get fov():Number {
-			return _fov;
-		}
-		
+		public function get fov():Number { return _fov; }		
 		public function set fov(value:Number):void {
 			_fov = value;
 		}
 		
-		public function get projectionHeight():Number {
-			return _projectionHeight;
-		}
-		
+		public function get projectionHeight():Number { return _projectionHeight; }		
 		public function set projectionHeight(value:Number):void {
 			_projectionHeight = value;
 		}
 		
-		public function get clipping():String {
-			return _clipping;
-		}
-		
+		public function get clipping():String { return _clipping; }		
 		public function set clipping(value:String):void {
 			_clipping = value;
 		}
 		
-		public function get viewPos():String {
-			return _viewPos;
-		}
-		
+		public function get viewPos():String { return _viewPos; }		
 		public function set viewPos(value:String):void {
 			_viewPos = value;
 		}
 		
-		public function get viewDim():String {
-			return _viewDim;
-		}
-		
+		public function get viewDim():String { return _viewDim; }		
 		public function set viewDim(value:String):void {
 			_viewDim = value;
 		}
 		
-		public function get viewAntiAlias():int {
-			return _viewAntiAlias;
-		}
-		
+		public function get viewAntiAlias():int { return _viewAntiAlias; }		
 		public function set viewAntiAlias(value:int):void {
 			_viewAntiAlias = value;
 		}
 		
-		public function get viewBackgroundColor():uint {
-			return _viewBackgroundColor;
-		}
-		
+		public function get viewBackgroundColor():uint { return _viewBackgroundColor; }		
 		public function set viewBackgroundColor(value:uint):void {
 			_viewBackgroundColor = value;
 		}
 		
-		public function get stageProxyColor():uint {
-			return _stageProxyColor;
-		}
-		
+		public function get stageProxyColor():uint { return _stageProxyColor; }		
 		public function set stageProxyColor(value:uint):void {
 			_stageProxyColor = value;
 		}
 		
-		public function get viewVct():Vector.<View3D> 
-		{
-			return _viewVct;
-		}
+		public function get viewVct():Vector.<View3D> { return _viewVct; }
 		
 		/**
 		 * Dispose methods to nullify children

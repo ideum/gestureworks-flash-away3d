@@ -8,7 +8,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.materials.methods.FilteredShadowMapMethod;
 	import away3d.materials.methods.NearShadowMapMethod;
 	import com.gestureworks.cml.core.CMLObjectList;
-	//import com.gestureworks.cml.element.Element;
 	import flash.geom.Vector3D;
 	
 	/**
@@ -76,10 +75,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		}
 		
-		public function get type():String {
-			return _type;
-		}
-		
+		public function get type():String { return _type; }		
 		public function set type(value:String):void {
 			_type = value;			
 			if (_type == POINT)
@@ -92,82 +88,52 @@ package com.gestureworks.cml.away3d.elements {
 				light.name = id;			
 		}
 		
-		public function get direction():String {
-			return _direction;
-		}
-		
+		public function get direction():String { return _direction; }		
 		public function set direction(value:String):void {
 			_direction = value;
 		}
 		
-		public function get ambient():Number {
-			return _ambient;
-		}
-		
+		public function get ambient():Number { return _ambient; }		
 		public function set ambient(value:Number):void {
 			_ambient = value;
 		}
 		
-		public function get ambientColor():uint {
-			return _ambientColor;
-		}
-		
+		public function get ambientColor():uint { return _ambientColor; }		
 		public function set ambientColor(value:uint):void {
 			_ambientColor = value;
 		}
 		
-		public function get diffuse():Number {
-			return _diffuse;
-		}
-		
+		public function get diffuse():Number { return _diffuse; }		
 		public function set diffuse(value:Number):void {
 			_diffuse = value;
 		}
 		
-		public function get diffuseColor():uint {
-			return _diffuseColor;
-		}
-		
+		public function get diffuseColor():uint { return _diffuseColor; }		
 		public function set diffuseColor(value:uint):void {
 			_diffuseColor = value;
 		}
 		
-		public function get light():LightBase {
-			return _light;
-		}
-		
+		public function get light():LightBase { return _light; }		
 		public function set light(value:LightBase):void {
 			_light = value;
 		}
 		
-		public function get fallOff():Number {
-			return _fallOff;
-		}
-		
+		public function get fallOff():Number { return _fallOff; }		
 		public function set fallOff(value:Number):void {
 			_fallOff = value;
 		}
 		
-		public function get radius():Number {
-			return _radius;
-		}
-		
+		public function get radius():Number { return _radius; }		
 		public function set radius(value:Number):void {
 			_radius = value;
 		}
 		
-		public function get shadowMethod():NearShadowMapMethod {
-			return _shadowMethod;
-		}
-		
+		public function get shadowMethod():NearShadowMapMethod { return _shadowMethod; }		
 		public function set shadowMethod(value:NearShadowMapMethod):void {
 			_shadowMethod = value;
 		}
 		
-		public function get castsShadows():Boolean {
-			return _castsShadows;
-		}
-		
+		public function get castsShadows():Boolean { return _castsShadows; }		
 		public function set castsShadows(value:Boolean):void {
 				_castsShadows = value;
 		}

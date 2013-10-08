@@ -30,10 +30,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines radius of Sphere
 		 * @default "50"
 		 */
-		public function get radius():Number {
-			return _radius;
-		}
-		
+		public function get radius():Number { return _radius; }		
 		public function set radius(value:Number):void {
 			_radius = value;
 		}
@@ -42,10 +39,7 @@ package com.gestureworks.cml.away3d.elements {
 		* Defines the number of vertical segments that make up the sphere. 
 		* @default 16.
 		 */
-		public function get segmentsW():uint {
-			return _segmentsW;
-		}
-		
+		public function get segmentsW():uint { return _segmentsW; }		
 		public function set segmentsW(value:uint):void {
 			_segmentsW = value;
 		}
@@ -54,10 +48,7 @@ package com.gestureworks.cml.away3d.elements {
 		* Defines the number of horizontal segments that make up the sphere. 
 		* @default 12.
 		 */
-		public function get segmentsH():uint {
-			return _segmentsH;
-		}
-		
+		public function get segmentsH():uint { return _segmentsH; }		
 		public function set segmentsH(value:uint):void {
 			_segmentsH = value;
 		}
@@ -66,10 +57,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
 		 * @default true
 		 */
-		public function get yUp():Boolean {
-			return _yUp;
-		}
-		
+		public function get yUp():Boolean { return _yUp; }		
 		public function set yUp(value:Boolean):void {
 			_yUp = value;
 		}
@@ -77,10 +65,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function get geometry():Geometry {
-			return _geometry;
-		}
-		
+		public function get geometry():Geometry { return _geometry; }		
 		public function set geometry(value:Geometry):void {
 			if (_geometry != value)
 				_geometry = value;

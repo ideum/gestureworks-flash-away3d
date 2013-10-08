@@ -7,7 +7,6 @@ package com.gestureworks.cml.away3d.elements  {
 	import away3d.textures.BitmapTexture;
 	import away3d.tools.utils.TextureUtils;
 	import away3d.utils.Cast;
-	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.element.Graphic;
 	import com.gestureworks.cml.element.Image;
 	import com.gestureworks.cml.element.Text;
@@ -15,7 +14,6 @@ package com.gestureworks.cml.away3d.elements  {
 	import com.gestureworks.cml.utils.document;
 	import com.greensock.loading.ImageLoader;
 	import flash.display.BitmapData;
-	import flash.display.Loader;
 	import flash.geom.Matrix;
 	
 	/**
@@ -132,10 +130,7 @@ package com.gestureworks.cml.away3d.elements  {
 		 * ColorMaterial color
 		 * @default "0XCCCCCC"
 		 */
-		public function get color():uint {
-			return uint(_color);
-		}
-		
+		public function get color():uint { return uint(_color); }		
 		public function set color(value:uint):void {
 			_color = uint(value);
 		}
@@ -143,10 +138,7 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Path to the image file
 		 */
-		public function get src():String {
-			return _src;
-		}
-		
+		public function get src():String { return _src; }		
 		public function set src(value:String):void {
 			_src = value;
 		}
@@ -154,10 +146,7 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Indicates whether or not any used textures should use mipmapping.
 		 */
-		public function get mipmap():Boolean {
-			return _mipmap;
-		}
-		
+		public function get mipmap():Boolean { return _mipmap; }		
 		public function set mipmap(value:Boolean):void {
 			_mipmap = value;
 		}
@@ -172,10 +161,7 @@ package com.gestureworks.cml.away3d.elements  {
 		 * <li>BlendMode.ALPHA</li>
 		 * </ul>
 		 */
-		public function get blendmode():String {
-			return _blendmode;
-		}
-		
+		public function get blendmode():String { return _blendmode; }		
 		public function set blendmode(value:String):void {
 			_blendmode = value;
 		}
@@ -183,10 +169,7 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Indicates whether or not any used textures should be tiled.
 		 */
-		public function get repeat():Boolean {
-			return _repeat;
-		}
-		
+		public function get repeat():Boolean { return _repeat; }		
 		public function set repeat(value:Boolean):void {
 			_repeat = value;
 		}
@@ -194,10 +177,7 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Defines whether or not the material should perform backface culling.
 		 */
-		public function get bothSides():Boolean {
-			return _bothSides;
-		}
-		
+		public function get bothSides():Boolean { return _bothSides; }		
 		public function set bothSides(value:Boolean):void {
 			_bothSides = value;
 		}
@@ -207,10 +187,7 @@ package com.gestureworks.cml.away3d.elements  {
 		 * invisible or entirely opaque, often used with textures for foliage, etc.
 		 * Recommended values are 0 to disable alpha, or 0.5 to create smooth edges. Default value is 0 (disabled).
 		 */
-		public function get alphaThreshold():Number {
-			return _alphaThreshold;
-		}
-		
+		public function get alphaThreshold():Number { return _alphaThreshold; }		
 		public function set alphaThreshold(value:Number):void {
 			_alphaThreshold = value;
 		}
@@ -219,10 +196,7 @@ package com.gestureworks.cml.away3d.elements  {
 		 * Indicate whether or not the material has transparency. If binary transparency is sufficient, for
 		 * example when using textures of foliage, consider using alphaThreshold instead.
 		 */
-		public function get alphaBlending():Boolean {
-			return _alphaBlending;
-		}
-		
+		public function get alphaBlending():Boolean { return _alphaBlending; }		
 		public function set alphaBlending(value:Boolean):void {
 			_alphaBlending = value;
 		}
@@ -230,10 +204,7 @@ package com.gestureworks.cml.away3d.elements  {
 		/**
 		 * Away3D Material
 		 */
-		public function get material():MaterialBase {
-			return _material;
-		}
-		
+		public function get material():MaterialBase { return _material; }		
 		public function set material(value:MaterialBase):void {
 			if (material != value)
 				_material = value;

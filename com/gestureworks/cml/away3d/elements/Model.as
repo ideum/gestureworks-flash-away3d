@@ -5,7 +5,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.library.AssetLibrary;
 	import away3d.loaders.parsers.Parsers;
 	import away3d.materials.MaterialBase;
-	import com.gestureworks.cml.core.CMLObjectList;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.utils.document;
 	import flash.net.URLRequest;
@@ -66,10 +65,7 @@ package com.gestureworks.cml.away3d.elements {
 			}
 		}
 		
-		public function get src():String {
-			return _src;
-		}
-		
+		public function get src():String { return _src; }		
 		public function set src(value:String):void {
 			_src = value;
 		}

@@ -36,10 +36,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * The radius of the top end of the cylinder.
 		 *  @default 50
 		 */
-		public function get topRadius():Number {
-			return _topRadius;
-		}
-		
+		public function get topRadius():Number { return _topRadius; }		
 		public function set topRadius(value:Number):void {
 			_topRadius = value;
 		}
@@ -48,10 +45,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * The radius of the bottom end of the cylinder.
 		 *  @default 50
 		 */
-		public function get bottomRadius():Number {
-			return _bottomRadius;
-		}
-		
+		public function get bottomRadius():Number { return _bottomRadius; }		
 		public function set bottomRadius(value:Number):void {
 			_bottomRadius = value;
 		}
@@ -60,10 +54,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * The height of the cylinder.
 		 *  @default 100
 		 */
-		public function get height():Number {
-			return _height;
-		}
-		
+		public function get height():Number { return _height; }		
 		public function set height(value:Number):void {
 			_height = value;
 		}
@@ -72,10 +63,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines the number of horizontal segments that make up the cylinder.
 		 *  @default 16.
 		 */
-		public function get segmentsW():uint {
-			return _segmentsW;
-		}
-		
+		public function get segmentsW():uint { return _segmentsW; }
 		public function set segmentsW(value:uint):void {
 			_segmentsW = value;
 		}
@@ -84,10 +72,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines the number of vertical segments that make up the cylinder.
 		 * @default 1
 		 */
-		public function get segmentsH():uint {
-			return _segmentsH;
-		}
-		
+		public function get segmentsH():uint { return _segmentsH; }		
 		public function set segmentsH(value:uint):void {
 			_segmentsH = value;
 		}
@@ -96,10 +81,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines whether the top end of the cylinder is closed (true) or open.
 		 *  @default true
 		 */
-		public function get topClosed():Boolean {
-			return _topClosed;
-		}
-		
+		public function get topClosed():Boolean { return _topClosed; }		
 		public function set topClosed(value:Boolean):void {
 			_topClosed = value;
 		}
@@ -108,10 +90,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines whether the surface of the cylinder is closed (true) or open.
 		 *  @default true
 		 */
-		public function get surfaceClosed():Boolean {
-			return _surfaceClosed;
-		}
-		
+		public function get surfaceClosed():Boolean { return _surfaceClosed; }		
 		public function set surfaceClosed(value:Boolean):void {
 			_surfaceClosed = value;
 		}
@@ -120,10 +99,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines whether the bottom end of the cylinder is closed (true) or open.
 		 *  @default true
 		 */
-		public function get bottomClosed():Boolean {
-			return _bottomClosed;
-		}
-		
+		public function get bottomClosed():Boolean { return _bottomClosed; }		
 		public function set bottomClosed(value:Boolean):void {
 			_bottomClosed = value;
 		}
@@ -132,10 +108,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Defines whether the cylinder poles should lay on the Y-axis (true) or on the Z-axis (false).
 		 *  @default true
 		 */
-		public function get yUp():Boolean {
-			return _yUp;
-		}
-		
+		public function get yUp():Boolean { return _yUp; }		
 		public function set yUp(value:Boolean):void {
 			_yUp = value;
 		}
@@ -143,10 +116,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Away3d Geometry
 		 */
-		public function get geometry():Geometry {
-			return _geometry;
-		}
-		
+		public function get geometry():Geometry { return _geometry; }		
 		public function set geometry(value:Geometry):void {
 			if (_geometry != value)
 				_geometry = value;
