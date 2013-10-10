@@ -41,7 +41,7 @@ package com.gestureworks.away3d
 		public static function registerTouchObject(t:*):Away3DTouchObject 
 		{
 			if (t is TouchContainer3D){
-				touchObjects[t.target] = t;
+				touchObjects[t.vto] = t;
 				return null; 
 			}
 			else
@@ -51,11 +51,15 @@ package com.gestureworks.away3d
 		
 		public static function deregisterTouchObject(t:*):void 
 		{
-			delete touchObjects[t];
+			if(t is TouchContainer3D)
+				delete touchObjects[t.vto];
+			else
+				delete touchObjects[t];
 		}	
 		
 		private static function validTarget(obj:Object):Object {
-			if (!obj) return null;
+			if (!obj)
+				return obj;
 			if (touchObjects[obj])
 				return touchObjects[obj];
 			return validTarget(obj.parent);
@@ -91,19 +95,22 @@ package com.gestureworks.away3d
 				
 				if (collider) {
 					e.target = validTarget(collider.entity);
-					pointTargets[e.touchPointID] = e.target;
-					if (touch3d) {
-						e.stageX = e.target.scenePosition.x;
-						e.stageY = e.target.scenePosition.y;
-						e.stageZ = e.target.scenePosition.z;
+					
+					if(e.target){
+						pointTargets[e.touchPointID] = e.target;
+						if (touch3d) {
+							e.stageX = e.target.scenePosition.x;
+							e.stageY = e.target.scenePosition.y;
+							e.stageZ = e.target.scenePosition.z;
+						}
+						else {
+							var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
+							v = view.unproject(e.stageX, e.stageY, v.length)
+							e.stageX = v.x;
+							e.stageY = v.y;
+							e.stageZ = v.z;
+						}			
 					}
-					else {
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-						v = view.unproject(e.stageX, e.stageY, v.length)
-						e.stageX = v.x;
-						e.stageY = v.y;
-						e.stageZ = v.z;
-					}			
 				}
 			}
 		
