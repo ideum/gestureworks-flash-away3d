@@ -55,6 +55,7 @@ package com.gestureworks.away3d
 		}	
 		
 		private static function validTarget(obj:Object):Object {
+			if (!obj) return null;
 			if (touchObjects[obj])
 				return touchObjects[obj];
 			return validTarget(obj.parent);
