@@ -50,20 +50,20 @@ package com.gestureworks.cml.away3d.elements
 				TouchContainer3D(parent).addChild3D(groupObj3D);
 		}
 		
-		override public function updateTarget():void 
+		override public function updateVTO():void 
 		{
-			target.transform = transform.matrix3D;
+			vto.transform = transform.matrix3D;
 		}
 		
-		private var _target:*;
+		private var _vto:*;
 		/**
 		 * Sets the transformation target
 		 */
-		override public function get target():Object { return _target; }
-		override public function set target(tgt:Object):void {
-			_target = tgt;
-			if(_target){
-				transform.matrix3D = _target.transform;
+		override public function get vto():Object { return _vto; }
+		override public function set vto(tgt:Object):void {
+			_vto = tgt;
+			if(_vto){
+				transform.matrix3D = _vto.transform;
 				Away3DTouchManager.registerTouchObject(this);
 			}
 			else {

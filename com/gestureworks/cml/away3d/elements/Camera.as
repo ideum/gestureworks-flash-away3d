@@ -28,7 +28,7 @@ package com.gestureworks.cml.away3d.elements
 		{
 			super();
 			_camera = new away3d.cameras.Camera3D();
-			target = _camera;
+			vto = _camera;
 		}
 		
 		/**

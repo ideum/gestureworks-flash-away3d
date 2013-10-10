@@ -40,7 +40,7 @@ package com.gestureworks.cml.away3d.elements {
 			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
 				if (this.parent is TouchContainer3D)
 					TouchContainer3D(this.parent).addChild3D(ObjectContainer3D(e.asset));
-				target = e.asset;
+				vto = e.asset;
 			}
 			
 			
