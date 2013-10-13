@@ -8,25 +8,20 @@ package com.gestureworks.cml.away3d.elements {
 	 * @author 
 	 */
 	public class Geometry extends CMLObject {
-		
-		public var ref:String;
-		
+				
 		public function Geometry() {
 			super();
 		}
 		
-		override public function parseCML(cml:XMLList):XMLList {
-		
+		override public function parseCML(cml:XMLList):XMLList {		
 			var rXML:XMLList = new XMLList;
-			
 			if (cml.@ref != undefined) {
-				ref = String(cml.@ref);
+				var ref:String = String(cml.@ref);
 				var cp:XMLList = cml.copy();
 				cp.setName(ref);
 				delete cp.@ref;
 				rXML = cp;
 			}
-		
 			return rXML;
 		}		
 	}
