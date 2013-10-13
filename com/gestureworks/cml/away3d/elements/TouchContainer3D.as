@@ -85,6 +85,15 @@ package com.gestureworks.cml.away3d.elements
 			z = value.split(",")[2];
 		}
 		
+		/**
+		 * Sets the position 
+		 */
+		public function get pos():* {return _position;}
+		public function set pos(value:*):void 
+		{
+			position = value;
+		}		
+		
 		private var _rot:String;
 		/**
 		 * Sets the rotation 
