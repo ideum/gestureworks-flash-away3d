@@ -1,7 +1,7 @@
-package com.gestureworks.away3d 
+package com.gestureworks.cml.core 
 {
 	/** 
-	 * The CML_Away3D class is the registry file for Away3D-exclusive classes that are capable of
+	 * The Away3D_CML class is the registry file for Away3D-exclusive classes that are capable of
 	 * being load by the CML Parser.
 	 * 
 	 * <p>You can register your own Away3D class for CML loading by placing your class file
@@ -20,21 +20,24 @@ package com.gestureworks.away3d
 	 * @author Ideum
 	 * @see com.gestureworks.cml.core.CML_CORE
 	 */	 
-	public class CML_Away3D { }
+	public class Away3D_CML { }
 
 	import com.gestureworks.cml.away3d.elements.Camera; Camera;
 	import com.gestureworks.cml.away3d.elements.Container3D; Container3D;
-	import com.gestureworks.cml.away3d.elements.Cube; Cube;
-	import com.gestureworks.cml.away3d.elements.Cylinder; Cylinder;
 	import com.gestureworks.cml.away3d.elements.Light; Light;
 	import com.gestureworks.cml.away3d.elements.LightPicker; LightPicker;
 	import com.gestureworks.cml.away3d.elements.Material; Material;
 	import com.gestureworks.cml.away3d.elements.Mesh; Mesh;
 	import com.gestureworks.cml.away3d.elements.Model; Model;
 	import com.gestureworks.cml.away3d.elements.ModelAsset; ModelAsset;
-	import com.gestureworks.cml.away3d.elements.Plane; Plane;
 	import com.gestureworks.cml.away3d.elements.Scene; Scene;
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
 	import com.gestureworks.cml.away3d.elements.Sound3D; Sound3D;
-	import com.gestureworks.cml.away3d.elements.Sphere; Sphere;
+	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
+	
+	import com.gestureworks.cml.away3d.geometries.Cube; Cube;
+	import com.gestureworks.cml.away3d.geometries.Cylinder; Cylinder;	
+	import com.gestureworks.cml.away3d.geometries.Plane; Plane;
+	import com.gestureworks.cml.away3d.geometries.Sphere; Sphere;
+		
 }
