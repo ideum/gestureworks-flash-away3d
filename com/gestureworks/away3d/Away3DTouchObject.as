@@ -11,18 +11,17 @@ package com.gestureworks.away3d
 		public var centerTransform:Boolean = true;
 		public var camera:Camera3D;
 		
-		public function Away3DTouchObject(vto:*=null) 
+		public function Away3DTouchObject(_vto:*=null) 
 		{
-			super(target);	
-			this.vto = vto;
-			transform.matrix3D = vto.transform;
+			super(_vto);
+			transform.matrix3D = vto.transform
 		}	
 		/**
 		 * Current distance from the target to camera
 		 */
 		public function get distance():Number 
 		{ 
-			//_distance = View3D(view).camera.project(target.scenePosition).length;
+			_distance = View3D(view).camera.project(vto.scenePosition).length;
 			return _distance; 
 		}
 		
