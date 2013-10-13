@@ -17,7 +17,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _clipping:String = "20,3000"; //"near,far"
 		private var _viewPos:String; //"x,y"
 		private var _viewDim:String;//"wh"
-		private var _viewBackgroundColor:uint = 0xCCCCCC;
+		private var _viewBgColor:uint = 0x000000;
 		private var _transform3D:Matrix3D;
 		private var _camera:away3d.cameras.Camera3D;
 		private var _lens:LensBase;
@@ -89,9 +89,9 @@ package com.gestureworks.cml.away3d.elements {
 			_viewDim = value;
 		}
 		
-		public function get viewBackgroundColor():uint { return _viewBackgroundColor; }		
-		public function set viewBackgroundColor(value:uint):void { 
-			_viewBackgroundColor = value;
+		public function get viewBgColor():uint { return _viewBgColor; }		
+		public function set viewBgColor(value:uint):void { 
+			_viewBgColor = value;
 		}
 		
 		public function get transform3D():Matrix3D { return _transform3D; }		
