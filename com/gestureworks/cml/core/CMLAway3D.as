@@ -2,7 +2,7 @@ package com.gestureworks.cml.core
 {
 	import com.gestureworks.away3d.Away3DTouchManager;
 	/** 
-	 * The Away3D_CML class is the registry file for Away3D-exclusive classes that are capable of
+	 * The CMLAway3D class is the registry file for Away3D-exclusive classes that are capable of
 	 * being load by the CML Parser.
 	 * 
 	 * <p>You can register your own Away3D class for CML loading by placing your class file
@@ -21,7 +21,7 @@ package com.gestureworks.cml.core
 	 * @author Ideum
 	 * @see com.gestureworks.cml.core.CML_CORE
 	 */	 
-	public class CMLRegistry3D {
+	public class CMLAway3D {
 		Away3DTouchManager.initialize();					
 	}
 
