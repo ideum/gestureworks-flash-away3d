@@ -1,4 +1,4 @@
-package com.gestureworks.cml.away3d.elements {
+package com.gestureworks.cml.away3d.geometries {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.PlaneGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;

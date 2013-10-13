@@ -93,7 +93,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * @return
 		 */
 		private static function isGeometry(tag:String):Boolean {
-			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.elements."]) is IGeometry; 
+			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.geometries."]) is IGeometry; 
 		}
 		
 		/*
@@ -103,9 +103,9 @@ package com.gestureworks.cml.away3d.elements {
 		public function set geometry(geom:*):void {
 			if (geom is XML) {
 				gref = geom;
-				geom = document.getElementById(geom).geometry
+				geom = document.getElementById(geom).geometry;
 			}
-			if(geom is Geometry)
+			if(geom is away3d.core.base.Geometry)
 				mesh.geometry = geom;
 		}
 		

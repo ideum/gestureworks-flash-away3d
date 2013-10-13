@@ -1,9 +1,8 @@
-package com.gestureworks.cml.away3d.elements {
+package com.gestureworks.cml.away3d.geometries {
 	import away3d.core.base.Geometry;
 	import away3d.primitives.CubeGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.element.Container
 	
 	/**
 	 * ...
@@ -16,6 +15,9 @@ package com.gestureworks.cml.away3d.elements {
 		private var _segmentsH:uint = 1;
 		private var _segmentsD:uint = 1;
 		private var _geometry:Geometry;
+		
+		public var name:String;
+		public var class_:String;
 		
 		public function Cube() {
 			super();
