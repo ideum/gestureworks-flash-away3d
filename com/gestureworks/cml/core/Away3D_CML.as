@@ -32,7 +32,6 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.ModelAsset; ModelAsset;
 	import com.gestureworks.cml.away3d.elements.Scene; Scene;
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
-	import com.gestureworks.cml.away3d.elements.Sound3D; Sound3D;
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	
 	import com.gestureworks.cml.away3d.geometries.Cube; Cube;
