@@ -1,5 +1,4 @@
-package com.gestureworks.cml.away3d.elements 
-{
+package com.gestureworks.cml.away3d.elements {
 	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.LensBase;
 	import away3d.cameras.lenses.OrthographicLens;
@@ -11,8 +10,7 @@ package com.gestureworks.cml.away3d.elements
 	 * ...
 	 * 
 	 */
-	public class Camera extends TouchContainer3D
-	{
+	public class Camera extends TouchContainer3D {
 		private var _ortho:Boolean = false;
 		private var _fov:Number = 60;
 		private var _projectionHeight:Number = 500;
@@ -24,8 +22,7 @@ package com.gestureworks.cml.away3d.elements
 		private var _camera:away3d.cameras.Camera3D;
 		private var _lens:LensBase;
 		
-		public function Camera() 
-		{
+		public function Camera() {
 			super();
 			_camera = new away3d.cameras.Camera3D();
 			vto = _camera;
@@ -34,9 +31,7 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Initialisation method
 		 */
-		override public function init():void
-		{
-			//trace("###SCENE CAMERA displayComplete ###")
+		override public function init():void {
 			if (_ortho)
 				_lens = new OrthographicLens(_projectionHeight);
 			else
@@ -112,9 +107,6 @@ package com.gestureworks.cml.away3d.elements
 		public function get lens():LensBase { return _lens; }		
 		public function set lens(value:LensBase):void {
 			_lens = value;
-		}
-		
-		
+		}	
 	}
-
 }

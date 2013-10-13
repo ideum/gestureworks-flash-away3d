@@ -1,11 +1,8 @@
 package com.gestureworks.cml.away3d.elements {
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.core.CMLObjectList;
-	import com.gestureworks.cml.core.CMLParser;
+	
 	/**
-	 * ...
-	 * @author 
+	 * Loads Geometry instances in CML through ref attribute 
 	 */
 	public class Geometry extends CMLObject {
 				
