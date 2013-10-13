@@ -10,7 +10,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.utils.Cast;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.events.*;
-	import com.gestureworks.cml.kits.*;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.events.*;

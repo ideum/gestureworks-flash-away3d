@@ -4,7 +4,6 @@ package com.gestureworks.away3d
 	import away3d.core.pick.IPicker;
 	import away3d.core.pick.PickingCollisionVO;
 	import away3d.core.pick.PickingType;
-	import away3d.entities.Mesh;
 	import away3d.events.*;
 	import com.gestureworks.cml.away3d.elements.Scene;
 	import com.gestureworks.cml.away3d.elements.TouchContainer3D;

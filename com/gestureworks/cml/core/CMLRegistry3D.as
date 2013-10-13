@@ -21,7 +21,7 @@ package com.gestureworks.cml.core
 	 * @author Ideum
 	 * @see com.gestureworks.cml.core.CML_CORE
 	 */	 
-	public class Away3D_CML {
+	public class CMLRegistry3D {
 		Away3DTouchManager.initialize();					
 	}
 
