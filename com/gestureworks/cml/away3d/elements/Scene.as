@@ -45,7 +45,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Scene(stage:Stage = null) {
 			super();
 			scene = new Scene3D();
-			
+			mouseChildren = true;
 			//stage3DProxy = DefaultStage3D.getInstance(stage).stage3DProxy;
 		}
 
@@ -119,7 +119,7 @@ package com.gestureworks.cml.away3d.elements {
 					View3D(viewVct[i]).width = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[0];
 					View3D(viewVct[i]).height = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[1];
 				}
-				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBackgroundColor));
+				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBgColor));
 			}
 		}
 		

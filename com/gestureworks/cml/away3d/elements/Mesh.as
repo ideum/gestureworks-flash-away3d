@@ -20,8 +20,8 @@ package com.gestureworks.cml.away3d.elements {
 		
 		public function Mesh() {
 			super();
-			mesh = new away3d.entities.Mesh(null, null);
-			vto = mesh;
+			_mesh = new away3d.entities.Mesh(null, null);
+			vto = _mesh;
 		}
 		
 		/**
