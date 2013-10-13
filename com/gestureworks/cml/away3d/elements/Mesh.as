@@ -12,11 +12,10 @@ package com.gestureworks.cml.away3d.elements {
 	 * ...
 	 */
 	public class Mesh extends TouchContainer3D {
-		private var _mesh:away3d.entities.Mesh;
 		private var gref:XML;
-		private var mref:XML;
-		private var _groupObj3D:ObjectContainer3D;
-		private var _touchEnabled:Boolean = false;
+		private var mref:XML;		
+		private var _mesh:away3d.entities.Mesh;
+		private var _obj3D:ObjectContainer3D;
 		private var _castsShadows:Boolean = true;
 		
 		public function Mesh() {
@@ -29,7 +28,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * Initialisation method
 		 */
 		override public function init():void {
-			//trace("### Mesh  displayComplete ###")
 			mesh.name = this.id;
 			mesh.x = this.x;
 			mesh.y = this.y;
@@ -129,10 +127,10 @@ package com.gestureworks.cml.away3d.elements {
 		public function get mesh():away3d.entities.Mesh { return _mesh; }		
 		public function set mesh(value:away3d.entities.Mesh):void {
 			_mesh = value;
-			_groupObj3D = value;
+			_obj3D = value;
 		}
 		
-		public override function get groupObj3D():ObjectContainer3D { return _mesh; }
+		public override function get obj3D():ObjectContainer3D { return _mesh; }
 		
 		/**
 		 * Whether this mesh casts shadows

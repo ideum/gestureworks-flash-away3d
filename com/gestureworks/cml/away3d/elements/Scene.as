@@ -8,12 +8,9 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.core.managers.Stage3DProxy;
 	import away3d.core.pick.PickingType;
 	import away3d.utils.Cast;
-	import com.gestureworks.away3d.Away3DTouchManager;
-	import com.gestureworks.away3d.Away3DTouchObject;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.events.*;
 	import com.gestureworks.cml.kits.*;
-	import com.gestureworks.managers.TouchManager;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
 	import flash.events.*;
@@ -104,8 +101,8 @@ package com.gestureworks.cml.away3d.elements {
 			//stage3DProxy.color = _stageProxyColor;
 			//stage3DProxy.antiAlias = _viewAntiAlias;
 			//view.shareContext = true;
-//TODO REMOVE WHEN TOUCH IS ENABLED
-//view.forceMouseMove = true;
+			//TODO REMOVE WHEN TOUCH IS ENABLED
+			//view.forceMouseMove = true;
 
 			viewVct.push(view);
 		}

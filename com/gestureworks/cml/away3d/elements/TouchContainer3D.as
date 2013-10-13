@@ -15,7 +15,7 @@ package com.gestureworks.cml.away3d.elements
 	{		
 		private var _lookat:String;
 		private var _pivot:String = "0,0,0";
-		private var _groupObj3D:ObjectContainer3D; 
+		private var _obj3D:ObjectContainer3D; 
 		
 		/**
 		 * Constructor
@@ -23,31 +23,29 @@ package com.gestureworks.cml.away3d.elements
 		public function TouchContainer3D()
 		{
 			super();	
-			transform3d = true;			
 			away3d = true;	
 		}
 		
 		override public function init():void 
 		{
 			super.init();
-			
-			groupObj3D = new ObjectContainer3D();
-			groupObj3D.name = id;
-			groupObj3D.x = x;
-			groupObj3D.y = y;
-			groupObj3D.z = z;
-			groupObj3D.pivotPoint = new Vector3D(pivot.split(",")[0], pivot.split(",")[1], pivot.split(",")[2]);
-			groupObj3D.rotationX = rotationX;
-			groupObj3D.rotationY = rotationY;
-			groupObj3D.rotationZ = rotationZ;
+			obj3D = new ObjectContainer3D();
+			obj3D.name = id;
+			obj3D.x = x;
+			obj3D.y = y;
+			obj3D.z = z;
+			obj3D.pivotPoint = new Vector3D(pivot.split(",")[0], pivot.split(",")[1], pivot.split(",")[2]);
+			obj3D.rotationX = rotationX;
+			obj3D.rotationY = rotationY;
+			obj3D.rotationZ = rotationZ;
 			if (lookat) //overides any rotation above
-				groupObj3D.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
-			groupObj3D.scaleX = scaleX;
-			groupObj3D.scaleY = scaleY;
-			groupObj3D.scaleZ = scaleZ;
+				obj3D.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
+			obj3D.scaleX = scaleX;
+			obj3D.scaleY = scaleY;
+			obj3D.scaleZ = scaleZ;
 			
 			if (parent is TouchContainer3D)
-				TouchContainer3D(parent).addChild3D(groupObj3D);
+				TouchContainer3D(parent).addChild3D(obj3D);
 		}
 		
 		override public function updateVTO():void 
@@ -132,12 +130,12 @@ package com.gestureworks.cml.away3d.elements
 		}
 		
 		public function addChild3D(child:ObjectContainer3D):void {
-			groupObj3D.addChild(child);
+			obj3D.addChild(child);
 		}
 		
-		public function get groupObj3D():ObjectContainer3D { return _groupObj3D; }		
-		public function set groupObj3D(value:ObjectContainer3D):void {
-			_groupObj3D = value;
+		public function get obj3D():ObjectContainer3D { return _obj3D; }		
+		public function set obj3D(value:ObjectContainer3D):void {
+			_obj3D = value;
 		}		
 		
 	}
