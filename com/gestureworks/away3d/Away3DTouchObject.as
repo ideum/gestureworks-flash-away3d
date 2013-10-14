@@ -14,15 +14,22 @@ package com.gestureworks.away3d
 		public function Away3DTouchObject(_vto:*=null) 
 		{
 			super(_vto);
-			transform.matrix3D = vto.transform
+			
+			if (_vto) {
+				transform.matrix3D = vto.transform;
+			}
 		}	
 		/**
 		 * Current distance from the target to camera
 		 */
 		public function get distance():Number 
-		{ 
-			_distance = View3D(view).camera.project(vto.scenePosition).length;
-			return _distance; 
+		{
+			var d:Number = 0;
+			if (vto && view) {
+				d = View3D(view).camera.project(vto.scenePosition).length;
+				_distance = d;
+			}
+			return d; 
 		}
 		
 		/**
