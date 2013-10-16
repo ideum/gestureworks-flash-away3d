@@ -1,7 +1,7 @@
 package com.gestureworks.cml.away3d.elements
 {
 	import away3d.containers.ObjectContainer3D;
-	import com.gestureworks.away3d.Away3DTouchManager;
+	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.*;
 	import com.gestureworks.cml.element.*;
 	import com.gestureworks.cml.interfaces.*;
@@ -62,11 +62,11 @@ package com.gestureworks.cml.away3d.elements
 			_vto = tgt;
 			if(_vto){
 				transform.matrix3D = _vto.transform;
-				Away3DTouchManager.registerTouchObject(this);
+				TouchManager3D.registerTouchObject(this);
 			}
 			else {
 				transform.matrix3D = null;
-				Away3DTouchManager.deregisterTouchObject(this);
+				TouchManager3D.deregisterTouchObject(this);
 			}
 		}
 		

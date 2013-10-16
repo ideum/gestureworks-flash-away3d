@@ -5,19 +5,19 @@ package com.gestureworks.away3d
 	import com.gestureworks.core.*;
 	import com.gestureworks.interfaces.IAway3D;
 	
-	public class Away3DTouchObject extends TouchSprite implements IAway3D
+	public class TouchObject3D extends TouchSprite implements IAway3D
 	{	
 		private var _distance:Number;
 		public var centerTransform:Boolean = true;
 		public var camera:Camera3D;
 		
-		public function Away3DTouchObject(_vto:*=null) 
+		public function TouchObject3D(_vto:*=null) 
 		{
 			super(_vto);
 			
-			if (_vto) {
-				transform.matrix3D = vto.transform;
-			}
+			//if (_vto) {
+			//	transform.matrix3D = vto.transform;
+			//}
 		}	
 		/**
 		 * Current distance from the target to camera

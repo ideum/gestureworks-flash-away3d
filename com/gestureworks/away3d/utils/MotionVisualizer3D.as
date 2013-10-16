@@ -1,4 +1,4 @@
-package com.gestureworks.away3d
+package com.gestureworks.away3d.utils
 {
 	import away3d.lights.PointLight;
 	import com.gestureworks.objects.MotionPointObject;
@@ -19,7 +19,7 @@ package com.gestureworks.away3d
 	import com.gestureworks.objects.TransformObject;
 	import com.gestureworks.objects.HandObject;
 	
-	public class Away3DMotionVisualizer extends ObjectContainer3D
+	public class MotionVisualizer3D extends ObjectContainer3D
 	{
 		//////////////////////////////////////////////////////////////////////
 		// public
@@ -75,7 +75,7 @@ package com.gestureworks.away3d
 		private var step:Number = 10 * DEG_RAD;
 		private var i:uint;
 		
-		public function Away3DMotionVisualizer():void
+		public function MotionVisualizer3D():void
 		{
 			trace("auto init 3d vis", ts);
 		}

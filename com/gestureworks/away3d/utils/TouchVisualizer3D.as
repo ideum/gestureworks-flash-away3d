@@ -1,4 +1,4 @@
-package com.gestureworks.away3d
+package com.gestureworks.away3d.utils
 {
 	import away3d.containers.*;
 	import away3d.entities.*;
@@ -16,7 +16,7 @@ package com.gestureworks.away3d
 	import flash.geom.*;
 	import flash.utils.*;
 	
-	public class Away3DTouchVisualizer extends ObjectContainer3D
+	public class TouchVisualizer3D extends ObjectContainer3D
 	{
 		public var maxPoints:int = 10;
 		public var maxTrails:int = 60;
@@ -35,7 +35,7 @@ package com.gestureworks.away3d
 		private var sphereMat:ColorMaterial;
 		private var trailMat:ColorMaterial;
 	
-		public function Away3DTouchVisualizer(view3D:View3D, stage2D:Stage, lightPick:StaticLightPicker) 
+		public function TouchVisualizer3D(view3D:View3D, stage2D:Stage, lightPick:StaticLightPicker) 
 		{
 			super();
 			

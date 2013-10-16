@@ -15,36 +15,30 @@ package com.gestureworks.away3d
 	import flash.geom.*;
 	import flash.utils.*;
 	
-	public class Away3DTouchManager
+	public class TouchManager2D
 	{
 		private static var tBegin:GWTouchEvent;
 		private static var tMove:GWTouchEvent;
 		private static var tEnd:GWTouchEvent;
-		private static var vIn:Vector3D;
-		private static var mIn:Matrix3D;
-		private static var mOut:Matrix3D;
 		private static var touchPicker:IPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;  
 		private static var touchObjects:Dictionary = new Dictionary(true);	
 		private static var collider:PickingCollisionVO; 
 		private static var pointTargets:Dictionary = new Dictionary();
-		
-		public static var touch3d:Boolean = false;
+		public static var touch3d:Boolean = true;
 		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
-			mIn = new Matrix3D();
-			mOut = new Matrix3D();
 			touchPicker.onlyMouseEnabled = false;
 		}
 				
-		public static function registerTouchObject(t:*):Away3DTouchObject 
+		public static function registerTouchObject(t:*):TouchObject3D
 		{
 			if (t is TouchContainer3D){
 				touchObjects[t.vto] = t;
 				return null; 
 			}
 			else
-				touchObjects[t] = new Away3DTouchObject(t);
+				touchObjects[t] = new TouchObject3D(t);
 			return touchObjects[t];		
 		}
 		
@@ -96,19 +90,7 @@ package com.gestureworks.away3d
 					e.target = validTarget(collider.entity);
 					
 					if(e.target){
-						pointTargets[e.touchPointID] = e.target;
-						if (touch3d) {
-							e.stageX = e.target.scenePosition.x;
-							e.stageY = e.target.scenePosition.y;
-							e.stageZ = e.target.scenePosition.z;
-						}
-						else {
-							var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-							v = view.unproject(e.stageX, e.stageY, v.length)
-							e.stageX = v.x;
-							e.stageY = v.y;
-							e.stageZ = v.z;
-						}			
+						pointTargets[e.touchPointID] = e.target;		
 					}
 				}
 			}
@@ -123,18 +105,6 @@ package com.gestureworks.away3d
 					var view:View3D = e.target.parent as View3D;
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
-					if (touch3d) {
-						e.stageX = e.target.scenePosition.x;
-						e.stageY = e.target.scenePosition.y;
-						e.stageZ = e.target.scenePosition.z;
-					}
-					else {
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-						v = view.unproject(e.stageX, e.stageY, v.length)
-						e.stageX = v.x;
-						e.stageY = v.y;
-						e.stageZ = v.z;
-					}
 				}
 			}
 			return e;
@@ -147,46 +117,11 @@ package com.gestureworks.away3d
 					var view:View3D = e.target.parent as View3D;
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
-					if (touch3d) {
-						e.stageX = e.target.scenePosition.x;
-						e.stageY = e.target.scenePosition.y;
-						e.stageZ = e.target.scenePosition.z;
-					}
-					else {
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-						v = view.unproject(e.stageX, e.stageY, v.length)
-						e.stageX = v.x;
-						e.stageY = v.y;
-						e.stageZ = v.z;
-					}
 				}
 				delete pointTargets[e.touchPointID];				
 			}			
 			return e;
 		}			
-			
-		public static function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D
-		{
-			var cartesianCoords:Vector3D = new Vector3D();
-			var r:Number = sphericalCoords.z;
-			cartesianCoords.y = r*Math.sin(-sphericalCoords.y);
-			var cosE:Number = Math.cos(-sphericalCoords.y);
-			cartesianCoords.x = r*cosE*Math.sin(sphericalCoords.x);
-			cartesianCoords.z = r*cosE*Math.cos(sphericalCoords.x);
-			return cartesianCoords;
-		}
-		public static function cartesianToSpherical(cartesianCoords:Vector3D):Vector3D
-		{
-			var cartesianFromCenter:Vector3D = new Vector3D();
-			cartesianFromCenter.x = cartesianCoords.x;
-			cartesianFromCenter.y = cartesianCoords.y;
-			cartesianFromCenter.z = cartesianCoords.z;
-			var sphericalCoords:Vector3D = new Vector3D();
-			sphericalCoords.z = cartesianFromCenter.length;
-			sphericalCoords.x = Math.atan2(cartesianFromCenter.x, cartesianFromCenter.z);
-			sphericalCoords.y = -Math.asin((cartesianFromCenter.y) / sphericalCoords.z);
-			return sphericalCoords;
-		}
 		
 	}
 }
