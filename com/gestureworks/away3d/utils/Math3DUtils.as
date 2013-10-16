@@ -1,4 +1,5 @@
 package com.gestureworks.away3d.utils {
+	import flash.geom.Vector3D;
 	/**
 	 * ...
 	 * @author 
