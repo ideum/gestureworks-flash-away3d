@@ -25,7 +25,7 @@ package com.gestureworks.away3d.utils
 		private var view:View3D;
 		private var stage:Stage;		
 		private var lightPicker:StaticLightPicker;
-		private var manager:Away3DTouchManager;
+		private var manager:TouchManager3D;
 		
 		private var points:Array;
 		private var trails:Array;
@@ -52,7 +52,7 @@ package com.gestureworks.away3d.utils
 			geom.segmentsH = 50;
 			geom.segmentsW = 50;
 			
-			manager = new Away3DTouchManager(view);
+			manager = new TouchManager3D(view);
 			sphereMat = new ColorMaterial;
 			sphereMat.alphaBlending = true;
 			sphereMat.alpha = 1;
