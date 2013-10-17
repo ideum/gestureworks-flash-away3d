@@ -14,10 +14,9 @@ package com.gestureworks.away3d
 		public function TouchObject3D(_vto:*=null) 
 		{
 			super(_vto);
-			
-			//if (_vto) {
-			//	transform.matrix3D = vto.transform;
-			//}
+			if (_vto) {
+				transform.matrix3D = vto.transform.clone();
+			}
 		}	
 		/**
 		 * Current distance from the target to camera
