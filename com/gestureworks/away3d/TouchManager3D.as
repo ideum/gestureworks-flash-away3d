@@ -73,7 +73,7 @@ package com.gestureworks.away3d
 		
 		private static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
 		{		
-			var sceneTouch:Boolean = e.target is Scene
+			var sceneTouch:Boolean = e.target is Scene;
 			var viewTouch:Boolean = e.target && e.target.parent is View3D;
 			if (sceneTouch || viewTouch) {
 				
@@ -90,9 +90,9 @@ package com.gestureworks.away3d
 					e.target = validTarget(collider.entity);
 					
 					if(e.target){
-						pointTargets[e.touchPointID] = e.target;
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-						v = view.unproject(e.stageX, e.stageY, v.length)
+						pointTargets[e.touchPointID] = e.target;		
+						e.target.view = view;
+						var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
 						e.stageX = v.x;
 						e.stageY = v.y;
 						e.stageZ = v.z;
@@ -110,8 +110,8 @@ package com.gestureworks.away3d
 					var view:View3D = e.target.parent as View3D;
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
-					var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-					v = view.unproject(e.stageX, e.stageY, v.length)
+					e.target.view = view;
+					var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
 					e.stageX = v.x;
 					e.stageY = v.y;
 					e.stageZ = v.z;
@@ -127,13 +127,11 @@ package com.gestureworks.away3d
 					var view:View3D = e.target.parent as View3D;
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
-					if (touch3d) {
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, 0);	
-						v = view.unproject(e.stageX, e.stageY, v.length)
-						e.stageX = v.x;
-						e.stageY = v.y;
-						e.stageZ = v.z;
-					}
+					e.target.view = view;
+					var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
+					e.stageX = v.x;
+					e.stageY = v.y;
+					e.stageZ = v.z;
 				}
 				delete pointTargets[e.touchPointID];				
 			}			
