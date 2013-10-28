@@ -72,7 +72,7 @@ package com.gestureworks.away3d
 		}
 		
 		private static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
-		{		
+		{			
 			var sceneTouch:Boolean = e.target is Scene;
 			var viewTouch:Boolean = e.target && e.target.parent is View3D;
 			if (sceneTouch || viewTouch) {
@@ -92,10 +92,13 @@ package com.gestureworks.away3d
 					if(e.target){
 						pointTargets[e.touchPointID] = e.target;		
 						e.target.view = view;
-						var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
-						e.stageX = v.x;
-						e.stageY = v.y;
-						e.stageZ = v.z;
+						
+						if (e.target.hasOwnProperty("touch3d") && e.target.touch3d) {
+							var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
+							e.stageX = v.x;
+							e.stageY = v.y;
+							e.stageZ = v.z;
+						}
 					}
 				}
 			}
@@ -111,10 +114,12 @@ package com.gestureworks.away3d
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
 					e.target.view = view;
-					var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
-					e.stageX = v.x;
-					e.stageY = v.y;
-					e.stageZ = v.z;
+						if ("touch3d" in e.target && e.target.touch3d) {
+							var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
+							e.stageX = v.x;
+							e.stageY = v.y;
+							e.stageZ = v.z;
+						}
 				}
 			}
 			return e;
@@ -128,10 +133,12 @@ package com.gestureworks.away3d
 					e.view = view as DisplayObjectContainer;
 					e.target = pointTargets[e.touchPointID];	
 					e.target.view = view;
-					var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
-					e.stageX = v.x;
-					e.stageY = v.y;
-					e.stageZ = v.z;
+						if ("touch3d" in e.target && e.target.touch3d) {
+							var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
+							e.stageX = v.x;
+							e.stageY = v.y;
+							e.stageZ = v.z;
+						}
 				}
 				delete pointTargets[e.touchPointID];				
 			}			
