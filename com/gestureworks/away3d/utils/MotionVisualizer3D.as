@@ -40,12 +40,8 @@ package com.gestureworks.away3d.utils
 		//////////////////////////////////////////////////////////////////////	
 		
 		private var ts:TouchSprite;
-		
-		private var lines:SegmentSet;
-		
+
 		private var clines:SegmentSet;
-		
-		private var seg:SegmentSet;
 		
 		private var pvector:LineSegment;
 		private var v0:Vector3D;
@@ -64,7 +60,9 @@ package com.gestureworks.away3d.utils
 		private var iballList:Array = new Array();
 		private var iringList:Array = new Array();
 		// cluster
-		private var cballList:Array = new Array();
+		private var celementList:Array = new Array();
+		private var clinkList:Array = new Array();
+		private var cvectorList:Array = new Array();
 		// gesture
 		private var gballList:Array = new Array();
 		
@@ -94,70 +92,58 @@ package com.gestureworks.away3d.utils
 			var sg8:SphereGeometry = new SphereGeometry(8);
 			var sg10:SphereGeometry = new SphereGeometry(10);
 			//// build cylinder geometry
-			//var cg1:CylinderGeometry = new CylinderGeometry(1, 1, 1, 2, 1, false, false, true, false);
-			//var cg0:WireframeCylinder = new WireframeCylinder(1,1, 1, 2, 1, 0xFFFFFF,1);
-			//var cg1:WireframeCylinder = new WireframeCylinder(10,10, 10, 32, 16, 0xFFFF00,1);
-			//var cg2:WireframeCylinder = new WireframeCylinder(50, 50, 1, 32, 1, 0xFFFFFF,1);
+			var cg1:CylinderGeometry = new CylinderGeometry(1, 1, 1, 2, 2, false, false, true, false);
+			var cg2:CylinderGeometry = new CylinderGeometry(1, 1, 1, 2, 2, false, false, true, false);
+			
 			//// build plane
 			var plane:PlaneGeometry = new PlaneGeometry(180, 220, 1, 1, true, true);
-				
-			// fingertips	
+			
+			///////////////////////////////////////////////////////////////////////////////////////
+			// fingertips
 			for (i = 0; i < 12; i++) 
 			{
 				var sMat:ColorMaterial = new ColorMaterial(0x006600, 0.6);
 					sMat.alphaBlending = true;
-					sMat.lightPicker = lightPicker;
+					//sMat.lightPicker = lightPicker;
 				var smesh:Mesh = new Mesh(sg4, sMat);
 				var ball:ObjectContainer3D = new ObjectContainer3D();
 					ball.addChild(smesh);
 					ballList.push(ball);
 				this.addChild(ball);
 			}
-			
 
 			// finger plane projections (12)
-			// knuckle points ()
+			// knuckle points and shadow points
 			var sMat2:ColorMaterial = new ColorMaterial(0xFFFFFF,0.4);
 				sMat2.alphaBlending = true;
 				sMat2.lightPicker = lightPicker;
-				
-	
-				for (i = 0; i < 10; i++) 
-				{
-					/*
-				var sMat8:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.6);
+			
+			// finger to palm vectors
+			var sMat8:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.6);
 					sMat8.alphaBlending = true;
-					sMat8.lightPicker = lightPicker;
-				var smesh:Mesh = new Mesh(cg1, sMat8);
-				var finger:ObjectContainer3D = new ObjectContainer3D();
-					//finger.x = -50;
-					finger.addChild(smesh);
-					fingerList.push(finger);
-				this.addChild(finger);
-				*/
-				var cg0:WireframeCylinder = new WireframeCylinder(1,1, 1, 2, 1, 0xFFFFFF,1);
-					fingerList.push(cg0);
-				this.addChild(cg0);
-				}
 				
 				for (i = 0; i < 10; i++) 
 				{
-				//var sMat9:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.6);
-					//sMat9.alphaBlending = true;
-					//sMat9.lightPicker = lightPicker;
-				//var smesh2:Mesh = new Mesh(cg1, sMat9);
-				//var vfinger:ObjectContainer3D = new ObjectContainer3D();
-					
-					//vfinger.addChild(smesh2);
-					//vfingerList.push(vfinger);
-				//this.addChild(vfinger);
-					
-				var cg1:WireframeCylinder = new WireframeCylinder(1,1, 1, 4, 1, 0xFFFF00,1);
-					vfingerList.push(cg1);
-				this.addChild(cg1);
+					var ksmesh:Mesh = new Mesh(cg1, sMat8);
+					var finger:ObjectContainer3D = new ObjectContainer3D();
+						finger.addChild(ksmesh);
+						fingerList.push(finger);
+					this.addChild(finger);
 				}
-				
-				
+			
+			//finger direction vectors
+			var sMat9:ColorMaterial = new ColorMaterial(0xFFFF00, 0.6);
+				sMat9.alphaBlending = true;
+			
+				for (i = 0; i < 10; i++) 
+				{
+					var smesh2:Mesh = new Mesh(cg1, sMat9);
+					var vfinger:ObjectContainer3D = new ObjectContainer3D();
+						vfinger.addChild(smesh2);
+						vfingerList.push(vfinger);
+					this.addChild(vfinger);
+				}
+			// shadow balls including fav point
 			for (i = 0; i < 14; i++) 
 			{
 				var wsmesh:Mesh = new Mesh(sg2, sMat2);
@@ -166,93 +152,84 @@ package com.gestureworks.away3d.utils
 					wballList.push(wball);
 				this.addChild(wball);
 			}
-			
-			
-			
 			// palm plane
 			for (i = 0; i < 2; i++) 
 			{	
-				
 				var mat:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.1);
 					mat.bothSides = true;
 					mat.alphaBlending = true;
 					mat.lightPicker = lightPicker;
-					//mat.blendMode = BlendMode.ADD;
 				var palmplane:Mesh = new Mesh(plane, mat);	
 					palmList.push(palmplane);
 				this.addChild(palmplane);
 				
-				
-				// palm ring
-				//var sMat10:ColorMaterial = new ColorMaterial(0xFFFFFF, 0.6);
-					//sMat10.alphaBlending = true;
-					//sMat10.lightPicker = lightPicker;
-				//var scmesh:Mesh = new Mesh(cg2, sMat10);
-				
-				//var ring:ObjectContainer3D = new ObjectContainer3D();
-					//ring.addChild(scmesh);
-					//ring.addChild(cg2);
-					//ringList.push(ring);
-				//this.addChild(ring);
-				var cg2:WireframeCylinder = new WireframeCylinder(50,50, 1, 32, 16, 0xFFFFFF,1);
-					ringList.push(cg2);
-				this.addChild(cg2);
+				var cg50:WireframeCylinder = new WireframeCylinder(50,50, 1, 32, 16, 0xFFFFFF,1);
+					ringList.push(cg50);
+				this.addChild(cg50);
 			}
 			
 
-
-			
-			
-			
-			
-			
-			
-			
-			
 			/////////////////////////////////////////////////////////////////////////////
 			// INTERACTION POINTS////////////////////////////////////////////////////////
 				for (i = 0; i < 20; i++) 
 				{
 					var iMat1:ColorMaterial = new ColorMaterial(0x006600, 1);
-					iMat1.lightPicker = lightPicker;
+						//iMat1.lightPicker = lightPicker;
 					var ismesh1:Mesh = new Mesh(sg2, iMat1);
 					var iball:ObjectContainer3D = new ObjectContainer3D();
 						iball.addChild(ismesh1);
 						iballList.push(iball);
 					this.addChild(iball);
-				}
-				
-				
-				// interative point ring
-				for (i= 0; i < 20; i++) 
-				{
-					var iring:ObjectContainer3D = new ObjectContainer3D();
-					var ring0:SegmentSet = new SegmentSet();
-					iring.addChild(ring0);
-						iringList.push(iring);
-					this.addChild(iring);
+					
+					// interative point ring
+					var cg3:WireframeCylinder = new WireframeCylinder(15,15, 1, 16,8, 0xFFFFFF,0.5);
+						iringList.push(cg3);
+					this.addChild(cg3);
 				}
 				
 			///////////////////////////////////////////////////////////////////////////
 			//CLUSTER /////////////////////////////////////////////////////////////////
-			var iMat:ColorMaterial = new ColorMaterial(0xFFAE1F, 0.8);
-			iMat.lightPicker = lightPicker;
+			var iMat:ColorMaterial = new ColorMaterial(0xFFFF33, 0.8);
+				iMat.lightPicker = lightPicker;
 				var ismesh:Mesh = new Mesh(sg6, iMat);
 				var cball:ObjectContainer3D = new ObjectContainer3D();
 					cball.addChild(ismesh);
-					cballList.push(cball);
+					celementList.push(cball);
 				this.addChild(cball);
 				
-			// cluster lines
-			clines = new SegmentSet();
-			this.addChild(clines);	
+				
+				var sMat11:ColorMaterial = new ColorMaterial(0xFFFF33, 0.8);
+					sMat11.alphaBlending = true;
+				
+				// cluster lines
+				for (i = 0; i < 3; i++) 
+				{
+					var smesh5:Mesh = new Mesh(cg2, sMat11);
+					var cline:ObjectContainer3D = new ObjectContainer3D();
+						cline.addChild(smesh5);
+						celementList.push(cline);
+					this.addChild(cline);
+				}
+				
+				var sMat12:ColorMaterial = new ColorMaterial(0xFFAE1F, 0.8);
+					sMat12.alphaBlending = true;
+				
+				//cluster link lines
+				for (i = 0; i < 40; i++) 
+				{
+					var smesh6:Mesh = new Mesh(cg2, sMat12);
+					var clinkline:ObjectContainer3D = new ObjectContainer3D();
+						clinkline.addChild(smesh6);
+						clinkList.push(clinkline);
+					this.addChild(clinkline);
+				}	
 			
 			/////////////////////////////////////////////////////////////////////////////
 			//GESTURE////////////////////////////////////////////////////////////////////
 			for (i = 0; i < 10; i++) 
 			{
 				var iMat0:ColorMaterial = new ColorMaterial(0x6666FF, 0.6);
-				iMat0.lightPicker = lightPicker;
+					iMat0.lightPicker = lightPicker;
 				var ismesh0:Mesh = new Mesh(sg10, iMat0);
 				var gball:ObjectContainer3D = new ObjectContainer3D();
 					gball.addChild(ismesh0);
@@ -265,14 +242,15 @@ package com.gestureworks.away3d.utils
 	
 		private function clearHand():void
 		{
-			for (i = 0; i < ballList.length; i++)
+				//fingertips
+				for (i = 0; i < ballList.length; i++)
 				{
 					ballList[i].x = 0;
 					ballList[i].y = 0;
 					ballList[i].z = 0;
 					ballList[i].visible = false;
 				}
-				
+				//finger vectors
 				for (i = 0; i <fingerList.length; i++)
 				{
 					fingerList[i].x = 0;
@@ -281,7 +259,7 @@ package com.gestureworks.away3d.utils
 					fingerList[i].scaleZ = 100;
 					fingerList[i].visible = false;
 				}
-				
+				//fingertip vector
 				for (i = 0; i <vfingerList.length; i++)
 				{
 					vfingerList[i].x = 0;
@@ -290,7 +268,7 @@ package com.gestureworks.away3d.utils
 					vfingerList[i].scaleZ = 100;
 					vfingerList[i].visible = false;
 				}
-				
+				// motion point shadows
 				for (i = 0; i < wballList.length; i++)
 				{
 					wballList[i].x = 0;
@@ -298,7 +276,7 @@ package com.gestureworks.away3d.utils
 					wballList[i].z = 0;
 					wballList[i].visible = false;
 				}
-				
+				// knuckle points
 				for ( i = 0; i < kballList.length; i++)
 				{
 					kballList[i].x = 0;
@@ -306,37 +284,7 @@ package com.gestureworks.away3d.utils
 					kballList[i].z = 0;
 					kballList[i].visible = false;
 				}
-				
-				
-				
-				
-				
-				for ( i = 0; i < iballList.length; i++)
-				{
-					iballList[i].x = 0;
-					iballList[i].y = 0;
-					iballList[i].z = 0;
-					iballList[i].visible = false;
-				}
-				
-				for ( i = 0; i < gballList.length; i++)
-				{
-					gballList[i].x = 0;
-					gballList[i].y = 0;
-					gballList[i].z = 0;
-					gballList[i].visible = false;
-				}
-				
-				for ( i = 0; i < iringList.length; i++)
-				{
-					iringList[i].x = 0;
-					iringList[i].y = 0;
-					iringList[i].z = 0;
-					iringList[i].visible = false;
-					iringList[i].getChildAt(0).removeAllSegments();
-				}
-				
-				
+				//palm objects
 				for ( i = 0; i < palmList.length; i++)
 				{
 					palmList[i].visible = false;
@@ -344,9 +292,48 @@ package com.gestureworks.away3d.utils
 				}
 				
 				
+				//////////////////////////////////////////
+				//interaction points
+				for ( i = 0; i < iballList.length; i++)
+				{
+					iballList[i].x = 0;
+					iballList[i].y = 0;
+					iballList[i].z = 0;
+					iballList[i].visible = false;
+					
+					iringList[i].x = 0;
+					iringList[i].y = 0;
+					iringList[i].z = 0;
+					iringList[i].visible = false;
+				}
 				
+				////////////////////////////////////
+				// cluster elements (points and lines)
+				for ( i = 0; i < celementList.length; i++)
+				{
+					celementList[i].x = 0;
+					celementList[i].y = 0;
+					celementList[i].z = 0;
+					celementList[i].visible = false;
+				}
 				
-				cballList[0].visible = false;
+				for ( i = 0; i < clinkList.length; i++)
+				{
+					clinkList[i].x = 0;
+					clinkList[i].y = 0;
+					clinkList[i].z = 0;
+					clinkList[i].visible = false;
+				}
+				
+				////////////////////////////////////	
+				//gesturepoints
+				for ( i = 0; i < gballList.length; i++)
+				{
+					gballList[i].x = 0;
+					gballList[i].y = 0;
+					gballList[i].z = 0;
+					gballList[i].visible = false;
+				}
 		}
 		
 		
@@ -382,8 +369,6 @@ package com.gestureworks.away3d.utils
 					vfingerList[i + j * 5].position = new Vector3D(pt.position.x + vd.x*0.5, pt.position.y + vd.y*0.5, pt.position.z + vd.z*0.5);
 					vfingerList[i + j * 5].lookAt(v);
 					vfingerList[i + j * 5].scaleZ = vd.length;
-					//vfingerList[i + j * 5].getChildAt(0).material.color = 0xFFFF00; //yellow
-					//vfingerList[i + j * 5].getChildAt(0).material.lightPicker = lightPicker;
 				}
 				
 				if (fingerList[i+j*5]) 
@@ -397,22 +382,17 @@ package com.gestureworks.away3d.utils
 					fingerList[i + j * 5].position = new Vector3D(palm_pt.position.x + dx*0.5,palm_pt.position.y + dy*0.5,palm_pt.position.z + dz*0.5);
 					fingerList[i + j * 5].lookAt(pt.position)
 					fingerList[i + j * 5].scaleZ = dv;
-					//fingerList[i + j * 5].getChildAt(0).material.color = 0xFFFFFF; //white
-					//fingerList[i + j * 5].getChildAt(0).material.lightPicker = lightPicker;
 				}
 				
 				
 				
 				if (ballList[i+j*5]) 
 				{
-					////////////////////////////////////////////////////////////////////////////
-					// draw fingers
-					//var pt:MotionPointObject  = cO.handList[j].fingerList[i];
-						
+						////////////////////////////////////////////////////////////////////////////
+						// draw fingers
 						ballList[i+j*5].visible = true;	
 						ballList[i+j*5].position  = pt.position;
 						ballList[i+j*5].getChildAt(0).material.color = 0x00FF00; //green
-						ballList[i+j*5].getChildAt(0).material.lightPicker = lightPicker;
 						
 						// ball shadow
 						wballList[i+j*5].visible = true;	
@@ -421,7 +401,6 @@ package com.gestureworks.away3d.utils
 						if (pt.fingertype == "thumb")   
 						{
 							ballList[i+j*5].getChildAt(0).material.color = 0xFF0000; //red
-							ballList[i + j * 5].getChildAt(0).material.lightPicker = lightPicker;
 						}
 
 						//if (pt.fingertype == "index") //yellow // blue
@@ -442,8 +421,6 @@ package com.gestureworks.away3d.utils
 				var v0:Vector3D = new Vector3D(palm.position.x * 1, palm.position.y * 1, palm.position.z * 1);
 				var v1:Vector3D = new Vector3D(palm.direction.x * d, palm.direction.y * d, palm.direction.z * d);
 				var v2:Vector3D = new Vector3D(palm.normal.x*d, palm.normal.y*d, palm.normal.z*d);
-				//var v1 = new Vector3D(v.x,v.y,v.y);
-				//var v2 = new Vector3D(100,100,100);
 				var v02:Vector3D = v0.add(v2);
 				var v01:Vector3D = v0.add(v1);
 				
@@ -451,26 +428,8 @@ package com.gestureworks.away3d.utils
 				//lines.addSegment(new LineSegment(v0, v01, 0xFF0000, 0xFF0000, 1));
 				
 					//draw palm ring
-					var r:Number = cO.handList[j].sphereRadius; //GW radius not leap
-					//var r2:Number = 0.3*r;
-					
-					//ringList[j].
-					
-					
-					// remove segments
-					//ringList[j].removeAllSegments();
-					
-					for (var theta0:Number = 0; theta0 < 360; theta0 += step) 
-					{
-						var vv1:Vector3D = new Vector3D(r * Math.cos(theta0), 0, r * Math.sin(theta0));
-						var vv2:Vector3D = new Vector3D(r * Math.cos(theta0 + step), 0, r * Math.sin(theta0 + step));
-						
-						//var vv12 = new Vector3D(r2*Math.cos(theta0), 0, r2*Math.sin(theta0));
-						//var vv22 = new Vector3D(r2*Math.cos(theta0+step), 0, r2*Math.sin(theta0+step));
-						
-						//ringList[j].addSegment(new LineSegment(vv1, vv2, 0xFFFFFF, 0xFFFFFF, 1));
-					}
-					
+					//var r:Number = cO.handList[j].sphereRadius; //GW radius not leap
+
 					var rotX:Number = RAD_DEG * Math.asin(palm.normal.x);
 					//var rotY:Number = RAD_DEG*Math.asin(palm.normal.y);
 					var rotZ:Number = RAD_DEG*Math.asin(palm.normal.z);
@@ -498,230 +457,102 @@ package com.gestureworks.away3d.utils
 			for ( i = 0; i < cO.iPointArray.length; i++) 
 			{
 				//trace("ipoint", cO.iPointArray.length );
-				
 				//trace("ipoint",i,cO.iPointArray[i].position );
-				if (iballList[i]) 
+				
+				if ((iballList[i])&&(iringList[i])) 
 				{
-					iballList[i].visible = true;	
-					iballList[i].position  = cO.iPointArray[i].position;
-					
-					
+					iballList[i].visible = true;
+					iringList[i].visible = true;
+					iballList[i].position  = cO.iPointArray[i].position;	
+					iringList[i].position  = cO.iPointArray[i].position;
 					
 					if (cO.iPointArray[i].type == "pinch") 
 					{
 						//trace("pinch");
 						iballList[i].getChildAt(0).material.color = 0x00FFFF; //orange 0xE3716B
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.6;
+						iringList[i].scaleY = 0.6;
+						iringList[i].color = 0x00FFFFF;
+						
 					}
 					if (cO.iPointArray[i].type == "push") //pin
 					{
 						//trace("push"); 
 						iballList[i].getChildAt(0).material.color = 0xFFFF00; // yellow
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.8;
+						iringList[i].scaleY = 0.8;
+						iringList[i].color = 0xFFFF00;
 						
 					}
 					if (cO.iPointArray[i].type == "trigger") 
 					{
 						//trace("trigger");
 						iballList[i].getChildAt(0).material.color = 0xc44dbe; //pink
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.9;
+						iringList[i].scaleY = 0.9;
+						iringList[i].color = 0xc44dbe;
 					}
 					if (cO.iPointArray[i].type == "hook") 
 					{
 						//trace("hook");
 						iballList[i].getChildAt(0).material.color = 0x0000FF; //blue
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 1;
+						iringList[i].scaleY = 1;
+						iringList[i].color = 0x0000FF;
 					}
 					if (cO.iPointArray[i].type == "tool") 
 					{
 						//trace("tool");
 						iballList[i].getChildAt(0).material.color = 0xFFFF00; //
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.8;
+						iringList[i].scaleY = 0.8;
+						iringList[i].color = 0xFFFF00;
 					}
 					if (cO.iPointArray[i].type == "finger_average") 
 					{
 						//trace("fav");
 						iballList[i].getChildAt(0).material.color = 0x000000; //black
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.5;
+						iringList[i].scaleY = 0.5;
+						iringList[i].color = 0x000000;
 					}
 					if (cO.iPointArray[i].type == "palm") 
 					{
 						//trace("palm");
-						iballList[i].getChildAt(0).material.color = 0xFFFFFF; //black
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iballList[i].getChildAt(0).material.color = 0xFFFFFF; //white
+						iringList[i].scaleX = 0.5;
+						iringList[i].scaleY = 0.5;
+						iringList[i].color = 0xFFFFFF;
 					}
 					
 					if (cO.iPointArray[i].type == "finger") 
 					{
 						//trace("finger",cO.iPointArray[i].position.x,cO.iPointArray[i].position.y);
 						iballList[i].getChildAt(0).material.color = 0x00FF00; //green
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.5;
+						iringList[i].scaleY = 0.5;
+						iringList[i].color = 0x00FF00;
 					}
 					
 					if (cO.iPointArray[i].type == "thumb") 
 					{
 						//trace("palm");
 						iballList[i].getChildAt(0).material.color = 0xFF0000; //red
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
+						iringList[i].scaleX = 0.6;
+						iringList[i].scaleY = 0.6;
+						iringList[i].color = 0xFF0000;
 					}
 					
 					if (cO.iPointArray[i].type == "frame") 
 					{
 						//trace("palm");
 						iballList[i].getChildAt(0).material.color = 0xE3716B; //salmon pink
-						iballList[i].getChildAt(0).material.lightPicker = lightPicker;
-					}
-				}	
-				
-				
-				if (iringList[i]) 
-				{
-					iringList[i].visible = true;	
-					iringList[i].position  = cO.iPointArray[i].position;
-					
-					var segset:SegmentSet = iringList[i].getChildAt(0)
-					var s:Number = 20 * DEG_RAD;
-					var r0:Number = 6;
-					var t:Number = 0
-					var vv1:Vector3D;
-					var vv2:Vector3D;
-					
-					if (cO.iPointArray[i].type == "pinch") 
-					{
-						//trace("pinch");
-						r0 = 8
-						//iringList[i].getChildAt(0).material.color = 0x00FFFF; //orange 0xE3716B
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0x00FFFF, 0x00FFFF, 2));
-						}
-						
-					}
-					if (cO.iPointArray[i].type == "push") //pin
-					{
-						//trace("push"); 
-						//iringList[i].getChildAt(0).material.color = 0xFFFF00; // yellow
-						r0 = 9
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0xFFFF00, 0xFFFF00, 2));
-						}
-						
-						
-					}
-					if (cO.iPointArray[i].type == "trigger") 
-					{
-						//trace("trigger");
-						//iringList[i].getChildAt(0).material.color = 0xc44dbe; //pink
-						r0 = 10
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0xc44dbe, 0xc44dbe, 2));
-						}
-					}
-					if (cO.iPointArray[i].type == "hook") 
-					{
-						//trace("hook");
-						//iringList[i].getChildAt(0).material.color = 0x0000FF; //blue
-						r0 = 12
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0x0000FF, 0x0000FF, 2));
-						}
-					}
-					if (cO.iPointArray[i].type == "tool") 
-					{
-						//trace("tool");
-						//iringList[i].getChildAt(0).material.color = 0xFFFF00; //
-					}
-					
-					
-					if (cO.iPointArray[i].type == "finger_average") 
-					{
-						//trace("fav");
-						r0 = 6;
-						//trace(iringList[i].getChildAt(0).getSegment(0).color0 = 0x000000);
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0x000000, 0x000000, 2));
-						}
-						
-					}
-					if (cO.iPointArray[i].type == "palm") 
-					{
-						//trace("palm");
-						r0 = 6;
-						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0xFFFFFF, 0xFFFFFF, 2));
-						}
-					}
-					
-					
-					
-					
-					if (cO.iPointArray[i].type == "finger") 
-					{
-						//trace("palm");
-						r0 = 5;
-						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0x00FF00, 0x00FF00, 2));
-						}
-					}
-					
-					if (cO.iPointArray[i].type == "thumb") 
-					{
-						//trace("palm");
-						r0 = 8;
-						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0xFF0000, 0xFF0000, 2));
-						}
-					}
-					
-					if (cO.iPointArray[i].type == "frame") 
-					{
-						//trace("palm");
-						r0 = 12;
-						//iringList[i].getChildAt(0).material.color = 0xFFFFFF; //black
-						
-						for ( t = 0; t < 360; t += s) 
-						{
-							 vv1 = new Vector3D(r0*Math.cos(t), 0, r0*Math.sin(t));
-							 vv2 = new Vector3D(r0 * Math.cos(t + s), 0, r0 * Math.sin(t + s));	
-							segset.addSegment(new LineSegment(vv1, vv2, 0xE3716B, 0xE3716B, 2));
-						}
-					}		
+						iringList[i].scaleX = 1;
+						iringList[i].scaleY = 1;
+						iringList[i].color = 0xE3716B;
+					}	
 				}
-				
-			}	
+			}
 		}
 		
 		
@@ -729,45 +560,69 @@ package com.gestureworks.away3d.utils
 		//ip draw cluster
 		private function drawClusterData():void
 		{
-			trace("draw cluster data" );
-			clines.visible = true;
-			clines.removeAllSegments();
-			
 			var ipn:uint = cO.iPointArray.length;
-			
-			trace(ipn);
-			
-			//cluster web
-			for (var i:int = 0; i < ipn; i++) 
-			{	
-				for (var j:int = 0; j < ipn; j++) 
-				{
-					if (i != j) clines.addSegment(new LineSegment(cO.iPointArray[i].position,cO.iPointArray[j].position, 0xFFAE1F, 0xFFAE1F, 2));
+			//trace("draw cluster data",ipn);
+			if(ipn){
+				// cluster center
+				celementList[0].visible = true;
+				celementList[0].position = new Vector3D(cO.x, cO.y, cO.z)
+
+				//cluster box //0xFFFF33, 2
+				celementList[1].visible = true;
+				celementList[1].position = new Vector3D(cO.x, cO.y, cO.z);
+				celementList[1].lookAt(new Vector3D (10000,0,0));
+				celementList[1].scaleZ = cO.width;
+				//celementList[1].getChildAt(0).material.color = 0xFFFF33;
+				
+				celementList[2].visible = true;
+				celementList[2].position = new Vector3D(cO.x, cO.y, cO.z);
+				celementList[2].lookAt(new Vector3D (0,10000,0));
+				celementList[2].scaleZ = cO.height;
+				//celementList[2].getChildAt(0).material.color = 0xFFFF33;
+				
+				celementList[3].visible = true;
+				celementList[3].position = new Vector3D(cO.x, cO.y, cO.z);
+				celementList[3].lookAt(new Vector3D (0,0,10000));
+				celementList[3].scaleZ = cO.length;
+				//celementList[3].getChildAt(0).material.color = 0xFFFF33;
+				
 				}
-			}
+				
+				//cluster web
+				for (var i:int = 0; i < ipn; i++) 
+				{	
+					
+					
+					for (var j:int = 0; j < ipn; j++) 
+					{
+						if (i != j) 
+						{
+							//0xFFAE1F 2
+							if (clinkList[i * ipn + j])
+							{
+								clinkList[i * ipn + j].visible = true;
+								//FIND MID POINT
+								clinkList[i*ipn+j].position = new Vector3D(0.5*(cO.iPointArray[i].position.x + cO.iPointArray[j].position.x), 0.5*(cO.iPointArray[i].position.y + cO.iPointArray[j].position.y) , 0.5*(cO.iPointArray[i].position.z + cO.iPointArray[j].position.z) );
+								// SET LENGTH
+								var dist:Number = Vector3D.distance(cO.iPointArray[i].position, cO.iPointArray[j].position);
+								clinkList[i*ipn+j].scaleZ = dist;
+								// POINT TO INTERACTIONPOINT
+								clinkList[i * ipn + j].lookAt(cO.iPointArray[j].position);
+							}
+						}
+					}
+				}
 			
-			// cluster center
-			cballList[0].visible = true;
-			cballList[0].position = new Vector3D(cO.x, cO.y, cO.z)
 			
-			//trace(this.cO.x,this.cO.x - this.cO.width);
 			
-			//cluster box
-			var v1x:Vector3D =  new Vector3D (cO.x -(cO.width * 0.5), cO.y, cO.z);
-			var v2x:Vector3D =  new Vector3D (cO.x + (cO.width * 0.5), cO.y, cO.z);
-			var v1y:Vector3D =  new Vector3D (cO.x, cO.y - (cO.height * 0.5), cO.z);
-			var v2y:Vector3D =  new Vector3D (cO.x, cO.y + (cO.height* 0.5),cO.z);
-			var v1z:Vector3D =  new Vector3D (cO.x, cO.y, cO.z - (cO.length * 0.5));
-			var v2z:Vector3D =  new Vector3D (cO.x, cO.y, cO.z + (cO.length * 0.5));
-			
-			clines.addSegment(new LineSegment(v1x, v2x , 0xFFFF33, 0xFFFF33, 2));
-			clines.addSegment(new LineSegment(v1y, v2y , 0xFFFF33, 0xFFFF33, 2));
-			clines.addSegment(new LineSegment(v1z, v2z , 0xFFFF33, 0xFFFF33, 2));
+	
 		}
 		
 		private function drawGestureEvents():void
 		{
 			var period:int = 10;
+			
+			//trace("3d motion gesture events visualizer")
 			
 			if (this.cO.history.length > period)
 			{
@@ -777,6 +632,8 @@ package com.gestureworks.away3d.utils
 				{
 				var gpn:uint = this.cO.history[h].gPointArray.length
 				
+				//trace("3d motion gesture events visualizer", gpn)
+			
 					//gesture points
 					for (var i:int = 0; i < gpn; i++) 
 					{	
@@ -785,26 +642,26 @@ package com.gestureworks.away3d.utils
 							gballList[i].visible = true;	
 							gballList[i].position  = cO.history[h].gPointArray[i].position;
 							
-							// SIDE TAP 
+							// SIDE TAP // YELLOW
 							if (cO.history[h].gPointArray[i].type == "x tap") {
 								gballList[i].getChildAt(0).material.color = 0xFFFF00;
-								trace("x tap ball");
+								//trace("x tap ball");
 							}
-							// KEY TAP
+							// KEY TAP // RED
 							if (cO.history[h].gPointArray[i].type == "y tap") {
 								gballList[i].getChildAt(0).material.color = 0xFF0000;
-								trace("y tap ball");
+								//trace("y tap ball");
 							}
-							// SCREEN TAP
+							// SCREEN TAP // GREEN
 							if (cO.history[h].gPointArray[i].type == "z tap") {
 								gballList[i].getChildAt(0).material.color = 0x00FFFF;
-								trace("z tap ball");
+								//trace("z tap ball");
 							}
 							
-							// HOLD GESTURE POINT
+							// HOLD GESTURE POINT // BLUE
 							if (cO.history[h].gPointArray[i].type == "hold") {
 								gballList[i].getChildAt(0).material.color = 0x0000FF;
-								trace("hold ball");
+								//trace("hold ball");
 							}
 						}
 						
@@ -818,14 +675,16 @@ package com.gestureworks.away3d.utils
 		
 		public function updateDisplay():void
 		{			
-			if (drawHands) {
+			if (drawHands) 
+			{
 				clearHand();
 				drawHand();
 			}
-			//if (drawPoints) drawInteractionPoints();
+			if (drawPoints) drawInteractionPoints();
 			//if (drawClusters) 
-				//drawClusterData();
-			//if (drawGestures) drawGestureEvents();
+			drawClusterData();
+			//if (drawGestures) 
+			drawGestureEvents();
 		}
 		
 
