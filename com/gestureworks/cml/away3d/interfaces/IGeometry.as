@@ -7,7 +7,7 @@ package com.gestureworks.cml.away3d.interfaces
 		 * Away3D Geometry
 		 */
 		function get geometry():Geometry;
-		function set geometry(value:Geometry):void;
+		function set geometry(value:Geometry):void; 
 	}
 	
 }

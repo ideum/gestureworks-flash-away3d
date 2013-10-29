@@ -14,7 +14,6 @@
 	import com.gestureworks.cml.element.Image;
 	import com.gestureworks.cml.element.TouchContainer;
 	import com.gestureworks.cml.events.*;
-	import com.gestureworks.cml.kits.*;
 	import com.gestureworks.core.GestureWorks;
 	import com.gestureworks.events.GWEvent;
 	import com.gestureworks.events.GWGestureEvent;
@@ -127,7 +126,7 @@
 		private var _lens:PerspectiveLens;
 		
 		private var cam:Camera3D;
-		private var view:View3D;
+		private var pview:View3D;
 		private var cube_face:Array = new Array();
 		private var shape_net:TextureMaterial;
 		
@@ -196,9 +195,9 @@
 		}
 		
 		/**
-		 * CML callback Initialisation
+		 * Initialisation method
 		 */
-		override public function displayComplete():void
+		override public function init():void
 		{
 			if (projectionType == "cube"){
 				var counter:Number = 0;
@@ -232,14 +231,6 @@
 			setupUI();
 		}
 		
-		/**
-		 * Initialisation method
-		 */
-		override public function init():void
-		{
-			displayComplete();
-		}
-		
 		private function setupUI():void
 		{ 
 			addChild(panoramicTouch);
@@ -250,13 +241,13 @@
 			
 			// create a viewport
 			_lens = new PerspectiveLens(90);
-			view = new View3D();
-			view.width = width;
-			view.height = height;
-			view.camera = cam;
+			pview = new View3D();
+			pview.width = width;
+			pview.height = height;
+			pview.camera = cam;
 			cam.lens = _lens;
 			
-			panoramicTouch.addChild(view);
+			panoramicTouch.addChild(pview);
 			
 			//----------------------------------// 
 			
@@ -269,8 +260,8 @@
 				
 				camController = null;
 				
-				view.scene.addChild(largeSphere);
-				view.render();
+				pview.scene.addChild(largeSphere);
+				pview.render();
 			}
 			
 			if (_projectionType == "cube") {
@@ -278,8 +269,8 @@
 				var bmCubeText:BitmapCubeTexture = new BitmapCubeTexture(Cast.bitmapData(cube_face[0]), Cast.bitmapData(cube_face[1]), Cast.bitmapData(cube_face[2]), Cast.bitmapData(cube_face[3]), Cast.bitmapData(cube_face[4]), Cast.bitmapData(cube_face[5]));
 				//															right							left							up							down							front							back
 				_skyBox = new SkyBox(bmCubeText);
-				view.scene.addChild(_skyBox);
-				view.render();
+				pview.scene.addChild(_skyBox);
+				pview.render();
 			}
 			
 			panoramicTouch.addEventListener(GWGestureEvent.DRAG, gestureDragHandler);
@@ -305,7 +296,7 @@
 				_lens.fieldOfView = _fov;
 			}
 			
-		  	view.render(); 
+		  	pview.render(); 
 		}
 		
 		// yaw and pitch control
@@ -347,7 +338,7 @@
 				_skyBox = null;
 			panoramicTouch = null;
 			cam = null;
-			view = null;
+			pview = null;
 			camController = null;
 		}
 	}

@@ -1,8 +1,8 @@
 ﻿package com.gestureworks.cml.components
 {
 	import com.gestureworks.cml.element.*;
+	import com.gestureworks.cml.elements.Panoramic;
 	import com.gestureworks.cml.events.*;
-	import com.gestureworks.cml.kits.*;
 	import flash.display.DisplayObject;
 	import flash.events.*;
 	import flash.geom.*;

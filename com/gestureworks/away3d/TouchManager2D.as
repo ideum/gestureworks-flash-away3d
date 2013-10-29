@@ -15,7 +15,7 @@ package com.gestureworks.away3d
 	import flash.geom.*;
 	import flash.utils.*;
 	
-	public class TouchManager2D
+	public class TouchManager2D 
 	{
 		private static var tBegin:GWTouchEvent;
 		private static var tMove:GWTouchEvent;
