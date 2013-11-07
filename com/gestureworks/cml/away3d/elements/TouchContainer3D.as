@@ -1,6 +1,8 @@
 package com.gestureworks.cml.away3d.elements
 {
+	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
+	import away3d.containers.View3D;
 	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.*;
 	import com.gestureworks.cml.elements.*;
@@ -16,6 +18,9 @@ package com.gestureworks.cml.away3d.elements
 		private var _lookat:String;
 		private var _pivot:String = "0,0,0";
 		private var _obj3D:ObjectContainer3D; 
+		private var _distance:Number;
+		public var centerTransform:Boolean = true;
+		//public var camera:Camera3D;		
 		
 		/**
 		 * Constructor
@@ -24,6 +29,7 @@ package com.gestureworks.cml.away3d.elements
 		{
 			super();	
 			away3d = true;	
+			touch3d = true;
 		}
 		
 		override public function init():void 
@@ -48,9 +54,25 @@ package com.gestureworks.cml.away3d.elements
 				TouchContainer3D(parent).addChild3D(obj3D);
 		}
 		
-		override public function updateVTO():void 
+		/**
+		 * Current distance from the target to camera
+		 */
+		public function get distance():Number 
 		{
-			vto.transform = transform.matrix3D;
+			var d:Number = 0;
+			if (vto && view) {
+				d = View3D(view).camera.project(vto.scenePosition).length; 
+				_distance = d;
+			}
+			return d; 
+		}
+		
+		/**
+		 * Updates target transform
+		 */		
+		override public function updateVTO():void
+		{
+			vto.transform = transform.matrix3D;			
 		}
 		
 		private var _vto:*;

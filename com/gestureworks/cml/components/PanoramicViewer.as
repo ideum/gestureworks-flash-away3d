@@ -1,7 +1,7 @@
 ﻿package com.gestureworks.cml.components
 {
-	import com.gestureworks.cml.element.*;
-	import com.gestureworks.cml.elements.Panoramic;
+	import com.gestureworks.cml.elements.*;
+	import com.gestureworks.cml.elementss.Panoramic;
 	import com.gestureworks.cml.events.*;
 	import flash.display.DisplayObject;
 	import flash.events.*;
@@ -31,8 +31,8 @@
 	 * 
 	 * @author Josh
 	 * @see Component
-	 * @see com.gestureworks.cml.element.Panoramic
-	 * @see com.gestureworks.cml.element.TouchContainer
+	 * @see com.gestureworks.cml.elements.Panoramic
+	 * @see com.gestureworks.cml.elements.TouchContainer
 	 */		 
 	public class PanoramicViewer extends Component
 	{	

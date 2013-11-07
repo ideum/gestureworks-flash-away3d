@@ -1,4 +1,4 @@
-﻿package com.gestureworks.cml.elements
+﻿package com.gestureworks.cml.elementss
 {
 	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.PerspectiveLens;
@@ -10,9 +10,9 @@
 	import away3d.primitives.SphereGeometry;
 	import away3d.textures.BitmapCubeTexture;
 	import away3d.utils.Cast;
-	import com.gestureworks.cml.element.*;
-	import com.gestureworks.cml.element.Image;
-	import com.gestureworks.cml.element.TouchContainer;
+	import com.gestureworks.cml.elements.*;
+	import com.gestureworks.cml.elements.Image;
+	import com.gestureworks.cml.elements.TouchContainer;
 	import com.gestureworks.cml.events.*;
 	import com.gestureworks.core.GestureWorks;
 	import com.gestureworks.events.GWEvent;

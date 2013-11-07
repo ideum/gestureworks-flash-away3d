@@ -3,7 +3,7 @@ package com.gestureworks.cml.away3d.geometries {
 	import away3d.primitives.CylinderGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.element.Container;
+	import com.gestureworks.cml.elements.Container;
 	
 	/**
 	 * ...

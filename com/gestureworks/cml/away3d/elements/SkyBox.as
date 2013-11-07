@@ -2,7 +2,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.primitives.SkyBox;
 	import away3d.textures.BitmapCubeTexture;
 	import away3d.utils.Cast;
-	import com.gestureworks.cml.element.Image;
+	import com.gestureworks.cml.elements.Image;
 	
 	/**
 	 * ...

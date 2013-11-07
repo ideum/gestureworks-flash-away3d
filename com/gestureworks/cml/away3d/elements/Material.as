@@ -7,9 +7,9 @@ package com.gestureworks.cml.away3d.elements  {
 	import away3d.textures.BitmapTexture;
 	import away3d.tools.utils.TextureUtils;
 	import away3d.utils.Cast;
-	import com.gestureworks.cml.element.Graphic;
-	import com.gestureworks.cml.element.Image;
-	import com.gestureworks.cml.element.Text;
+	import com.gestureworks.cml.elements.Graphic;
+	import com.gestureworks.cml.elements.Image;
+	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.managers.FileManager;
 	import com.gestureworks.cml.utils.document;
 	import com.greensock.loading.ImageLoader;

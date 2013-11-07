@@ -16,7 +16,7 @@ package com.gestureworks.cml.core
 	 * <p>Register custom packages by pushing into the CMLCore.packages array.
 	 * 
 	 * <p>You can then use one of the following procedures to register your class:</p>
-	 * <listing version="3.0">com.gestureworks.cml.element.CustomClass; CustomClass;</listing>
+	 * <listing version="3.0">com.gestureworks.cml.elements.CustomClass; CustomClass;</listing>
 	 * <p>or</p>
 	 * <listing version="3.0">CMLCore.classes.push(CMLCustomClass);</listing>
 	 * 
