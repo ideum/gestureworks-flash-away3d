@@ -8,7 +8,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.core.managers.Stage3DProxy;
 	import away3d.core.pick.PickingType;
 	import away3d.utils.Cast;
-	import com.gestureworks.cml.element.*;
+	import com.gestureworks.cml.elements.*;
 	import com.gestureworks.cml.events.*;
 	import flash.display.BitmapData;
 	import flash.display.Stage;
