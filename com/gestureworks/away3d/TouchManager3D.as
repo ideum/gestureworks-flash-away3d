@@ -93,7 +93,7 @@ package com.gestureworks.away3d
 						pointTargets[e.touchPointID] = e.target;		
 						e.target.view = view;
 						
-						if (e.target.hasOwnProperty("touch3d") && e.target.touch3d) {
+						if ("touch3d" in e.target && e.target.touch3d) {
 							var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
 							e.stageX = v.x;
 							e.stageY = v.y;
