@@ -31,14 +31,16 @@ package com.gestureworks.away3d
 			touchPicker.onlyMouseEnabled = false;
 		}
 				
-		public static function registerTouchObject(t:*):TouchObject3D 
+		public static function registerTouchObject(t:*):TouchContainer3D
 		{
 			if (t is TouchContainer3D){
 				touchObjects[t.vto] = t;
 				return null; 
 			}
-			else
-				touchObjects[t] = new TouchObject3D(t);
+			else {
+				touchObjects[t] = new TouchContainer3D(t);
+				touchObjects[t].vto = t;
+			}
 			return touchObjects[t];		
 		}
 		

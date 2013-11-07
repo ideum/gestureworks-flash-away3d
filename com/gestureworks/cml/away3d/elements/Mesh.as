@@ -1,60 +1,72 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
-	import away3d.core.base.Geometry;
 	import away3d.entities.Mesh;
-	import away3d.materials.MaterialBase;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+	import com.gestureworks.away3d.TouchManager3D;
+	import com.gestureworks.away3d.utils.CML3DUtils;
 	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.interfaces.ICSS;
+	import com.gestureworks.cml.interfaces.IObject;
+	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.document;
-	import flash.geom.Vector3D;
+	import com.gestureworks.cml.utils.StateUtils;
+	import flash.utils.Dictionary;
 	
 	/**
-	 * ...
+	 * 
 	 */
-	public class Mesh extends TouchContainer3D {
-		private var gref:XML;
-		private var mref:XML;		
-		private var _mesh:away3d.entities.Mesh;
-		private var _obj3D:ObjectContainer3D;
-		private var _castsShadows:Boolean = true;
+	public class Mesh extends away3d.entities.Mesh implements IObject, ICSS, IState  {
 		
-		public function Mesh() {
-			super();
-			_mesh = new away3d.entities.Mesh(null, null);
-			vto = _mesh;
-		}
+		// IObject
+		private var _cmlIndex:int;
+		private var _childList:ChildList;
+		
+		// IState
+		private var _stateId:String
+
+		// CML refs
+		private var _gref:XML; // geometry
+		private var _mref:XML; // material			
+		private var _lref:XML; // light		
 		
 		/**
-		 * Initialisation method
+		 * Constructor
 		 */
-		override public function init():void {
-			mesh.name = this.id;
-			mesh.x = this.x;
-			mesh.y = this.y;
-			mesh.z = this.z;
-			mesh.pivotPoint = new Vector3D(this.pivot.split(",")[0], this.pivot.split(",")[1], this.pivot.split(",")[2]);
-			mesh.rotationX = this.rotationX;
-			mesh.rotationY = this.rotationY;
-			mesh.rotationZ = this.rotationZ;
-			if (this.lookat) //overides any rotation above
-				mesh.lookAt(new Vector3D(this.lookat.split(",")[0], this.lookat.split(",")[1], this.lookat.split(",")[2]));
-			mesh.scaleX = this.scaleX;
-			mesh.scaleY = this.scaleY;
-			mesh.scaleZ = this.scaleZ;
-			
-			if (gref)
-				geometry = gref;
-			
-			if(mref)	
-				material = mref;
+		public function Mesh () {
+			super(null, null);
+			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;
+			vto.away3d = true;
+			mouseEnabled = true;
+			state = new Dictionary(false);
+			state[0] = new State(false);
+			_childList = new ChildList;	
+		}
 
-			if (this.parent is TouchContainer3D)
-				TouchContainer3D(this.parent).addChild3D(mesh);
-				
-			mesh.castsShadows = _castsShadows;
+		
+		//////////////////////////////////////////////////////////////
+		// ICML
+		//////////////////////////////////////////////////////////////	
+		
+		/**
+		 * CML initialization
+		 */
+		public function init():void {
+			var s:String;
 			
-			mesh.mouseEnabled = true;
-			mesh.mouseChildren = true;		
+			if (gref) {
+				if (String(gref).charAt(0) == "#") {
+					s = String(gref).substr(1);
+				}
+				geometry = document.getElementById(s).geometry; 	
+			}
+			
+			if (mref) {
+				if (String(mref).charAt(0) == "#") {
+					s = String(mref).substr(1);
+				}
+				material = document.getElementById(s).material; 
+			}	
 		}
 		
 		/**
@@ -62,88 +74,179 @@ package com.gestureworks.cml.away3d.elements {
 		 * @param	cml
 		 * @return
 		 */
-		override public function parseCML(cml:XMLList):XMLList {
+		public function parseCML(cml:XMLList):XMLList {
 			var node:XML = XML(cml);
 			var obj:Object;
 			var tag:String;
 			var isGeo:Boolean;
 			
 			for each(var item:XML in node.*) {
-				
-				if (isGeometry(item.name())) {					
-					obj = CMLParser.instance.createObject(item.name());
-					CMLParser.instance.attrLoop(obj, XMLList(item));
+				if (CML3DUtils.isGeometry(item.name())) {					
+					obj = CMLParser.createObject(item.name());
+					CMLParser.attrLoop(obj, XMLList(item));
 					obj.updateProperties();
 					obj.init();					
 					geometry = obj.geometry;
 					delete cml[item.name()];
-				}					
-				
-			}
+				}									
+			}			
+			return CMLParser.parseCML(this, cml);
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// IOBJECT
+		//////////////////////////////////////////////////////////////		
+		
+		/**
+		 * Property states
+		 */
+		public var state:Dictionary;		
+		
+		/**
+		 * Sets the cml index
+		 */
+		public function get cmlIndex():int {return _cmlIndex};
+		public function set cmlIndex(value:int):void
+		{
+			_cmlIndex = value;
+		}	
+		
+		/**
+		 * Sets cml childlist
+		 */
+		public function get childList():ChildList { return _childList;}
+		public function set childList(value:ChildList):void { 
+			_childList = value;
+		}
+		
+		/**
+		 * Postparse method
+		 * @param	cml
+		 */
+		public function postparseCML(cml:XMLList):void {}
 			
-			CMLParser.instance.parseCML(this, cml);
-			return cml.*;
+		/**
+		 * Update properties of child
+		 * @param	state
+		 */
+		public function updateProperties(state:*=0):void {
+			CMLParser.updateProperties(this, state);		
+		}	
+		
+		/**
+		 * Destructor
+		 */
+		override public function dispose():void {}		
+		
+		
+		//////////////////////////////////////////////////////////////
+		//  ICSS 
+		//////////////////////////////////////////////////////////////
+
+		private var _className:String;
+		/**
+		 * sets the class name of displayobject
+		 */
+		public function get className():String { return _className ; }
+		public function set className(value:String):void
+		{
+			_className = value;
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// ISTATE
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * Sets the state id
+		 */
+		public function get stateId():* {return _stateId};
+		public function set stateId(value:*):void
+		{
+			_stateId = value;
 		}
 		
 		/**
-		 * Determines if CML object is a Geometry instance
-		 * @param	tag
-		 * @return
+		 * Loads state by index number. If the first parameter is NaN, the current state will be saved.
+		 * @param sIndex State index to be loaded.
+		 * @param recursion If true the state will load recursively through the display list starting at the current display ojbect.
 		 */
-		private static function isGeometry(tag:String):Boolean {
-			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.geometries."]) is IGeometry; 
-		}
-		
-		/*
-		 * Away3D Geometry
-		 */
-		public function get geometry():* { return mesh.geometry; }	
-		public function set geometry(geom:*):void {
-			if (geom is XML) {
-				gref = geom;
-				geom = document.getElementById(geom).geometry;
+		public function loadState(sId:* = null, recursion:Boolean = false):void { 
+			if (StateUtils.loadState(this, sId, recursion)) {
+				StateUtils.loadState(vto, sId, recursion);
+				_stateId = sId;
 			}
-			if(geom is away3d.core.base.Geometry)
-				mesh.geometry = geom;
-		}
-		
-		/*
-		 * Away3D material
-		 */
-		public function get material():* { return mesh.material; }		
-		public function set material(mat:*):void { 
-			if (mat is XML) {
-				mref = mat;
-				mat = document.getElementById(mat).material;				
-			}
-			if(mat is MaterialBase)
-				mesh.material = mat; 
-		}
-		
-		
-		/*
-		 * Away3d mesh.
-		 */
-		public function get mesh():away3d.entities.Mesh { return _mesh; }		
-		public function set mesh(value:away3d.entities.Mesh):void {
-			_mesh = value;
-			_obj3D = value;
-		}
-		
-		public override function get obj3D():ObjectContainer3D { return _mesh; }
+		}	
 		
 		/**
-		 * Whether this mesh casts shadows
-		 * @default true
+		 * Save state by index number. If the first parameter is NaN, the current state will be saved.
+		 * @param sIndex State index to save.
+		 * @param recursion If true the state will save recursively through the display list starting at the current display ojbect.
 		 */
-		public function get castsShadows():Boolean { return _castsShadows; }		
-		public function set castsShadows(value:Boolean):void {
-			_castsShadows = value;
+		public function saveState(sId:* = null, recursion:Boolean = false):void { 
+			StateUtils.saveState(this, sId, recursion); 
+			StateUtils.saveState(vto, sId, recursion); 
+		}		
+		
+		/**
+		 * Tween state by stateIndex from current to given state index. If the first parameter is null, the current state will be used.
+		 * @param sIndex State index to tween.
+		 * @param tweenTime Duration of tween
+		 */
+		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+			if (StateUtils.tweenState(this, sId, tweenTime)) {
+				StateUtils.tweenState(vto, sId, tweenTime);
+				_stateId = sId;
+			}
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// GestureWorks
+		//////////////////////////////////////////////////////////////			
+		
+		/**
+		 * Virtual transform object
+		 */
+		public var vto:TouchContainer3D;
+		
+		
+		//////////////////////////////////////////////////////////////
+		// Display
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * Searches the child and adds to the list
+		 */
+		public function addAllChildren():void {		
+			var n:int = childList.length;
+			for (var i:int = 0; i < childList.length; i++) {
+				if (childList.getIndex(i) is ObjectContainer3D)				
+					addChild(childList.getIndex(i));
+				if (n != childList.length)
+					i--;
+			}
+		}	
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////			
+		
+		/*
+		 * Geometry reference
+		 */
+		public function get gref():* { return _gref; }	
+		public function set gref(geom:*):void {
+			_gref = geom;
 		}
 		
-		override public function addChild3D(child:ObjectContainer3D):void {
-			mesh.addChild(child);
+		/*
+		 * Material reference
+		 */
+		public function get mref():* { return _mref; }		
+		public function set mref(mat:*):void { 
+			_mref = mat;
 		}
+		
 	
 	}
 

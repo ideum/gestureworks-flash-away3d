@@ -26,12 +26,11 @@ package com.gestureworks.cml.away3d.elements {
 		private var _viewPos:String = "0,0"; //"x,y"
 		private var _viewDim:String; //"wh"
 		private var _viewAntiAlias:int = 4;
-		private var _viewBackgroundColor:uint = 0xCCCCCC;
-		private var _transform3D:Matrix3D;
+		private var _viewBgColor:uint = 0x000000;
 		
 		// Away3D view instances vect
 		private var _viewVct:Vector.<View3D> = new Vector.<View3D>;
-		private var scene:Scene3D;
+		public var scene:Scene3D;
 		private var stage3DProxy:Stage3DProxy;
 		private var lastRot:Number = 0;
 		private var curRot:Number;
@@ -47,25 +46,37 @@ package com.gestureworks.cml.away3d.elements {
 			mouseChildren = true;
 			//stage3DProxy = DefaultStage3D.getInstance(stage).stage3DProxy;
 		}
+		
+		/**
+		 * method searches the child and adds to the list
+		 */
+		override public function addAllChildren():void {		
+			var n:int = childList.length;
+			for (var i:int = 0; i < childList.length; i++) {
+				if (childList.getIndex(i) is ObjectContainer3D)				
+					scene.addChild(childList.getIndex(i));
+				if (n != childList.length)
+					i--;
+			}
+		}			
+		
 
 		/**
 		 * Initialisation method
 		 */
 		override public function init():void {
-			
 			for (var i:uint = 0; i < this.numChildren; i++)
 				if (this.getChildAt(i) is com.gestureworks.cml.away3d.elements.Camera)
 					camerasVct.push(com.gestureworks.cml.away3d.elements.Camera(this.getChildAt(i)));
 			
-			if (camerasVct.length > 0)
-			{
+			if (camerasVct.length > 0) {
 			//	for each (var c:SceneCamera in camerasVct)
 					createView(camerasVct[0]);
 			}
 			else
 				createView();
 			
-			setupUI();
+			setupUI();			
 		}
 		
 		override public function addChild3D(child:ObjectContainer3D):void {
@@ -74,8 +85,9 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private function createView(sceneCamera:com.gestureworks.cml.away3d.elements.Camera = null):void {
 			var cam:away3d.cameras.Camera3D
-			if (sceneCamera)
+			if (sceneCamera) {
 				cam = sceneCamera.getCamera();
+			}
 			else {
 				cam = new away3d.cameras.Camera3D((_ortho) ? new OrthographicLens(_projectionHeight) : new PerspectiveLens(_fov));
 				cam.lens.near = _clipping.split(",")[0];
@@ -94,8 +106,8 @@ package com.gestureworks.cml.away3d.elements {
 			
 			//view.mousePicker = PickingType.RAYCAST_BEST_HIT;
 			view.forceMouseMove = true;
-			view.touchPicker = PickingType.RAYCAST_BEST_HIT;
-			view.background = Cast.bitmapTexture(new BitmapData(2, 2, false, _viewBackgroundColor));
+			view.touchPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;
+			view.background = Cast.bitmapTexture(new BitmapData(2, 2, false, _viewBgColor));
 			//view.stage3DProxy = stage3DProxy;
 			//stage3DProxy.color = _stageProxyColor;
 			//stage3DProxy.antiAlias = _viewAntiAlias;
@@ -119,6 +131,7 @@ package com.gestureworks.cml.away3d.elements {
 					View3D(viewVct[i]).height = com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewDim.split(",")[1];
 				}
 				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBgColor));
+				View3D(viewVct[i]).background = Cast.bitmapTexture(new BitmapData(2, 2, false, com.gestureworks.cml.away3d.elements.Camera(camerasVct[i]).viewBgColor));
 			}
 		}
 		
@@ -133,18 +146,8 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		private function tick(e:Event):void {
-			//Graphic gets automagically added to touch manager
-			//for each (var to:* in TouchManager.touchObjects)
-			//if (to is Away3DTouchObject)
-				//to.updateTransform();
-			
 			for each (var v:View3D in viewVct) {
 				v.render();
-				
-				//if was rotating a cam
-				/*	curRot = this.parent.rotation
-				   v.camera.roll(curRot - lastRot)
-				 lastRot = curRot;*/
 			}
 		}
 		
@@ -183,9 +186,9 @@ package com.gestureworks.cml.away3d.elements {
 			_viewAntiAlias = value;
 		}
 		
-		public function get viewBackgroundColor():uint { return _viewBackgroundColor; }		
-		public function set viewBackgroundColor(value:uint):void {
-			_viewBackgroundColor = value;
+		public function get viewBgColor():uint { return _viewBgColor; }		
+		public function set viewBgColor(value:uint):void {
+			_viewBgColor = value;
 		}
 		
 		public function get stageProxyColor():uint { return _stageProxyColor; }		

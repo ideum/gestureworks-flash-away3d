@@ -25,9 +25,12 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Constructor
 		 */
-		public function TouchContainer3D()
+		public function TouchContainer3D(_vto:Object=null)
 		{
 			super();	
+			if (_vto) {
+				transform.matrix3D = _vto.transform.clone();
+			}			
 			away3d = true;	
 			touch3d = true;
 		}
@@ -50,8 +53,9 @@ package com.gestureworks.cml.away3d.elements
 			obj3D.scaleY = scaleY;
 			obj3D.scaleZ = scaleZ;
 			
-			if (parent is TouchContainer3D)
+			if (parent is TouchContainer3D) {
 				TouchContainer3D(parent).addChild3D(obj3D);
+			}
 		}
 		
 		/**

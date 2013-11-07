@@ -10,6 +10,9 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function parseCML(cml:XMLList):XMLList {		
 			var rXML:XMLList = new XMLList;
 			if (cml.@ref != undefined) {
