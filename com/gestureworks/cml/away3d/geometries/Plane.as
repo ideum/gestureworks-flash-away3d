@@ -1,97 +1,149 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.core.base.Geometry;
 	import away3d.primitives.PlaneGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
-	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.elements.Container;
+	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.interfaces.ICSS;
+	import com.gestureworks.cml.interfaces.IObject;
+	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.utils.ChildList;
+	import com.gestureworks.cml.utils.StateUtils;
+	import flash.utils.Dictionary;
 	
 	/**
-	 * ...
-	 *
+	 * This class creates plane geometry that can be applied to a Mesh. It extends the Away3D PlaneGeometry class to add CML support.
 	 */
-	public class Plane extends CMLObject implements IGeometry {
-		private var _width:Number = 100;
-		private var _height:Number = 100;
-		private var _segmentsW:uint = 1;
-		private var _segmentsH:uint = 1;
-		private var _yUp:Boolean = true;
-		private var _doubleSided:Boolean = false;
-		private var _geometry:Geometry;
+	public class Plane extends PlaneGeometry implements IObject, ICSS, IState, IGeometry  {
 		
-		public function Plane() {
-			super();
+		// IObject
+		private var _cmlIndex:int;
+		private var _childList:ChildList;
+		
+		// ICSS
+		private var _className:String;			
+		
+		// IState
+		private var _stateId:String;	
+		
+		/**
+		 * @inheritDoc
+		 */		
+		public function Plane(width:Number = 100, height:Number = 100, segmentsW:uint = 1, segmentsH:uint = 1, yUp:Boolean = true, doubleSided:Boolean = false) {
+			super(width, height, segmentsW, segmentsH, yUp, doubleSided);
+			state = new Dictionary(false);
+			state[0] = new State(false);
+			_childList = new ChildList;				
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// ICML
+		//////////////////////////////////////////////////////////////	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function parseCML(cml:XMLList):XMLList {
+			return CMLParser.parseCML(this, cml);
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// IOBJECT
+		//////////////////////////////////////////////////////////////		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public var state:Dictionary;		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get cmlIndex():int { return _cmlIndex; }
+		public function set cmlIndex(value:int):void {
+			_cmlIndex = value;
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get childList():ChildList { return _childList; }
+		public function set childList(value:ChildList):void { 
+			_childList = value;
 		}
 		
 		/**
-		 * Initialisation method
+		 * @inheritDoc
 		 */
-		public function init():void {			
-			_geometry = new PlaneGeometry(_width, _height, _segmentsW, _segmentsH, _yUp, _doubleSided); 
-		}
+		public function init():void {}		
 		
 		/**
-		 * The width of the plane.
-		 * @default 100
+		 * @inheritDoc
 		 */
-		public function get width():Number { return _width; }		
-		public function set width(value:Number):void {
-			_width = value;
-		}
+		public function postparseCML(cml:XMLList):void {}
+			
+		/**
+		 * @inheritDoc
+		 */
+		public function updateProperties(state:*=0):void {
+			CMLParser.updateProperties(this, state);		
+		}	
 		
 		/**
-		 * The height of the plane.
-		 * @default 100
+		 * @inheritDoc
 		 */
-		public function get height():Number { return _height; }	
-		public function set height(value:Number):void {
-			_height = value;
-		}
+		override public function dispose():void {
+			super.dispose();
+		}		
 		
-		/**
-		 * The number of segments that make up the plane along the X-axis.
-		 * @default 1
-		 */
-		public function get segmentsW():uint { return _segmentsW;}		
-		public function set segmentsW(value:uint):void {
-			_segmentsW = value;
-		}
 		
-		/**
-		 * The number of segments that make up the plane along the Y or Z-axis, depending on whether yUp is true or
-		 * false, respectively.
-		 * @default 1
-		 */
-		public function get segmentsH():uint { return _segmentsH;}		
-		public function set segmentsH(value:uint):void {
-			_segmentsH = value;
-		}
-		
-		/**
-		 * yUp Defines whether the normal vector of the plane should point along the Y-axis (true) or Z-axis (false).
-		 * @default true
-		 */
-		public function get yUp():Boolean { return _yUp; }		
-		public function set yUp(value:Boolean):void {
-			_yUp = value;
-		}
-		
-		/**
-		 * Defines whether the plane will be visible from both sides, with correct vertex normals (as opposed to bothSides on Material).
-		 * @default false
-		 */
-		public function get doubleSided():Boolean { return _doubleSided; }		
-		public function set doubleSided(value:Boolean):void {
-			_doubleSided = value;
-		}
-		
-		/**
-		 * Away3d Geometry
-		 */
-		public function get geometry():Geometry { return _geometry; }		
-		public function set geometry(value:Geometry):void {
-			_geometry = value;
-		}
-	
-	}
+		//////////////////////////////////////////////////////////////
+		//  ICSS 
+		//////////////////////////////////////////////////////////////
 
+		/**
+		 * @inheritDoc
+		 */
+		public function get className():String { return _className; }
+		public function set className(value:String):void {
+			_className = value;
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// ISTATE
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get stateId():* { return _stateId; }
+		public function set stateId(value:*):void {
+			_stateId = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function loadState(sId:* = null, recursion:Boolean = false):void { 
+			if (StateUtils.loadState(this, sId, recursion)) {
+				_stateId = sId;
+			}
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function saveState(sId:* = null, recursion:Boolean = false):void { 
+			StateUtils.saveState(this, sId, recursion); 
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+			if (StateUtils.tweenState(this, sId, tweenTime)) {
+				_stateId = sId;
+			}
+		}		
+		
+	}
 }

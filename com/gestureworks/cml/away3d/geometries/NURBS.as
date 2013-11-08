@@ -1,5 +1,5 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.CubeGeometry;
+	import away3d.primitives.NURBSGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -11,25 +11,25 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates cube geometry that can be applied to a Mesh. It extends the Away3D CubeGeometry class to add CML support.
+	 * This class creates NURBS geometry that can be applied to a Mesh. It extends the Away3D NURBSGeometry class to add CML support.
 	 */
-	public class Cube extends CubeGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class NURBS extends NURBSGeometry implements IObject, ICSS, IState, IGeometry  {
 		
 		// IObject
 		private var _cmlIndex:int;
 		private var _childList:ChildList;
 		
 		// ICSS
-		private var _className:String;		
+		private var _className:String;			
 		
 		// IState
 		private var _stateId:String;	
 		
 		/**
 		 * @inheritDoc
-		 */		
-		public function Cube(width:Number = 100, height:Number = 100, depth:Number = 100, segmentsW:uint = 1, segmentsH:uint = 1, segmentsD:uint = 1, tile6:Boolean = true) {
-			super(width, height, depth, segmentsW, segmentsH, segmentsD, tile6);
+		 */	
+		public function NURBS(cNet:Vector.<NURBSVertex>, uCtrlPnts:int, vCtrlPnts:int, uOrder:int = 4, vOrder:int = 4, uSegments:int = 10, vSegments:int = 10, uKnot:Vector.<Number> = null, vKnot:Vector.<Number> = null) {
+			super(cNet, uCtrlPnts, vCtrlPnts, uOrder, vOrder, uSegments, vSegments, uKnot, vKnot);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				

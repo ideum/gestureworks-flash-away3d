@@ -1,76 +1,149 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.core.base.Geometry;
 	import away3d.primitives.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
-	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.elements.Container;
+	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.interfaces.ICSS;
+	import com.gestureworks.cml.interfaces.IObject;
+	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.utils.ChildList;
+	import com.gestureworks.cml.utils.StateUtils;
+	import flash.utils.Dictionary;
 	
 	/**
-	 * ...
+	 * This class creates sphere geometry that can be applied to a Mesh. It extends the Away3D SphereGeometry class to add CML support.
 	 */
-	public class Sphere extends CMLObject implements IGeometry {
-		private var _radius:Number = 50;
-		private var _segmentsW:uint = 16;
-		private var _segmentsH:uint = 12;
-		private var _yUp:Boolean = true;
-		private var _geometry:Geometry;
+	public class Sphere extends SphereGeometry implements IObject, ICSS, IState, IGeometry  {
 		
-		public function Sphere() {
-			super();
-		}
+		// IObject
+		private var _cmlIndex:int;
+		private var _childList:ChildList;
 		
-		/**
-		 * Initialisation method
-		 */
-		public function init():void {			
-			_geometry = new SphereGeometry(_radius,  _segmentsW, _segmentsH, _yUp);		
-		}
+		// ICSS
+		private var _className:String;			
+		
+		// IState
+		private var _stateId:String;			
 		
 		/**
-		 * Defines radius of Sphere
-		 * @default "50"
+		 * @inheritDoc
 		 */
-		public function get radius():Number { return _radius; }		
-		public function set radius(value:Number):void {
-			_radius = value;
+		public function Sphere(radius:Number = 50, segmentsW:uint = 16, segmentsH:uint = 12, yUp:Boolean = true) {
+			super(radius, segmentsW, segmentsH, yUp);
+			state = new Dictionary(false);
+			state[0] = new State(false);
+			_childList = new ChildList;				
 		}
 		
-		/**
-		* Defines the number of vertical segments that make up the sphere. 
-		* @default 16.
-		 */
-		public function get segmentsW():uint { return _segmentsW; }		
-		public function set segmentsW(value:uint):void {
-			_segmentsW = value;
-		}
+		//////////////////////////////////////////////////////////////
+		// ICML
+		//////////////////////////////////////////////////////////////	
 		
 		/**
-		* Defines the number of horizontal segments that make up the sphere. 
-		* @default 12.
+		 * @inheritDoc
 		 */
-		public function get segmentsH():uint { return _segmentsH; }		
-		public function set segmentsH(value:uint):void {
-			_segmentsH = value;
+		public function parseCML(cml:XMLList):XMLList {
+			return CMLParser.parseCML(this, cml);
 		}
 		
+		//////////////////////////////////////////////////////////////
+		// IOBJECT
+		//////////////////////////////////////////////////////////////		
+		
 		/**
-		 * Defines whether the sphere poles should lay on the Y-axis (true) or on the Z-axis (false).
-		 * @default true
+		 * @inheritDoc
 		 */
-		public function get yUp():Boolean { return _yUp; }		
-		public function set yUp(value:Boolean):void {
-			_yUp = value;
+		public var state:Dictionary;		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get cmlIndex():int { return _cmlIndex; }
+		public function set cmlIndex(value:int):void {
+			_cmlIndex = value;
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get childList():ChildList { return _childList; }
+		public function set childList(value:ChildList):void { 
+			_childList = value;
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function get geometry():Geometry { return _geometry; }		
-		public function set geometry(value:Geometry):void {
-			if (_geometry != value)
-				_geometry = value;
-		}
-	
-	}
+		public function init():void {}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postparseCML(cml:XMLList):void {}
+			
+		/**
+		 * @inheritDoc
+		 */
+		public function updateProperties(state:*=0):void {
+			CMLParser.updateProperties(this, state);		
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void {
+			super.dispose();
+		}		
+		
+		
+		//////////////////////////////////////////////////////////////
+		//  ICSS 
+		//////////////////////////////////////////////////////////////
 
+		/**
+		 * @inheritDoc
+		 */
+		public function get className():String { return _className; }
+		public function set className(value:String):void {
+			_className = value;
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// ISTATE
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get stateId():* { return _stateId; }
+		public function set stateId(value:*):void {
+			_stateId = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function loadState(sId:* = null, recursion:Boolean = false):void { 
+			if (StateUtils.loadState(this, sId, recursion)) {
+				_stateId = sId;
+			}
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function saveState(sId:* = null, recursion:Boolean = false):void { 
+			StateUtils.saveState(this, sId, recursion); 
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+			if (StateUtils.tweenState(this, sId, tweenTime)) {
+				_stateId = sId;
+			}
+		}		
+		
+	}
 }

@@ -1,127 +1,149 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.core.base.Geometry;
 	import away3d.primitives.CylinderGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
-	import com.gestureworks.cml.core.CMLObject;
-	import com.gestureworks.cml.elements.Container;
+	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.interfaces.ICSS;
+	import com.gestureworks.cml.interfaces.IObject;
+	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.utils.ChildList;
+	import com.gestureworks.cml.utils.StateUtils;
+	import flash.utils.Dictionary;
 	
 	/**
-	 * ...
+	 * This class creates cylinder geometry that can be applied to a Mesh. It extends the Away3D CylinderGeometry class to add CML support.
 	 */
-	public class Cylinder extends CMLObject implements IGeometry {
-		private var _topRadius:Number = 50;
-		private var _bottomRadius:Number = 50;
-		private var _height:Number = 100;
-		private var _segmentsW:uint = 16;
-		private var _segmentsH:uint = 1;
-		private var _topClosed:Boolean = true;
-		private var _bottomClosed:Boolean = true;
-		private var _surfaceClosed:Boolean = true;
-		private var _yUp:Boolean;
-		private var _geometry:Geometry;
+	public class Cylinder extends CylinderGeometry implements IObject, ICSS, IState, IGeometry  {
 		
-		public function Cylinder() {
-			super();
+		// IObject
+		private var _cmlIndex:int;
+		private var _childList:ChildList;
+		
+		// ICSS
+		private var _className:String;		
+		
+		// IState
+		private var _stateId:String;		
+		
+		/**
+		 * @inheritDoc
+		 */		
+		public function Cylinder(topRadius:Number = 50, bottomRadius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 1, topClosed:Boolean = true, bottomClosed:Boolean = true, surfaceClosed:Boolean = true, yUp:Boolean = true) {
+			super(topRadius, bottomRadius, height, segmentsW, segmentsH, topClosed, bottomClosed, surfaceClosed, yUp);
+			state = new Dictionary(false);
+			state[0] = new State(false);
+			_childList = new ChildList;				
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// ICML
+		//////////////////////////////////////////////////////////////	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function parseCML(cml:XMLList):XMLList {
+			return CMLParser.parseCML(this, cml);
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// IOBJECT
+		//////////////////////////////////////////////////////////////		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public var state:Dictionary;		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get cmlIndex():int { return _cmlIndex; }
+		public function set cmlIndex(value:int):void {
+			_cmlIndex = value;
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get childList():ChildList { return _childList; }
+		public function set childList(value:ChildList):void { 
+			_childList = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postparseCML(cml:XMLList):void {}
 			
-		}
+		/**
+		 * @inheritDoc
+		 */
+		public function updateProperties(state:*=0):void {
+			CMLParser.updateProperties(this, state);		
+		}	
 		
 		/**
-		 * Initialisation method
+		 * @inheritDoc
 		 */
-		public function init():void {
-			_geometry = new CylinderGeometry(_topRadius, _bottomRadius, _height, _segmentsW, _segmentsH, _topClosed, _bottomClosed, _surfaceClosed, _yUp); 
-		}
+		override public function dispose():void {
+			super.dispose();
+		}		
 		
-		/**
-		 * The radius of the top end of the cylinder.
-		 *  @default 50
-		 */
-		public function get topRadius():Number { return _topRadius; }		
-		public function set topRadius(value:Number):void {
-			_topRadius = value;
-		}
 		
-		/**
-		 * The radius of the bottom end of the cylinder.
-		 *  @default 50
-		 */
-		public function get bottomRadius():Number { return _bottomRadius; }		
-		public function set bottomRadius(value:Number):void {
-			_bottomRadius = value;
-		}
-		
-		/**
-		 * The height of the cylinder.
-		 *  @default 100
-		 */
-		public function get height():Number { return _height; }		
-		public function set height(value:Number):void {
-			_height = value;
-		}
-		
-		/**
-		 * Defines the number of horizontal segments that make up the cylinder.
-		 *  @default 16.
-		 */
-		public function get segmentsW():uint { return _segmentsW; }
-		public function set segmentsW(value:uint):void {
-			_segmentsW = value;
-		}
-		
-		/**
-		 * Defines the number of vertical segments that make up the cylinder.
-		 * @default 1
-		 */
-		public function get segmentsH():uint { return _segmentsH; }		
-		public function set segmentsH(value:uint):void {
-			_segmentsH = value;
-		}
-		
-		/**
-		 * Defines whether the top end of the cylinder is closed (true) or open.
-		 *  @default true
-		 */
-		public function get topClosed():Boolean { return _topClosed; }		
-		public function set topClosed(value:Boolean):void {
-			_topClosed = value;
-		}
-		
-		/**
-		 * Defines whether the surface of the cylinder is closed (true) or open.
-		 *  @default true
-		 */
-		public function get surfaceClosed():Boolean { return _surfaceClosed; }		
-		public function set surfaceClosed(value:Boolean):void {
-			_surfaceClosed = value;
-		}
-		
-		/**
-		 * Defines whether the bottom end of the cylinder is closed (true) or open.
-		 *  @default true
-		 */
-		public function get bottomClosed():Boolean { return _bottomClosed; }		
-		public function set bottomClosed(value:Boolean):void {
-			_bottomClosed = value;
-		}
-		
-		/**
-		 * Defines whether the cylinder poles should lay on the Y-axis (true) or on the Z-axis (false).
-		 *  @default true
-		 */
-		public function get yUp():Boolean { return _yUp; }		
-		public function set yUp(value:Boolean):void {
-			_yUp = value;
-		}
-		
-		/**
-		 * Away3d Geometry
-		 */
-		public function get geometry():Geometry { return _geometry; }		
-		public function set geometry(value:Geometry):void {
-			if (_geometry != value)
-				_geometry = value;
-		}
-	
-	}
+		//////////////////////////////////////////////////////////////
+		//  ICSS 
+		//////////////////////////////////////////////////////////////
 
+		/**
+		 * @inheritDoc
+		 */
+		public function get className():String { return _className; }
+		public function set className(value:String):void {
+			_className = value;
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// ISTATE
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get stateId():* { return _stateId; }
+		public function set stateId(value:*):void {
+			_stateId = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function loadState(sId:* = null, recursion:Boolean = false):void { 
+			if (StateUtils.loadState(this, sId, recursion)) {
+				_stateId = sId;
+			}
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function saveState(sId:* = null, recursion:Boolean = false):void { 
+			StateUtils.saveState(this, sId, recursion); 
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+			if (StateUtils.tweenState(this, sId, tweenTime)) {
+				_stateId = sId;
+			}
+		}		
+		
+	}
 }
