@@ -28,7 +28,6 @@ package com.gestureworks.cml.away3d.elements {
 		// CML refs
 		private var _gref:XML; // geometry
 		private var _mref:XML; // material			
-		private var _lref:XML; // light		
 		
 		/**
 		 * Constructor
@@ -58,7 +57,7 @@ package com.gestureworks.cml.away3d.elements {
 				if (String(gref).charAt(0) == "#") {
 					s = String(gref).substr(1);
 				}
-				geometry = document.getElementById(s).geometry; 	
+				geometry = document.getElementById(s); 	
 			}
 			
 			if (mref) {
@@ -70,7 +69,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Custom CML parse routine to add local Geometry and Material
+		 * Custom CML parse routine
 		 * @param	cml
 		 * @return
 		 */
