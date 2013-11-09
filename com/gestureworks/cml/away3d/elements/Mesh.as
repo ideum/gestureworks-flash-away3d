@@ -72,7 +72,7 @@ package com.gestureworks.cml.away3d.elements {
 				if (String(mref).charAt(0) == "#") {
 					s = String(mref).substr(1);
 				}
-				material = document.getElementById(s).material; 
+				material = document.getElementById(s); 
 			}	
 		}
 		
@@ -84,6 +84,16 @@ package com.gestureworks.cml.away3d.elements {
 			var obj:Object;
 			var tag:String;
 			var isGeo:Boolean;
+			
+			if (node.@geometry != undefined) {
+				cml.@gref = cml.@geometry;
+				delete cml.@geometry;
+			}			
+			
+			if (cml.@material != undefined) {
+				cml.@mref = cml.@material;
+				delete cml.@material;
+			}				
 			
 			for each(var item:XML in node.*) {
 				if (CML3DUtils.isGeometry(item.name())) {					

@@ -1,6 +1,6 @@
-package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.CapsuleGeometry;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+package com.gestureworks.cml.away3d.textures {
+	import away3d.materials.utils.IVideoPlayer;
+	import com.gestureworks.cml.away3d.interfaces.ITexture;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
@@ -8,12 +8,14 @@ package com.gestureworks.cml.away3d.geometries {
 	import com.gestureworks.cml.interfaces.IState;
 	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.StateUtils;
+	import flash.media.Camera;
 	import flash.utils.Dictionary;
+	import away3d.textures.WebcamTexture;
 	
 	/**
-	 * This class creates capsule geometry that can be applied to a Mesh. It extends the Away3D CapsuleGeometry class to add CML support.
+	 * This class creates a video texture that can be applied to a Material. It extends the Away3D VideoTexture class to add CML support.
 	 */
-	public class Capsule extends CapsuleGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class VideoCameraTexture extends away3d.textures.WebcamTexture implements IObject, ICSS, IState, ITexture {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -23,17 +25,25 @@ package com.gestureworks.cml.away3d.geometries {
 		private var _className:String;			
 		
 		// IState
-		private var _stateId:String;	
+		private var _stateId:String;
+		
+		// 3D
+		private var _src:String;
 		
 		/**
 		 * @inheritDoc
 		 */	
-		public function Capsule(radius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 15, yUp:Boolean = true) {
-			super(radius, height, segmentsW, segmentsH, yUp);
+		public function VideoCameraTexture(cameraWidth:uint = 320, cameraHeight:uint = 240, materialSize:uint = 256, autoStart:Boolean = true, camera:Camera = null, smoothing:Boolean = true) {
+			super(cameraWidth, cameraHeight, materialSize, autoStart, camera, smoothing);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {}			
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
@@ -69,12 +79,7 @@ package com.gestureworks.cml.away3d.geometries {
 		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function init():void {}		
+		}	
 		
 		/**
 		 * @inheritDoc
@@ -144,6 +149,25 @@ package com.gestureworks.cml.away3d.geometries {
 				_stateId = sId;
 			}
 		}		
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////
+
+		/**
+		 * Sets file source
+		 * @param value File path
+		 */
+		public function get src():String { return _src;}
+		public function set src(value:String):void {
+			_src = value;
+		}		
+	
+		/**
+		 * @inheritDoc
+		 */
+		public function updateLightPicker():void {}
+		
 		
 	}
 }

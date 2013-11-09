@@ -1,47 +1,63 @@
-package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.ConeGeometry;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+package com.gestureworks.cml.away3d.textures {
+	import away3d.textures.BitmapTexture;
+	import com.gestureworks.cml.away3d.interfaces.ITexture;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IObject;
 	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.managers.FileManager;
 	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.StateUtils;
+	import com.greensock.loading.ImageLoader;
+	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates cone geometry that can be applied to a Mesh. It extends the Away3D ConeGeometry class to add CML support.
+	 * This class creates a bitmap texture that can be applied to a Material. It extends the Away3D BitmapTexture class to add CML support.
 	 */
-	public class Cone extends ConeGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class BitmapTexture extends away3d.textures.BitmapTexture implements IObject, ICSS, IState, ITexture {
 		
 		// IObject
 		private var _cmlIndex:int;
 		private var _childList:ChildList;
 		
-		// IState
-		private var _stateId:String;	
+		// ICSS
+		private var _className:String;			
 		
-		public function Cone(radius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 15, yUp:Boolean = true) {
-			super(radius, height, segmentsW, segmentsH, yUp);
+		// IState
+		private var _stateId:String;
+		
+		// 3D
+		private var _src:String;
+		
+		/**
+		 * @inheritDoc
+		 */	
+		public function BitmapTexture(bitmapData:BitmapData=null, generateMipmaps:Boolean = true) {
+			super(bitmapData, generateMipmaps);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {
+			if (src) { 
+				var fileData:ImageLoader = ImageLoader(FileManager.media.getLoader(src));
+				bitmapData = new BitmapData(fileData.rawContent.width, fileData.rawContent.height, true, 0x000000);
+				bitmapData.draw(fileData.rawContent);
+			}			
+		}			
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
 		//////////////////////////////////////////////////////////////	
 		
 		/**
-		 * CML initialization
-		 */
-		public function init():void {}
-		
-		/**
-		 * Custom CML parse routine
-		 * @param	cml
-		 * @return
+		 * @inheritDoc
 		 */
 		public function parseCML(cml:XMLList):XMLList {
 			return CMLParser.parseCML(this, cml);
@@ -52,43 +68,40 @@ package com.gestureworks.cml.away3d.geometries {
 		//////////////////////////////////////////////////////////////		
 		
 		/**
-		 * Property states
+		 * @inheritDoc
 		 */
 		public var state:Dictionary;		
 		
 		/**
-		 * Sets the cml index
+		 * @inheritDoc
 		 */
-		public function get cmlIndex():int {return _cmlIndex};
-		public function set cmlIndex(value:int):void
-		{
+		public function get cmlIndex():int { return _cmlIndex; }
+		public function set cmlIndex(value:int):void {
 			_cmlIndex = value;
 		}	
 		
 		/**
-		 * Sets cml childlist
+		 * @inheritDoc
 		 */
-		public function get childList():ChildList { return _childList;}
+		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
-		}
+		}	
 		
 		/**
-		 * Postparse method
-		 * @param	cml
+		 * @inheritDoc
 		 */
 		public function postparseCML(cml:XMLList):void {}
 			
 		/**
-		 * Update properties of child
-		 * @param	state
+		 * @inheritDoc
 		 */
 		public function updateProperties(state:*=0):void {
 			CMLParser.updateProperties(this, state);		
 		}	
 		
 		/**
-		 * Destructor
+		 * @inheritDoc
 		 */
 		override public function dispose():void {
 			super.dispose();
@@ -99,9 +112,8 @@ package com.gestureworks.cml.away3d.geometries {
 		//  ICSS 
 		//////////////////////////////////////////////////////////////
 
-		private var _className:String;
 		/**
-		 * sets the class name of displayobject
+		 * @inheritDoc
 		 */
 		public function get className():String { return _className; }
 		public function set className(value:String):void {
@@ -113,18 +125,15 @@ package com.gestureworks.cml.away3d.geometries {
 		//////////////////////////////////////////////////////////////				
 		
 		/**
-		 * Sets the state id
+		 * @inheritDoc
 		 */
 		public function get stateId():* { return _stateId; }
-		public function set stateId(value:*):void
-		{
+		public function set stateId(value:*):void {
 			_stateId = value;
 		}
 		
 		/**
-		 * Loads state by index number. If the first parameter is NaN, the current state will be saved.
-		 * @param sIndex State index to be loaded.
-		 * @param recursion If true the state will load recursively through the display list starting at the current display ojbect.
+		 * @inheritDoc
 		 */
 		public function loadState(sId:* = null, recursion:Boolean = false):void { 
 			if (StateUtils.loadState(this, sId, recursion)) {
@@ -133,24 +142,39 @@ package com.gestureworks.cml.away3d.geometries {
 		}	
 		
 		/**
-		 * Save state by index number. If the first parameter is NaN, the current state will be saved.
-		 * @param sIndex State index to save.
-		 * @param recursion If true the state will save recursively through the display list starting at the current display ojbect.
+		 * @inheritDoc
 		 */
 		public function saveState(sId:* = null, recursion:Boolean = false):void { 
 			StateUtils.saveState(this, sId, recursion); 
 		}		
 		
 		/**
-		 * Tween state by stateIndex from current to given state index. If the first parameter is null, the current state will be used.
-		 * @param sIndex State index to tween.
-		 * @param tweenTime Duration of tween
+		 * @inheritDoc
 		 */
 		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
 			if (StateUtils.tweenState(this, sId, tweenTime)) {
 				_stateId = sId;
 			}
 		}		
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////
+
+		/**
+		 * Sets file source
+		 * @param value File path
+		 */
+		public function get src():String { return _src;}
+		public function set src(value:String):void {
+			_src = value;
+		}		
+	
+		/**
+		 * @inheritDoc
+		 */
+		public function updateLightPicker():void {}
+		
 		
 	}
 }

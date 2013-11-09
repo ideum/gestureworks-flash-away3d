@@ -1,5 +1,5 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.TorusGeometry;
+	import away3d.primitives.PlaneGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -11,9 +11,9 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates torus geometry that can be applied to a Mesh. It extends the Away3D TorusGeometry class to add CML support.
+	 * This class creates plane geometry that can be applied to a Mesh. It extends the Away3D PlaneGeometry class to add CML support.
 	 */
-	public class Torus extends TorusGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class PlaneGeometry extends away3d.primitives.PlaneGeometry implements IObject, ICSS, IState, IGeometry  {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -23,13 +23,13 @@ package com.gestureworks.cml.away3d.geometries {
 		private var _className:String;			
 		
 		// IState
-		private var _stateId:String;			
+		private var _stateId:String;	
 		
 		/**
 		 * @inheritDoc
-		 */
-		public function Torus(radius:Number = 50, tubeRadius:Number = 50, segmentsR:uint = 16, segmentsT:uint = 8, yUp:Boolean = true) {
-			super(radius, tubeRadius, segmentsR, segmentsT, yUp);
+		 */		
+		public function PlaneGeometry(width:Number = 100, height:Number = 100, segmentsW:uint = 1, segmentsH:uint = 1, yUp:Boolean = true, doubleSided:Boolean = false) {
+			super(width, height, segmentsW, segmentsH, yUp, doubleSided);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				

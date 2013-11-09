@@ -1,6 +1,5 @@
-package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.SphereGeometry;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+package com.gestureworks.cml.away3d.materials {
+	import away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
@@ -11,9 +10,9 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates sphere geometry that can be applied to a Mesh. It extends the Away3D SphereGeometry class to add CML support.
+	 * This class creates a color material that can be applied to a Mesh. It extends the Away3D ColorMaterial class to add CML support.
 	 */
-	public class Sphere extends SphereGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class ColorMaterial extends away3d.materials.ColorMaterial implements IObject, ICSS, IState {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -23,13 +22,13 @@ package com.gestureworks.cml.away3d.geometries {
 		private var _className:String;			
 		
 		// IState
-		private var _stateId:String;			
+		private var _stateId:String;	
 		
 		/**
 		 * @inheritDoc
-		 */
-		public function Sphere(radius:Number = 50, segmentsW:uint = 16, segmentsH:uint = 12, yUp:Boolean = true) {
-			super(radius, segmentsW, segmentsH, yUp);
+		 */	
+		public function ColorMaterial(color:uint = 0xcccccc, alpha:Number = 1) {
+			super(color, alpha);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
@@ -144,6 +143,15 @@ package com.gestureworks.cml.away3d.geometries {
 				_stateId = sId;
 			}
 		}		
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function updateLightPicker():void {}
 		
 	}
 }

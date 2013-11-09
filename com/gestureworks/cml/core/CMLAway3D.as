@@ -11,6 +11,7 @@ package com.gestureworks.cml.core
 	 * <ul>
 	 *  <li>com.gestureworks.cml.away3d.elements</li>
 	 *  <li>com.gestureworks.cml.away3d.geometries</li>
+	 *  <li>com.gestureworks.cml.away3d.materials</li>
 	 * </ul>
 	 * 
 	 * <p>Register custom packages by pushing into the CMLCore.packages array.
@@ -37,16 +38,26 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.Scene; Scene;
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
+	import com.gestureworks.cml.away3d.elements.Texture; Texture;
 	
 	// geomtries
-	import com.gestureworks.cml.away3d.geometries.Capsule; Capsule;
-	import com.gestureworks.cml.away3d.geometries.Cone; Cone;
-	import com.gestureworks.cml.away3d.geometries.Cube; Cube;
-	import com.gestureworks.cml.away3d.geometries.Cylinder; Cylinder;	
-	import com.gestureworks.cml.away3d.geometries.NURBS; NURBS;	
-	import com.gestureworks.cml.away3d.geometries.Plane; Plane;
-	import com.gestureworks.cml.away3d.geometries.Sphere; Sphere;
-	import com.gestureworks.cml.away3d.geometries.Torus; Torus;
+	import com.gestureworks.cml.away3d.geometries.CapsuleGeometry; CapsuleGeometry;
+	import com.gestureworks.cml.away3d.geometries.ConeGeometry; ConeGeometry;
+	import com.gestureworks.cml.away3d.geometries.CubeGeometry; CubeGeometry;
+	import com.gestureworks.cml.away3d.geometries.CylinderGeometry; CylinderGeometry;	
+	import com.gestureworks.cml.away3d.geometries.NURBSGeometry; NURBSGeometry;	
+	import com.gestureworks.cml.away3d.geometries.PlaneGeometry; PlaneGeometry;
+	import com.gestureworks.cml.away3d.geometries.SphereGeometry; SphereGeometry;
+	import com.gestureworks.cml.away3d.geometries.TorusGeometry; TorusGeometry;
+	
+	// materials
+	import com.gestureworks.cml.away3d.materials.ColorMaterial; ColorMaterial;
+	import com.gestureworks.cml.away3d.materials.TextureMaterial; TextureMaterial;	
+	
+	// textures
+	import com.gestureworks.cml.away3d.textures.BitmapTexture; BitmapTexture;	
+	import com.gestureworks.cml.away3d.textures.VideoTexture; VideoTexture;	
+	import com.gestureworks.cml.away3d.textures.VideoCameraTexture; VideoCameraTexture;	
 	
 	
 }

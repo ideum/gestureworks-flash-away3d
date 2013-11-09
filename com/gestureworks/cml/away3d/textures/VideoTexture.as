@@ -1,6 +1,6 @@
-package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.CylinderGeometry;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
+package com.gestureworks.cml.away3d.textures {
+	import away3d.materials.utils.IVideoPlayer;
+	import com.gestureworks.cml.away3d.interfaces.ITexture;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
@@ -9,31 +9,47 @@ package com.gestureworks.cml.away3d.geometries {
 	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.StateUtils;
 	import flash.utils.Dictionary;
+	import away3d.textures.VideoTexture;
 	
 	/**
-	 * This class creates cylinder geometry that can be applied to a Mesh. It extends the Away3D CylinderGeometry class to add CML support.
+	 * This class creates a video texture that can be applied to a Material. It extends the Away3D VideoTexture class to add CML support.
 	 */
-	public class Cylinder extends CylinderGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class VideoTexture extends away3d.textures.VideoTexture implements IObject, ICSS, IState, ITexture {
 		
 		// IObject
 		private var _cmlIndex:int;
 		private var _childList:ChildList;
 		
 		// ICSS
-		private var _className:String;		
+		private var _className:String;			
 		
 		// IState
-		private var _stateId:String;		
+		private var _stateId:String;
+		
+		// 3D
+		private var _src:String;
 		
 		/**
 		 * @inheritDoc
-		 */		
-		public function Cylinder(topRadius:Number = 50, bottomRadius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 1, topClosed:Boolean = true, bottomClosed:Boolean = true, surfaceClosed:Boolean = true, yUp:Boolean = true) {
-			super(topRadius, bottomRadius, height, segmentsW, segmentsH, topClosed, bottomClosed, surfaceClosed, yUp);
+		 */	
+		public function VideoTexture(source:String=null, materialWidth:uint = 256, materialHeight:uint = 256, loop:Boolean = true, autoPlay:Boolean = false, player:IVideoPlayer = null) {
+			super(source, materialWidth, materialHeight, loop, autoPlay, player);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {
+			if (src) { 
+				player.source = src;
+				if (autoPlay) {
+					player.play();
+				}
+			}			
+		}			
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
@@ -69,12 +85,7 @@ package com.gestureworks.cml.away3d.geometries {
 		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function init():void {}		
+		}	
 		
 		/**
 		 * @inheritDoc
@@ -144,6 +155,25 @@ package com.gestureworks.cml.away3d.geometries {
 				_stateId = sId;
 			}
 		}		
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////
+
+		/**
+		 * Sets file source
+		 * @param value File path
+		 */
+		public function get src():String { return _src;}
+		public function set src(value:String):void {
+			_src = value;
+		}		
+	
+		/**
+		 * @inheritDoc
+		 */
+		public function updateLightPicker():void {}
+		
 		
 	}
 }

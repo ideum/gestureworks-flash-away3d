@@ -1,5 +1,5 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.PlaneGeometry;
+	import away3d.primitives.CylinderGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -11,25 +11,25 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates plane geometry that can be applied to a Mesh. It extends the Away3D PlaneGeometry class to add CML support.
+	 * This class creates cylinder geometry that can be applied to a Mesh. It extends the Away3D CylinderGeometry class to add CML support.
 	 */
-	public class Plane extends PlaneGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class CylinderGeometry extends away3d.primitives.CylinderGeometry implements IObject, ICSS, IState, IGeometry  {
 		
 		// IObject
 		private var _cmlIndex:int;
 		private var _childList:ChildList;
 		
 		// ICSS
-		private var _className:String;			
+		private var _className:String;		
 		
 		// IState
-		private var _stateId:String;	
+		private var _stateId:String;		
 		
 		/**
 		 * @inheritDoc
 		 */		
-		public function Plane(width:Number = 100, height:Number = 100, segmentsW:uint = 1, segmentsH:uint = 1, yUp:Boolean = true, doubleSided:Boolean = false) {
-			super(width, height, segmentsW, segmentsH, yUp, doubleSided);
+		public function CylinderGeometry(topRadius:Number = 50, bottomRadius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 1, topClosed:Boolean = true, bottomClosed:Boolean = true, surfaceClosed:Boolean = true, yUp:Boolean = true) {
+			super(topRadius, bottomRadius, height, segmentsW, segmentsH, topClosed, bottomClosed, surfaceClosed, yUp);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				

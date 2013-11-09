@@ -2,14 +2,14 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.core.CMLObject;
 	
 	/**
-	 * Loads Material instances in CML through the ref attribute 
+	 * Loads Texture instances in CML through the ref attribute 
 	 */
-	public class Material extends CMLObject {
+	public class Texture extends CMLObject {
 		
 		/**
 		 * Constructor
 		 */		
-		public function Material() {
+		public function Texture() {
 			super();
 		}
 		
@@ -18,21 +18,17 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		override public function parseCML(cml:XMLList):XMLList {		
 			var rXML:XMLList = new XMLList;
-			
-			if (cml.@texture != undefined) {
-				cml.@tref = cml.@texture;
-				delete cml.@texture;
-			}				
-			
 			if (cml.@ref != undefined) {
 				
-				if (cml.@ref == "Color") {
-					cml.@ref = "ColorMaterial";
+				if (cml.@ref == "Bitmap") {
+					cml.@ref = "BitmapTexture";
 				}	
-				else if (cml.@ref == "Texture") {
-					cml.@ref = "TextureMaterial";
+				else if (cml.@ref == "Video") {
+					cml.@ref = "VideoTexture";
 				}	
-				
+				else if (cml.@ref == "VideoCamera") {
+					cml.@ref = "VideoCameraTexture";
+				}				
 				var ref:String = String(cml.@ref);
 				var cp:XMLList = cml.copy();
 				cp.setName(ref);

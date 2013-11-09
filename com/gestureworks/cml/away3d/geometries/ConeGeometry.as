@@ -1,5 +1,5 @@
 package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.CubeGeometry;
+	import away3d.primitives.ConeGeometry;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -11,25 +11,19 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates cube geometry that can be applied to a Mesh. It extends the Away3D CubeGeometry class to add CML support.
+	 * This class creates cone geometry that can be applied to a Mesh. It extends the Away3D ConeGeometry class to add CML support.
 	 */
-	public class Cube extends CubeGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class ConeGeometry extends away3d.primitives.ConeGeometry implements IObject, ICSS, IState, IGeometry  {
 		
 		// IObject
 		private var _cmlIndex:int;
 		private var _childList:ChildList;
 		
-		// ICSS
-		private var _className:String;		
-		
 		// IState
 		private var _stateId:String;	
 		
-		/**
-		 * @inheritDoc
-		 */		
-		public function Cube(width:Number = 100, height:Number = 100, depth:Number = 100, segmentsW:uint = 1, segmentsH:uint = 1, segmentsD:uint = 1, tile6:Boolean = true) {
-			super(width, height, depth, segmentsW, segmentsH, segmentsD, tile6);
+		public function ConeGeometry(radius:Number = 50, height:Number = 100, segmentsW:uint = 16, segmentsH:uint = 15, yUp:Boolean = true) {
+			super(radius, height, segmentsW, segmentsH, yUp);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
@@ -40,7 +34,14 @@ package com.gestureworks.cml.away3d.geometries {
 		//////////////////////////////////////////////////////////////	
 		
 		/**
-		 * @inheritDoc
+		 * CML initialization
+		 */
+		public function init():void {}
+		
+		/**
+		 * Custom CML parse routine
+		 * @param	cml
+		 * @return
 		 */
 		public function parseCML(cml:XMLList):XMLList {
 			return CMLParser.parseCML(this, cml);
@@ -51,45 +52,43 @@ package com.gestureworks.cml.away3d.geometries {
 		//////////////////////////////////////////////////////////////		
 		
 		/**
-		 * @inheritDoc
+		 * Property states
 		 */
 		public var state:Dictionary;		
 		
 		/**
-		 * @inheritDoc
+		 * Sets the cml index
 		 */
-		public function get cmlIndex():int { return _cmlIndex; }
-		public function set cmlIndex(value:int):void {
+		public function get cmlIndex():int {return _cmlIndex};
+		public function set cmlIndex(value:int):void
+		{
 			_cmlIndex = value;
 		}	
 		
 		/**
-		 * @inheritDoc
+		 * Sets cml childlist
 		 */
-		public function get childList():ChildList { return _childList; }
+		public function get childList():ChildList { return _childList;}
 		public function set childList(value:ChildList):void { 
 			_childList = value;
 		}
 		
 		/**
-		 * @inheritDoc
-		 */
-		public function init():void {}		
-		
-		/**
-		 * @inheritDoc
+		 * Postparse method
+		 * @param	cml
 		 */
 		public function postparseCML(cml:XMLList):void {}
 			
 		/**
-		 * @inheritDoc
+		 * Update properties of child
+		 * @param	state
 		 */
 		public function updateProperties(state:*=0):void {
 			CMLParser.updateProperties(this, state);		
 		}	
 		
 		/**
-		 * @inheritDoc
+		 * Destructor
 		 */
 		override public function dispose():void {
 			super.dispose();
@@ -100,8 +99,9 @@ package com.gestureworks.cml.away3d.geometries {
 		//  ICSS 
 		//////////////////////////////////////////////////////////////
 
+		private var _className:String;
 		/**
-		 * @inheritDoc
+		 * sets the class name of displayobject
 		 */
 		public function get className():String { return _className; }
 		public function set className(value:String):void {
@@ -113,15 +113,18 @@ package com.gestureworks.cml.away3d.geometries {
 		//////////////////////////////////////////////////////////////				
 		
 		/**
-		 * @inheritDoc
+		 * Sets the state id
 		 */
 		public function get stateId():* { return _stateId; }
-		public function set stateId(value:*):void {
+		public function set stateId(value:*):void
+		{
 			_stateId = value;
 		}
 		
 		/**
-		 * @inheritDoc
+		 * Loads state by index number. If the first parameter is NaN, the current state will be saved.
+		 * @param sIndex State index to be loaded.
+		 * @param recursion If true the state will load recursively through the display list starting at the current display ojbect.
 		 */
 		public function loadState(sId:* = null, recursion:Boolean = false):void { 
 			if (StateUtils.loadState(this, sId, recursion)) {
@@ -130,14 +133,18 @@ package com.gestureworks.cml.away3d.geometries {
 		}	
 		
 		/**
-		 * @inheritDoc
+		 * Save state by index number. If the first parameter is NaN, the current state will be saved.
+		 * @param sIndex State index to save.
+		 * @param recursion If true the state will save recursively through the display list starting at the current display ojbect.
 		 */
 		public function saveState(sId:* = null, recursion:Boolean = false):void { 
 			StateUtils.saveState(this, sId, recursion); 
 		}		
 		
 		/**
-		 * @inheritDoc
+		 * Tween state by stateIndex from current to given state index. If the first parameter is null, the current state will be used.
+		 * @param sIndex State index to tween.
+		 * @param tweenTime Duration of tween
 		 */
 		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
 			if (StateUtils.tweenState(this, sId, tweenTime)) {
