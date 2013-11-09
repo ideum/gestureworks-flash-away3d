@@ -107,7 +107,36 @@ package com.gestureworks.away3d
 			}
 		
 			return e;
-		}		
+		}
+		
+		
+		public static function hitTest3D(target: TouchObject3D, view:View3D, x:Number, y:Number):Boolean
+		{			
+			var hit:Boolean = false;
+			collider = touchPicker.getViewCollision(x, y, view);
+			
+			if (collider) {
+					//if( validTarget(collider.entity)) 
+					trace("hit object 3d", collider.entity);
+					
+					if ( collider.entity.assetType == "Mesh"){//WireFrameCube
+						collider.entity.showBounds = true;
+					}
+					if ( collider.entity.assetType == "WireFrameCube"){//
+						collider.entity.showBounds = true;
+					}
+					if ( collider.entity.assetType == "WireframeCylinder"){//WireFrameCube
+						collider.entity.showBounds = true;
+					}
+					
+					hit = true;
+			}
+			
+			//trace("touch manager",collider,target, hit,view)
+			return hit;
+			
+		}
+		
 
 		private static function onTouchMove(e:GWTouchEvent):GWTouchEvent
 		{

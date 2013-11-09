@@ -11,12 +11,11 @@ package com.gestureworks.away3d.utils
 	import away3d.materials.methods.*;
 	import away3d.primitives.*;
 	import away3d.utils.*;
-	import away3d.primitives.LineSegment;
-	import away3d.entities.SegmentSet;
 	
 	import com.gestureworks.core.TouchSprite;
 	import com.gestureworks.objects.ClusterObject;
 	import com.gestureworks.objects.TransformObject;
+	import com.gestureworks.objects.TimelineObject;
 	import com.gestureworks.objects.HandObject;
 	
 	public class MotionVisualizer3D extends ObjectContainer3D
@@ -27,26 +26,21 @@ package com.gestureworks.away3d.utils
 		
 		public var drawHands:Boolean = true;
 		public var drawPoints:Boolean = true;
-		public var drawClusters:Boolean = false;
-		public var drawGestures:Boolean = false;
+		public var drawClusters:Boolean = true;
+		public var drawGestures:Boolean = true;
 		
 		public var cO:ClusterObject;
 		public var trO:TransformObject;
+		public var tiO:TimelineObject;
 		
 		public var lightPicker:StaticLightPicker;
 		
 		//////////////////////////////////////////////////////////////////////
 		// private
 		//////////////////////////////////////////////////////////////////////	
-		
 		private var ts:TouchSprite;
-
-		private var clines:SegmentSet;
 		
-		private var pvector:LineSegment;
-		private var v0:Vector3D;
-		private var v1:Vector3D;
-		
+		// TODO: CONVERT TO VECTORS
 		//hand skeleton
 		private var ballList:Array = new Array();
 		private var fingerList:Array = new Array();
@@ -66,6 +60,11 @@ package com.gestureworks.away3d.utils
 		// gesture
 		private var gballList:Array = new Array();
 		
+		
+		//EVENTS //TODO: CONVERT TO VECTORS
+		private var	gestureEventArray:Array = new Array();
+		//private var	gesturePoinArray:Array = new Array();
+		
 	
 		private var RAD_DEG:Number = 180/Math.PI
 		private var DEG_RAD:Number = Math.PI / 180; 
@@ -75,12 +74,12 @@ package com.gestureworks.away3d.utils
 		
 		public function MotionVisualizer3D():void
 		{
-			trace("auto init 3d vis", ts);
+			//trace("auto init 3d visualizer", ts);
 		}
 		
 		public function init():void 
 		{
-			trace("init 3d vis");
+			//trace("init 3d visualizer");
 
 			//////////////////////////////////////////////////////////////////////
 			// create hand object
@@ -290,8 +289,10 @@ package com.gestureworks.away3d.utils
 					palmList[i].visible = false;
 					ringList[i].visible = false;
 				}
-				
-				
+		}
+		
+		private function clearInteractionPoints():void
+		{
 				//////////////////////////////////////////
 				//interaction points
 				for ( i = 0; i < iballList.length; i++)
@@ -306,7 +307,10 @@ package com.gestureworks.away3d.utils
 					iringList[i].z = 0;
 					iringList[i].visible = false;
 				}
-				
+		}
+		
+		private function clearCluster():void
+		{
 				////////////////////////////////////
 				// cluster elements (points and lines)
 				for ( i = 0; i < celementList.length; i++)
@@ -324,7 +328,10 @@ package com.gestureworks.away3d.utils
 					clinkList[i].z = 0;
 					clinkList[i].visible = false;
 				}
-				
+		}
+		
+		private function clearGestures():void
+		{
 				////////////////////////////////////	
 				//gesturepoints
 				for ( i = 0; i < gballList.length; i++)
@@ -339,7 +346,7 @@ package com.gestureworks.away3d.utils
 		
 		private function drawHand():void
 		{
-			//trace("test", cO.motionArray.length,ballList.length);
+			//trace("draw hand", cO.motionArray.length, ballList.length);
 			
 			var hn:uint = cO.handList.length;
 			
@@ -452,14 +459,14 @@ package com.gestureworks.away3d.utils
 		
 		private function drawInteractionPoints():void
 		{
-	
+			//trace("ipoint", cO.iPointArray.length);
+			
 			// draw interaction points
 			for ( i = 0; i < cO.iPointArray.length; i++) 
-			{
-				//trace("ipoint", cO.iPointArray.length );
+			{	
 				//trace("ipoint",i,cO.iPointArray[i].position );
 				
-				if ((iballList[i])&&(iringList[i])) 
+				if ((cO.iPointArray[i])&&(iballList[i])&&(iringList[i])) 
 				{
 					iballList[i].visible = true;
 					iringList[i].visible = true;
@@ -591,15 +598,15 @@ package com.gestureworks.away3d.utils
 				//cluster web
 				for (var i:int = 0; i < ipn; i++) 
 				{	
-					
-					
+					// NEED THE COUNT BACK TO ELIMINATE DUPLICATES
 					for (var j:int = 0; j < ipn; j++) 
 					{
 						if (i != j) 
 						{
 							//0xFFAE1F 2
-							if (clinkList[i * ipn + j])
+							if ((clinkList[i * ipn + j])&&(cO.iPointArray[i])&&(cO.iPointArray[j]))
 							{
+								
 								clinkList[i * ipn + j].visible = true;
 								//FIND MID POINT
 								clinkList[i*ipn+j].position = new Vector3D(0.5*(cO.iPointArray[i].position.x + cO.iPointArray[j].position.x), 0.5*(cO.iPointArray[i].position.y + cO.iPointArray[j].position.y) , 0.5*(cO.iPointArray[i].position.z + cO.iPointArray[j].position.z) );
@@ -620,9 +627,14 @@ package com.gestureworks.away3d.utils
 		
 		private function drawGestureEvents():void
 		{
+			//trace("3d motion gesture events visualizer",gpn)
+		
+			///////////////////////////////////////////////////////////////////////
+			// SHOW GESTURE POINT OBJECTS
+			///////////////////////////////////////////////////////////////////////
+			/*
+			 *
 			var period:int = 10;
-			
-			//trace("3d motion gesture events visualizer")
 			
 			if (this.cO.history.length > period)
 			{
@@ -663,28 +675,87 @@ package com.gestureworks.away3d.utils
 								gballList[i].getChildAt(0).material.color = 0x0000FF;
 								//trace("hold ball");
 							}
+							
+							// DRAG GESTURE POINT //WHITE
+							if (cO.history[h].gPointArray[i].type == "drag") {
+								gballList[i].getChildAt(0).material.color = 0xFFFFFF;
+								//trace("hold ball");
+							}
 						}
 						
 					}
 				}
 			}
-			}
+			}*/
 			
+			////////////////////////////////////////////////////////////////////////
+			// SHOW GESTURE EVENTS
+			////////////////////////////////////////////////////////////////////////
+			
+				var scan_time:int = 60; //1000ms
+				var hold_linger:int = 30;
+				var tap_linger:int = 30;
+				
+				//trace("visulaize event frame",ts.tiO.timelineOn,ts.tiO.history.length,GestureGlobals.frameID);
+				
+				if(tiO){
+				for (var i:uint = 0; i < scan_time; i++) 
+					{
+						//trace(tiO.history.length)
+					if (tiO.history[i])
+						{
+						gestureEventArray = tiO.history[i].gestureEventArray;
+						//if(gestureEventArray.length)trace("gesture event array--------------------------------------------",gestureEventArray.length);
+
+								for (var j:uint=0; j < gestureEventArray.length; j++) 
+								{
+									if (gballList[j]) 
+									{
+										//trace(gestureEventArray[j].type, gestureEventArray[j].value.x, gestureEventArray[j].value.y, gestureEventArray[j].value.z);
+										gballList[j].visible = true;	
+										gballList[j].position  = new Vector3D (gestureEventArray[j].value.x,gestureEventArray[j].value.y,gestureEventArray[j].value.z);
+										//trace(gballList[j].position)
+										
+										// y tap gesture ball //RED
+										if ((gestureEventArray[j].type == "motion_ytap") && (i < tap_linger))gballList[j].getChildAt(0).material.color = 0xFF0000;
+										// x tap gesture ball //YELLOW
+										if ((gestureEventArray[j].type =="motion_xtap")&&(i<tap_linger))gballList[j].getChildAt(0).material.color = 0xFFFF00;
+										// z tap gesture ball //GREEN
+										if ((gestureEventArray[j].type =="motion_ztap")&&(i<tap_linger))gballList[j].getChildAt(0).material.color = 0x00FFFF;
+										// hold gesture ball //BLUE
+										if ((gestureEventArray[j].type =="motion_hold")&&(i<hold_linger))gballList[j].getChildAt(0).material.color = 0x0000FF;
+									}
+								}
+						}
+					}
+				}
 		}
 		
 		
 		public function updateDisplay():void
 		{			
+			clearHand();
+			
+			
 			if (drawHands) 
 			{
-				clearHand();
 				drawHand();
 			}
-			if (drawPoints) drawInteractionPoints();
-			//if (drawClusters) 
-			drawClusterData();
-			//if (drawGestures) 
-			drawGestureEvents();
+			if (drawPoints) 
+			{
+				clearInteractionPoints()
+				drawInteractionPoints();
+			}
+			if (drawClusters) 
+			{
+				clearCluster();
+				drawClusterData();
+			}
+			if (drawGestures) 
+			{
+				clearGestures();
+				drawGestureEvents();
+			}
 		}
 		
 

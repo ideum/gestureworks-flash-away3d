@@ -9,12 +9,10 @@ package com.gestureworks.away3d.utils {
 					
 		public static function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D {
 			var cartesianCoords:Vector3D = new Vector3D();
-			
-			var d:int = sphericalCoords.z * 2; 
-			
-			var x:Number = d * Math.sin( sphericalCoords.x ) * Math.cos( sphericalCoords.y );
-			var y:Number = d * Math.sin( sphericalCoords.x ) * Math.sin( sphericalCoords.y );
-			var z:Number = d * Math.cos( sphericalCoords.x );
+			var d:Number = sphericalCoords.z;
+			var x:Number = d * Math.sin( sphericalCoords.x * MathConsts.DEGREES_TO_RADIANS ) * Math.cos( sphericalCoords.y * MathConsts.DEGREES_TO_RADIANS );
+			var y:Number = d * Math.sin( sphericalCoords.x * MathConsts.DEGREES_TO_RADIANS ) * Math.sin( sphericalCoords.y * MathConsts.DEGREES_TO_RADIANS );
+			var z:Number = d * Math.cos( sphericalCoords.x * MathConsts.DEGREES_TO_RADIANS );
 			return new Vector3D(x, y, z);
 		}
 		
