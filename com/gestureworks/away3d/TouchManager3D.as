@@ -31,7 +31,7 @@ package com.gestureworks.away3d
 			touchPicker.onlyMouseEnabled = false;
 		}
 				
-		public static function registerTouchObject(t:*):TouchContainer3D
+		public static function registerTouchObject(t:*, touch3d:Boolean=true):TouchContainer3D
 		{
 			if (t is TouchContainer3D){
 				touchObjects[t.vto] = t;
@@ -40,6 +40,7 @@ package com.gestureworks.away3d
 			else {
 				touchObjects[t] = new TouchContainer3D(t);
 				touchObjects[t].vto = t;
+				touchObjects[t].touch3d = touch3d;
 			}
 			return touchObjects[t];		
 		}

@@ -5,8 +5,10 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.lights.PointLight;
 	import away3d.lights.shadowmaps.NearDirectionalShadowMapper;
 	import away3d.materials.lightpickers.StaticLightPicker;
+	import away3d.materials.MaterialBase;
 	import away3d.materials.methods.FilteredShadowMapMethod;
 	import away3d.materials.methods.NearShadowMapMethod;
+	import com.gestureworks.cml.away3d.interfaces.IMaterial;
 	import com.gestureworks.cml.core.CMLObjectList;
 	import flash.geom.Vector3D;
 	
@@ -68,8 +70,8 @@ package com.gestureworks.cml.away3d.elements {
 				//light.scaleZ = this.scaleZ;
 				
 				//need to update any materials previously set
-				for each (var m:Material in CMLObjectList.instance.getClass(Material))
-					if (m.material && m.material.lightPicker == null)
+				for each (var m:IMaterial in CMLObjectList.instance.getClass(IMaterial))
+					if (m && m.lightPicker == null)
 						m.updateLightPicker();
 			}
 		

@@ -23,8 +23,9 @@ package com.gestureworks.cml.core
 	 * @author Ideum
 	 * @see com.gestureworks.cml.core.CML_CORE
 	 */	
-	public class CMLAway3D {}
-
+	public class CMLAway3D { }
+	
+	// elements
 	import com.gestureworks.cml.away3d.elements.Camera; Camera;
 	import com.gestureworks.cml.away3d.elements.Container3D; Container3D;
 	import com.gestureworks.cml.away3d.elements.Light; Light;
@@ -37,8 +38,15 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	
+	// geomtries
+	import com.gestureworks.cml.away3d.geometries.Capsule; Capsule;
+	import com.gestureworks.cml.away3d.geometries.Cone; Cone;
 	import com.gestureworks.cml.away3d.geometries.Cube; Cube;
 	import com.gestureworks.cml.away3d.geometries.Cylinder; Cylinder;	
+	import com.gestureworks.cml.away3d.geometries.NURBS; NURBS;	
 	import com.gestureworks.cml.away3d.geometries.Plane; Plane;
 	import com.gestureworks.cml.away3d.geometries.Sphere; Sphere;
+	import com.gestureworks.cml.away3d.geometries.Torus; Torus;
+	
+	
 }

@@ -36,8 +36,19 @@ package com.gestureworks.cml.away3d.elements {
 		// CML refs		
 		private var _lref:XML;
 		
+		/**
+		 * The root mesh loaded by the model.
+		 */
 		public var mesh:ObjectContainer3D;
 		
+		/**
+		 * Virtual transform object.
+		 */
+		public var vto:TouchContainer3D;	
+		
+		/**
+		 * @inheritDoc
+		 */		
 		public function Model() {
 			super();	
 			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;
@@ -53,7 +64,7 @@ package com.gestureworks.cml.away3d.elements {
 		//////////////////////////////////////////////////////////////	
 		
 		/**
-		 * CML initialization
+		 * @inheritDoc
 		 */
 		public function init():void {
 			Parsers.enableAllBundled();
@@ -64,9 +75,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Custom CML parse routine to add local Geometry and Material
-		 * @param	cml
-		 * @return
+		 * @inheritDoc
 		 */
 		public function parseCML(cml:XMLList):XMLList {
 			var node:XML = XML(cml);			
@@ -92,45 +101,44 @@ package com.gestureworks.cml.away3d.elements {
 		//////////////////////////////////////////////////////////////		
 		
 		/**
-		 * Property states
+		 * @inheritDoc
 		 */
 		public var state:Dictionary;		
 		
 		/**
-		 * Sets the cml index
+		 * @inheritDoc
 		 */
-		public function get cmlIndex():int {return _cmlIndex};
-		public function set cmlIndex(value:int):void
-		{
+		public function get cmlIndex():int { return _cmlIndex };
+		public function set cmlIndex(value:int):void {
 			_cmlIndex = value;
 		}	
 		
 		/**
-		 * Sets cml childlist
+		 * @inheritDoc
 		 */
-		public function get childList():ChildList { return _childList;}
+		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
 		}
 		
 		/**
-		 * Postparse method
-		 * @param	cml
+		 * @inheritDoc
 		 */
 		public function postparseCML(cml:XMLList):void {}
 			
 		/**
-		 * Update properties of child
-		 * @param	state
+		 * @inheritDoc
 		 */
 		public function updateProperties(state:*=0):void {
 			CMLParser.updateProperties(this, state);		
 		}	
 		
 		/**
-		 * Destructor
+		 * @inheritDoc
 		 */
-		override public function dispose():void {}		
+		override public function dispose():void {
+			super.dispose();
+		}		
 		
 		
 		//////////////////////////////////////////////////////////////
@@ -141,9 +149,8 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * sets the class name of displayobject
 		 */
-		public function get className():String { return _className ; }
-		public function set className(value:String):void
-		{
+		public function get className():String { return _className; }
+		public function set className(value:String):void {
 			_className = value;
 		}		
 		
@@ -152,7 +159,7 @@ package com.gestureworks.cml.away3d.elements {
 		//////////////////////////////////////////////////////////////				
 		
 		/**
-		 * Sets the state id
+		 * @inheritDoc
 		 */
 		public function get stateId():* {return _stateId};
 		public function set stateId(value:*):void
@@ -161,9 +168,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Loads state by index number. If the first parameter is NaN, the current state will be saved.
-		 * @param sIndex State index to be loaded.
-		 * @param recursion If true the state will load recursively through the display list starting at the current display ojbect.
+		 * @inheritDoc
 		 */
 		public function loadState(sId:* = null, recursion:Boolean = false):void { 
 			if (StateUtils.loadState(this, sId, recursion)) {
@@ -173,9 +178,7 @@ package com.gestureworks.cml.away3d.elements {
 		}	
 		
 		/**
-		 * Save state by index number. If the first parameter is NaN, the current state will be saved.
-		 * @param sIndex State index to save.
-		 * @param recursion If true the state will save recursively through the display list starting at the current display ojbect.
+		 * @inheritDoc
 		 */
 		public function saveState(sId:* = null, recursion:Boolean = false):void { 
 			StateUtils.saveState(this, sId, recursion); 
@@ -183,9 +186,7 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		/**
-		 * Tween state by stateIndex from current to given state index. If the first parameter is null, the current state will be used.
-		 * @param sIndex State index to tween.
-		 * @param tweenTime Duration of tween
+		 * @inheritDoc
 		 */
 		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
 			if (StateUtils.tweenState(this, sId, tweenTime)) {
@@ -195,21 +196,11 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		//////////////////////////////////////////////////////////////
-		// GestureWorks
-		//////////////////////////////////////////////////////////////			
-		
-		/**
-		 * Virtual transform object
-		 */
-		public var vto:TouchContainer3D;
-		
-		
-		//////////////////////////////////////////////////////////////
-		// Display
+		// IContainer
 		//////////////////////////////////////////////////////////////				
 		
 		/**
-		 * Searches the childlist and adds to the display list
+		 * @inheritDoc
 		 */
 		public function addAllChildren():void {		
 			var n:int = childList.length;
@@ -224,6 +215,35 @@ package com.gestureworks.cml.away3d.elements {
 		//////////////////////////////////////////////////////////////
 		// 3D
 		//////////////////////////////////////////////////////////////		
+		
+		/**
+		 * Sets the model file path.
+		 */
+		public function get src():String { return _src; }		
+		public function set src(value:String):void {
+			_src = value;
+		}		
+		
+		/**
+		 * Sets the light picker.
+		 */
+		public function get lightPicker():* { return _lightPicker; }		
+		public function set lightPicker(value:*):void {
+			if (value is XML) {
+				lref = value;
+				value = document.getElementById(lref);
+			}
+			if (value is LightPicker)
+				_lightPicker = value;
+		}
+		
+		/**
+		 * Sets the light picker reference.
+		 */		
+		public function get lref():XML { return _lref;}
+		public function set lref(value:XML):void {
+			_lref = value;
+		}		
 		
 		private function assetComplete(e:AssetEvent):void {
 			trace(e.asset.name +"\t" + e.asset.assetType );			
@@ -254,32 +274,7 @@ package com.gestureworks.cml.away3d.elements {
 					ModelAsset(this.getChildAt(i)).update()
 			}
 		}
-		
-		/**
-		 * Sets model file path
-		 */
-		public function get src():String { return _src; }		
-		public function set src(value:String):void {
-			_src = value;
-		}
-		
-		public function get lightPicker():* { return _lightPicker; }		
-		public function set lightPicker(value:*):void {
-			if (value is XML) {
-				lref = value;
-				value = document.getElementById(lref);
-			}
-			if (value is LightPicker)
-				_lightPicker = value;
-		}
-		
-		public function get lref():XML {
-			return _lref;
-		}
-		
-		public function set lref(value:XML):void {
-			_lref = value;
-		}
+
 	
 	}
 

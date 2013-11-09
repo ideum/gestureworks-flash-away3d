@@ -7,7 +7,6 @@ package com.gestureworks.away3d.utils {
 	 */
 	public class CML3DUtils {
 		
-		
 		/**
 		 * Determines if CML object is a Geometry instance
 		 * @param	tag
@@ -17,8 +16,5 @@ package com.gestureworks.away3d.utils {
 			return CMLParser.searchPackages(tag,["com.gestureworks.cml.away3d.geometries."]) is IGeometry; 
 		}
 		
-		
-		
 	}
-
 }

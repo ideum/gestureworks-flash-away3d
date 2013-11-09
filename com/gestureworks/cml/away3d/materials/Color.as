@@ -1,6 +1,5 @@
-package com.gestureworks.cml.away3d.geometries {
-	import away3d.primitives.data.NURBSVertex;
-	import away3d.primitives.NURBSGeometry;
+package com.gestureworks.cml.away3d.materials {
+	import away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -12,9 +11,9 @@ package com.gestureworks.cml.away3d.geometries {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates NURBS geometry that can be applied to a Mesh. It extends the Away3D NURBSGeometry class to add CML support.
+	 * This class creates a color material that can be applied to a Mesh. It extends the Away3D CapsuleGeometry class to add CML support.
 	 */
-	public class NURBS extends NURBSGeometry implements IObject, ICSS, IState, IGeometry  {
+	public class Color extends ColorMaterial implements IObject, ICSS, IState, IGeometry  {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -29,8 +28,8 @@ package com.gestureworks.cml.away3d.geometries {
 		/**
 		 * @inheritDoc
 		 */	
-		public function NURBS(cNet:Vector.<NURBSVertex>, uCtrlPnts:int, vCtrlPnts:int, uOrder:int = 4, vOrder:int = 4, uSegments:int = 10, vSegments:int = 10, uKnot:Vector.<Number> = null, vKnot:Vector.<Number> = null) {
-			super(cNet, uCtrlPnts, vCtrlPnts, uOrder, vOrder, uSegments, vSegments, uKnot, vKnot);
+		public function Color(color:uint = 0xcccccc, alpha:Number = 1) {
+			super(color, alpha);
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				

@@ -7,29 +7,15 @@ package com.gestureworks.away3d.utils {
 	 */
 	public class Math3DUtils {
 					
-		public static function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D
-		{
+		public static function sphericalToCartesian(sphericalCoords:Vector3D):Vector3D {
 			var cartesianCoords:Vector3D = new Vector3D();
-			var distance = sphericalCoords.z;
-			var r:Number = sphericalCoords.z;
-			cartesianCoords.y = r*Math.sin(-sphericalCoords.y);
-			var cosE:Number = Math.cos(-sphericalCoords.y);
-			cartesianCoords.x = r*cosE*Math.sin(sphericalCoords.x);
-			cartesianCoords.z = r*cosE*Math.cos(sphericalCoords.x);
-			return cartesianCoords;
-		}
-		
-		public static function cartesianToSpherical(cartesianCoords:Vector3D):Vector3D
-		{
-			var cartesianFromCenter:Vector3D = new Vector3D();
-			cartesianFromCenter.x = cartesianCoords.x;
-			cartesianFromCenter.y = cartesianCoords.y;
-			cartesianFromCenter.z = cartesianCoords.z;
-			var sphericalCoords:Vector3D = new Vector3D();
-			sphericalCoords.z = cartesianFromCenter.length;
-			sphericalCoords.x = Math.atan2(cartesianFromCenter.x, cartesianFromCenter.z);
-			sphericalCoords.y = -Math.asin((cartesianFromCenter.y) / sphericalCoords.z);
-			return sphericalCoords;
+			
+			var d:int = sphericalCoords.z * 2; 
+			
+			var x:Number = d * Math.sin( sphericalCoords.x ) * Math.cos( sphericalCoords.y );
+			var y:Number = d * Math.sin( sphericalCoords.x ) * Math.sin( sphericalCoords.y );
+			var z:Number = d * Math.cos( sphericalCoords.x );
+			return new Vector3D(x, y, z);
 		}
 		
 	}

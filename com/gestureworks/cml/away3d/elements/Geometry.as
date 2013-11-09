@@ -5,7 +5,10 @@ package com.gestureworks.cml.away3d.elements {
 	 * Loads Geometry instances in CML through ref attribute 
 	 */
 	public class Geometry extends CMLObject {
-				
+		
+		/**
+		 * Constructor
+		 */
 		public function Geometry() {
 			super();
 		}

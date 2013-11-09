@@ -33,7 +33,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _mref:XML; // material			
 		
 		/**
-		 * Virtual transform object
+		 * Virtual transform object.
 		 */
 		public var vto:TouchContainer3D;			
 		
