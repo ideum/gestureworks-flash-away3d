@@ -3,6 +3,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.events.AssetEvent;
 	import away3d.events.LoaderEvent;
 	import away3d.library.AssetLibrary;
+	import away3d.library.AssetLibraryBundle;
 	import away3d.loaders.parsers.Parsers;
 	import away3d.materials.MaterialBase;
 	import com.gestureworks.away3d.TouchManager3D;
@@ -71,10 +72,9 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			Parsers.enableAllBundled();
-			//TODO namespace and context
-			AssetLibrary.addEventListener(LoaderEvent.RESOURCE_COMPLETE, initObjects);
-			AssetLibrary.addEventListener(AssetEvent.ASSET_COMPLETE, assetComplete);
-			AssetLibrary.load(new URLRequest(src));			
+			AssetLibraryBundle.getInstance(String(cmlIndex)).addEventListener(LoaderEvent.RESOURCE_COMPLETE, initObjects);
+			AssetLibraryBundle.getInstance(String(cmlIndex)).addEventListener(AssetEvent.ASSET_COMPLETE, assetComplete);
+			AssetLibraryBundle.getInstance(String(cmlIndex)).load(new URLRequest(src), null, String(cmlIndex));			
 		}
 		
 		/**
@@ -256,6 +256,10 @@ package com.gestureworks.cml.away3d.elements {
 		 * Assets loaded callback function.
 		 */
 		private function assetComplete(e:AssetEvent):void {
+			
+			if (e.asset.assetNamespace != String(cmlIndex)) 
+				return;
+			
 			trace(e.asset.name +"\t" + e.asset.assetType );	
 			
 			if (e.asset is ObjectContainer3D) {
