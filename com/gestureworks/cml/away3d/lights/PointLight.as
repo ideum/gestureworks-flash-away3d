@@ -1,5 +1,6 @@
 package com.gestureworks.cml.away3d.lights {
 	import away3d.lights.PointLight;
+	import com.gestureworks.cml.away3d.interfaces.ILight;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
@@ -12,7 +13,7 @@ package com.gestureworks.cml.away3d.lights {
 	/**
 	 * This class creates a point light that can be applied to a Material. It extends the Away3D PointLight class to add CML support.
 	 */
-	public class PointLight extends away3d.lights.PointLight implements IObject, ICSS, IState {
+	public class PointLight extends away3d.lights.PointLight implements IObject, ICSS, IState, ILight {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -147,11 +148,6 @@ package com.gestureworks.cml.away3d.lights {
 		//////////////////////////////////////////////////////////////
 		// 3D
 		//////////////////////////////////////////////////////////////
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function updateLightPicker():void {}
 		
 	}
 }

@@ -30,14 +30,10 @@ package com.gestureworks.cml.away3d.elements {
 		private var _stateId:String		
 		
 		// 3D
+		private var _debug:Boolean = false;
 		private var _src:String;
 		private var _lpref:XML;
-		private var _lightPicker:LightPicker;		
-		
-		/**
-		 * The root mesh loaded by the model.
-		 */
-		public var mesh:ObjectContainer3D;
+		private var _lightPicker:LightPicker;
 		
 		/**
 		 * Virtual transform object.
@@ -63,6 +59,17 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function init():void {
+			
+			var s:String;
+			
+			if (lpref) {
+				s = String(lpref);
+				if (s.charAt(0) == "#") {
+					s = s.substr(1);
+				}
+				lightPicker = document.getElementById(s); 	
+			}
+			
 			Parsers.enableAllBundled();
 			//TODO namespace and context
 			AssetLibrary.addEventListener(LoaderEvent.RESOURCE_COMPLETE, initObjects);
@@ -74,6 +81,12 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function parseCML(cml:XMLList):XMLList {	
+			
+			if (cml.@lightPicker != undefined) {
+				cml.@lpref = cml.@lightPicker;
+				delete cml.@lightPicker;
+			}	
+			
 			return CMLParser.instance.parseCML(this, cml);
 		}
 		
@@ -221,18 +234,30 @@ package com.gestureworks.cml.away3d.elements {
 			_lpref = value;
 		}		
 		
+		/**
+		 * Sets debug status.
+		 */
+		public function get debug():Boolean { return _debug; }
+		public function set debug(value:Boolean):void {
+			_debug = value;
+		}
+		
+		
+		/**
+		 * @private
+		 * Assets loaded callback function.
+		 */
 		private function assetComplete(e:AssetEvent):void {
-			trace(e.asset.name +"\t" + e.asset.assetType );			
-
-			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
-				mesh = ObjectContainer3D(e.asset);
-				if (this.parent is ObjectContainer3D)
-					ObjectContainer3D(this.parent).addChild(ObjectContainer3D(mesh));
-				else {
-					addChild(mesh);
-				}
+			trace(e.asset.name +"\t" + e.asset.assetType );	
+			
+			if (e.asset is ObjectContainer3D) {
+				ObjectContainer3D(e.asset).mouseEnabled = mouseEnabled;								
+				ObjectContainer3D(e.asset).mouseChildren = mouseChildren;								
 			}
 			
+			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
+				addChild(ObjectContainer3D(e.asset));
+			}
 			if (e.asset is MaterialBase) {			
 				if (lightPicker) {
 					MaterialBase(e.asset).lightPicker = lightPicker;
@@ -245,9 +270,11 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		private function initObjects(e:LoaderEvent):void {
-			for (var i:uint = 0; i < this.numChildren; i++) {
-				if (this.getChildAt(i) is ModelAsset)
-					ModelAsset(this.getChildAt(i)).update()
+			for each (var item:* in childList) {
+				
+				if (item is ModelAsset) {
+					ModelAsset(item).update()
+				}
 			}
 		}
 

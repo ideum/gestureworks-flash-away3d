@@ -28,7 +28,7 @@ package com.gestureworks.away3d
 		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
-			touchPicker.onlyMouseEnabled = false;
+			touchPicker.onlyMouseEnabled = true;
 		}
 				
 		public static function registerTouchObject(t:*, touch3d:Boolean=true):TouchContainer3D
