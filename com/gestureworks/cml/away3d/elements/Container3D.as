@@ -26,11 +26,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _className:String;
 		
 		// IState
-		private var _stateId:String;
-
-		// CML refs
-		private var _gref:XML; // geometry
-		private var _mref:XML; // material			
+		private var _stateId:String;	
 		
 		/**
 		 * Virtual transform object.

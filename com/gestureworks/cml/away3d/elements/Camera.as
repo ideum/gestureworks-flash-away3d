@@ -6,6 +6,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.View3D;
 	import away3d.core.pick.PickingType;
 	import away3d.utils.Cast;
+	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
@@ -46,10 +47,16 @@ package com.gestureworks.cml.away3d.elements {
 		private var _color:uint = 0x000000;
 		
 		/**
+		 * Virtual transform object.
+		 */
+		public var vto:TouchContainer3D;		
+		
+		/**
 		 * @inheritDoc
 		 */	
 		public function Camera(lens:LensBase = null) {
 			super(lens);
+			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;			
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				

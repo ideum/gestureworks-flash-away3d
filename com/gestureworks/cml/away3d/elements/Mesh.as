@@ -2,7 +2,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.entities.Mesh;
 	import com.gestureworks.away3d.TouchManager3D;
-	import com.gestureworks.away3d.utils.CML3DUtils;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.IContainer;
@@ -95,16 +94,6 @@ package com.gestureworks.cml.away3d.elements {
 				delete cml.@material;
 			}				
 			
-			for each(var item:XML in node.*) {
-				if (CML3DUtils.isGeometry(item.name())) {					
-					obj = CMLParser.createObject(item.name());
-					CMLParser.attrLoop(obj, XMLList(item));
-					obj.updateProperties();
-					obj.init();					
-					geometry = obj.geometry;
-					delete cml[item.name()];
-				}									
-			}			
 			return CMLParser.parseCML(this, cml);
 		}
 		
@@ -220,7 +209,7 @@ package com.gestureworks.cml.away3d.elements {
 					addChild(childList.getIndex(i));
 				if (n != childList.length)
 					i--;
-			}
+			}			
 		}	
 		
 		//////////////////////////////////////////////////////////////
@@ -242,5 +231,15 @@ package com.gestureworks.cml.away3d.elements {
 		public function set mref(mat:*):void { 
 			_mref = mat;
 		}
+		
+		/**
+		 * Sets whether touch events are processed on this object. Same as mouseEnabled.
+		 */
+		public function get touchEnabled():Boolean { return mouseEnabled; }
+		public function set touchEnabled(value:Boolean):void {
+			mouseEnabled = value;
+		}
+		
+		
 	}
 }

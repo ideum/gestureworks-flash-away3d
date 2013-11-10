@@ -242,6 +242,14 @@ package com.gestureworks.cml.away3d.elements {
 			_debug = value;
 		}
 		
+		/**
+		 * Sets whether touch events are processed on this object. Same as mouseEnabled.
+		 */
+		public function get touchEnabled():Boolean { return mouseEnabled; }
+		public function set touchEnabled(value:Boolean):void {
+			mouseEnabled = value;
+		}
+		
 		
 		/**
 		 * @private

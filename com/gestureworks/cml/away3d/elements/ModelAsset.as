@@ -31,14 +31,9 @@ package com.gestureworks.cml.away3d.elements
 			
 			if (t == "mesh") {
 				mesh = away3d.entities.Mesh(AssetLibrary.getAsset(id));
-				mesh.mouseEnabled = true;
-				vto = mesh;
-				touch3d = true;							
-				TouchManager3D.registerTouchObject(this);		
 			}
 			else if (t == "container")	{
 				container3D = ObjectContainer3D(AssetLibrary.getAsset(id));
-				TouchManager3D.registerTouchObject(container3D);		
 			}
 			else if (t == "material") {
 				material = MaterialBase(AssetLibrary.getAsset(id));
@@ -49,19 +44,32 @@ package com.gestureworks.cml.away3d.elements
 			
 			if (t == "mesh" || t =="container") {
 				var obj:ObjectContainer3D = ObjectContainer3D(AssetLibrary.getAsset(id));
+				
 				obj.x = x;
 				obj.y = y;
 				obj.z = z;
+				
 				obj.pivotPoint = new Vector3D(pivot.split(",")[0], pivot.split(",")[1], pivot.split(",")[2]); 
+				
 				obj.rotationX = rotationX;
 				obj.rotationY = rotationY;
 				obj.rotationZ = rotationZ;
+				
 				if ( lookat) { //overides any rotation above
 					obj.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
 				}
+				
 				obj.scaleX = scaleX;
 				obj.scaleY = scaleY;
 				obj.scaleZ = scaleZ;
+				
+				
+				obj.mouseEnabled = mouseEnabled;
+				obj.mouseChildren = mouseChildren;			
+				
+				vto = obj;								
+				TouchManager3D.registerTouchObject(this);
+				
 				
 				if (mref)
 					material = mref;

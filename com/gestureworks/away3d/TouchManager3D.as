@@ -9,6 +9,7 @@ package com.gestureworks.away3d
 	import com.gestureworks.cml.away3d.elements.TouchContainer3D;
 	import com.gestureworks.core.*;
 	import com.gestureworks.events.*;
+	import com.gestureworks.interfaces.ITouchObject;
 	import com.gestureworks.managers.*;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.*;
@@ -31,7 +32,7 @@ package com.gestureworks.away3d
 			touchPicker.onlyMouseEnabled = true;
 		}
 				
-		public static function registerTouchObject(t:*, touch3d:Boolean=true):TouchContainer3D
+		public static function registerTouchObject(t:*, touch3d:Boolean=true):ITouchObject
 		{
 			if (t is TouchContainer3D){
 				touchObjects[t.vto] = t;
