@@ -17,7 +17,12 @@ package com.gestureworks.cml.away3d.elements
 		private var _pivot:String = "0,0,0";
 		private var _obj3D:ObjectContainer3D; 
 		private var _distance:Number;
+		private var _vto:*;
+		
 		public var centerTransform:Boolean = false;
+		private var _sca:String;
+		private var _position:*;
+		private var _rot:String;
 		
 		/**
 		 * Constructor
@@ -75,7 +80,6 @@ package com.gestureworks.cml.away3d.elements
 			vto.transform = transform.matrix3D;			
 		}
 		
-		private var _vto:*;
 		/**
 		 * Sets the transformation target
 		 */
@@ -92,7 +96,10 @@ package com.gestureworks.cml.away3d.elements
 			}
 		}
 		
-		private var _position:*;
+		
+		
+		
+		
 		/**
 		 * Sets the position 
 		 */
@@ -114,7 +121,6 @@ package com.gestureworks.cml.away3d.elements
 			position = value;
 		}		
 		
-		private var _rot:String;
 		/**
 		 * Sets the rotation 
 		 */
@@ -127,7 +133,6 @@ package com.gestureworks.cml.away3d.elements
 			rotationZ = value.split(",")[2];
 		}
 		
-		private var _sca:String;
 		/**
 		 * Sets the scale 
 		 */
@@ -140,7 +145,10 @@ package com.gestureworks.cml.away3d.elements
 			scaleZ = value.split(",")[2];
 		}
 		
-				
+			
+		
+		
+		
 		public function get pivot():String { return _pivot; }		
 		public function set pivot(value:String):void {
 			_pivot = value;

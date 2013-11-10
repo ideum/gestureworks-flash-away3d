@@ -31,10 +31,8 @@ package com.gestureworks.cml.away3d.elements {
 		
 		// 3D
 		private var _src:String;
-		private var _lightPicker:LightPicker;
-		
-		// CML refs		
-		private var _lref:XML;
+		private var _lpref:XML;
+		private var _lightPicker:LightPicker;		
 		
 		/**
 		 * The root mesh loaded by the model.
@@ -52,8 +50,6 @@ package com.gestureworks.cml.away3d.elements {
 		public function Model() {
 			super();	
 			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;
-			//vto.away3d = true;
-			mouseEnabled = true;
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
@@ -77,22 +73,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function parseCML(cml:XMLList):XMLList {
-			var node:XML = XML(cml);			
-			for each(var item:XML in node.*) {
-				if (item.name()=="LightPicker") {					
-					lightPicker = CMLParser.instance.createObject(item.name());
-					CMLParser.instance.attrLoop(lightPicker, XMLList(item)); 
-					lightPicker.updateProperties();
-					
-					for each(var light:Light in lightPicker.lights) 
-						light.updateProperties();						
-					
-					lightPicker.parseCML(XMLList(item));						
-					lightPicker.init();
-					delete cml[item.name()];
-				}					
-			}			
+		public function parseCML(cml:XMLList):XMLList {	
 			return CMLParser.instance.parseCML(this, cml);
 		}
 		
@@ -229,20 +210,15 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		public function get lightPicker():* { return _lightPicker; }		
 		public function set lightPicker(value:*):void {
-			if (value is XML) {
-				lref = value;
-				value = document.getElementById(lref);
-			}
-			if (value is LightPicker)
 				_lightPicker = value;
 		}
 		
 		/**
 		 * Sets the light picker reference.
 		 */		
-		public function get lref():XML { return _lref;}
-		public function set lref(value:XML):void {
-			_lref = value;
+		public function get lpref():XML { return _lpref;}
+		public function set lpref(value:XML):void {
+			_lpref = value;
 		}		
 		
 		private function assetComplete(e:AssetEvent):void {
@@ -251,7 +227,7 @@ package com.gestureworks.cml.away3d.elements {
 			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
 				mesh = ObjectContainer3D(e.asset);
 				if (this.parent is ObjectContainer3D)
-					TouchContainer3D(this.parent).addChild3D(ObjectContainer3D(mesh));
+					ObjectContainer3D(this.parent).addChild(ObjectContainer3D(mesh));
 				else {
 					addChild(mesh);
 				}
@@ -259,7 +235,7 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if (e.asset is MaterialBase) {			
 				if (lightPicker) {
-					MaterialBase(e.asset).lightPicker = lightPicker.slp;
+					MaterialBase(e.asset).lightPicker = lightPicker;
 					//if (e.asset is ColorMaterial)
 						//ColorMaterial(e.asset).shadowMethod = Light(CMLObjectList.instance.getId(this._lightRef)).shadowMethod;
 					//else
