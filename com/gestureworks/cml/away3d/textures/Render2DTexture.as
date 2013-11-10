@@ -1,22 +1,24 @@
 package com.gestureworks.cml.away3d.textures {
 	import away3d.textures.BitmapTexture;
+	import away3d.tools.utils.TextureUtils;
 	import com.gestureworks.cml.away3d.interfaces.ITexture;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IObject;
 	import com.gestureworks.cml.interfaces.IState;
-	import com.gestureworks.cml.managers.FileManager;
 	import com.gestureworks.cml.utils.ChildList;
+	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.utils.StateUtils;
-	import com.greensock.loading.ImageLoader;
+	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 	
 	/**
 	 * This class creates a bitmap texture that can be applied to a Material. It extends the Away3D BitmapTexture class to add CML support.
 	 */
-	public class BitmapTexture extends away3d.textures.BitmapTexture implements IObject, ICSS, IState, ITexture {
+	public class Render2DTexture extends away3d.textures.BitmapTexture implements IObject, ICSS, IState, ITexture {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -34,7 +36,7 @@ package com.gestureworks.cml.away3d.textures {
 		/**
 		 * @inheritDoc
 		 */	
-		public function BitmapTexture(bitmapData:BitmapData=null, generateMipmaps:Boolean = true) {
+		public function Render2DTexture(bitmapData:BitmapData=null, generateMipmaps:Boolean = true) {
 			super(bitmapData, generateMipmaps);
 			state = new Dictionary(false);
 			state[0] = new State(false);
@@ -45,11 +47,20 @@ package com.gestureworks.cml.away3d.textures {
 		 * @inheritDoc
 		 */
 		public function init():void {			
-			var fileData:ImageLoader;
-			if (src) { 
-				fileData = ImageLoader(FileManager.media.getLoader(src));
-				bitmapData = new BitmapData(fileData.rawContent.width, fileData.rawContent.height, true, 0x000000);
-				bitmapData.draw(fileData.rawContent);
+			var b:Bitmap;
+			
+			for each (var child:* in childList) {
+				if (child is DisplayObjectContainer) {
+					var max:Number = TextureUtils.getBestPowerOf2(Math.max(child.width, child.height));
+					child.width = max;
+					child.height = max;
+					b = DisplayUtils.toBitmap(child, true);
+					break;
+				}
+			}
+			
+			if (b) { 
+				bitmapData = b.bitmapData;
 			}	
 		}			
 		

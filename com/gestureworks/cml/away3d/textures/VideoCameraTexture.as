@@ -1,5 +1,5 @@
 package com.gestureworks.cml.away3d.textures {
-	import away3d.materials.utils.IVideoPlayer;
+	import away3d.textures.WebcamTexture;
 	import com.gestureworks.cml.away3d.interfaces.ITexture;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -10,7 +10,6 @@ package com.gestureworks.cml.away3d.textures {
 	import com.gestureworks.cml.utils.StateUtils;
 	import flash.media.Camera;
 	import flash.utils.Dictionary;
-	import away3d.textures.WebcamTexture;
 	
 	/**
 	 * This class creates a video texture that can be applied to a Material. It extends the Away3D VideoTexture class to add CML support.

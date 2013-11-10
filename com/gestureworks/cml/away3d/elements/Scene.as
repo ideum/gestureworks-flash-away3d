@@ -26,7 +26,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _viewPos:String = "0,0"; //"x,y"
 		private var _viewDim:String; //"wh"
 		private var _viewAntiAlias:int = 4;
-		private var _viewBgColor:uint = 0x000000;
+		private var _viewBgColor:uint = 0x555555;
+		
 		
 		// Away3D view instances vect
 		private var _viewVct:Vector.<View3D> = new Vector.<View3D>;

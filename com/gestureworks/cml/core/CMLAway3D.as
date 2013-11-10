@@ -40,6 +40,10 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	import com.gestureworks.cml.away3d.elements.Texture; Texture;
 	
+	// light
+	import com.gestureworks.cml.away3d.lights.PointLight; PointLight;	
+	import com.gestureworks.cml.away3d.lights.DirectionalLight; DirectionalLight;	
+	
 	// geomtries
 	import com.gestureworks.cml.away3d.geometries.CapsuleGeometry; CapsuleGeometry;
 	import com.gestureworks.cml.away3d.geometries.ConeGeometry; ConeGeometry;
@@ -58,6 +62,8 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.textures.BitmapTexture; BitmapTexture;	
 	import com.gestureworks.cml.away3d.textures.VideoTexture; VideoTexture;	
 	import com.gestureworks.cml.away3d.textures.VideoCameraTexture; VideoCameraTexture;	
+	import com.gestureworks.cml.away3d.textures.Render2DTexture; Render2DTexture;	
 	
+
 	
 }

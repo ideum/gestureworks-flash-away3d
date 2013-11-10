@@ -18,7 +18,7 @@ package com.gestureworks.cml.away3d.elements {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * 
+	 * This class loads a 3D Model file.
 	 */
 	public class Model extends ObjectContainer3D implements IObject, ICSS, IState {
 		

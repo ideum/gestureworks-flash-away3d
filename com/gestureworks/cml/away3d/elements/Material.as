@@ -22,7 +22,12 @@ package com.gestureworks.cml.away3d.elements {
 			if (cml.@texture != undefined) {
 				cml.@tref = cml.@texture;
 				delete cml.@texture;
-			}				
+			}	
+			
+			if (cml.@lightPicker != undefined) {
+				cml.@lpref = cml.@lightPicker;
+				delete cml.@lightPicker;
+			}			
 			
 			if (cml.@ref != undefined) {
 				
@@ -39,7 +44,9 @@ package com.gestureworks.cml.away3d.elements {
 				delete cp.@ref;
 				rXML = cp;
 			}
-			return rXML;
-		}		
+			
+			return rXML;			
+		}
+		
 	}
 }

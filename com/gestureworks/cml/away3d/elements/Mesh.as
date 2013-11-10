@@ -62,15 +62,17 @@ package com.gestureworks.cml.away3d.elements {
 			var s:String;
 			
 			if (gref) {
-				if (String(gref).charAt(0) == "#") {
-					s = String(gref).substr(1);
+				s = String(gref);
+				if (s.charAt(0) == "#") {
+					s = s.substr(1);
 				}
 				geometry = document.getElementById(s); 	
 			}
 			
 			if (mref) {
-				if (String(mref).charAt(0) == "#") {
-					s = String(mref).substr(1);
+				s = String(mref);
+				if (s.charAt(0) == "#") {
+					s = s.substr(1);
 				}
 				material = document.getElementById(s); 
 			}	

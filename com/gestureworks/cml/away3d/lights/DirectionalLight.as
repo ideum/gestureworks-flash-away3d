@@ -1,22 +1,18 @@
-package com.gestureworks.cml.away3d.textures {
-	import away3d.textures.BitmapTexture;
-	import com.gestureworks.cml.away3d.interfaces.ITexture;
+package com.gestureworks.cml.away3d.lights {
+	import away3d.lights.DirectionalLight;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IObject;
 	import com.gestureworks.cml.interfaces.IState;
-	import com.gestureworks.cml.managers.FileManager;
 	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.StateUtils;
-	import com.greensock.loading.ImageLoader;
-	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates a bitmap texture that can be applied to a Material. It extends the Away3D BitmapTexture class to add CML support.
+	 * This class creates a directionarl light that can be applied to a Material. It extends the Away3D DirectionalLight class to add CML support.
 	 */
-	public class BitmapTexture extends away3d.textures.BitmapTexture implements IObject, ICSS, IState, ITexture {
+	public class DirectionalLight extends away3d.lights.DirectionalLight implements IObject, ICSS, IState {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -26,32 +22,17 @@ package com.gestureworks.cml.away3d.textures {
 		private var _className:String;			
 		
 		// IState
-		private var _stateId:String;
-		
-		// 3D
-		private var _src:String;
+		private var _stateId:String;	
 		
 		/**
 		 * @inheritDoc
 		 */	
-		public function BitmapTexture(bitmapData:BitmapData=null, generateMipmaps:Boolean = true) {
-			super(bitmapData, generateMipmaps);
+		public function DirectionalLight() {
+			super();
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;				
 		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function init():void {			
-			var fileData:ImageLoader;
-			if (src) { 
-				fileData = ImageLoader(FileManager.media.getLoader(src));
-				bitmapData = new BitmapData(fileData.rawContent.width, fileData.rawContent.height, true, 0x000000);
-				bitmapData.draw(fileData.rawContent);
-			}	
-		}			
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
@@ -87,7 +68,12 @@ package com.gestureworks.cml.away3d.textures {
 		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
-		}	
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {}		
 		
 		/**
 		 * @inheritDoc
@@ -161,21 +147,11 @@ package com.gestureworks.cml.away3d.textures {
 		//////////////////////////////////////////////////////////////
 		// 3D
 		//////////////////////////////////////////////////////////////
-
-		/**
-		 * Sets file source
-		 * @param value File path
-		 */
-		public function get src():String { return _src;}
-		public function set src(value:String):void {
-			_src = value;
-		}		
-	
+		
 		/**
 		 * @inheritDoc
 		 */
 		public function updateLightPicker():void {}
-		
 		
 	}
 }

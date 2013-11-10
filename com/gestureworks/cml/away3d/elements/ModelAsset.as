@@ -48,18 +48,18 @@ package com.gestureworks.cml.away3d.elements
 			
 			if (AssetLibrary.getAsset(id).assetType == "material")
 			{
-				var material:MaterialBase = MaterialBase(AssetLibrary.getAsset(id));
-				
-				if (material is ColorMaterial)
-				{
-					ColorMaterial(material).alpha = alpha;
-				}
-				else //texture
-				{
-					TextureMaterial(material).alpha = alpha;
-
-					
-				}
+				//var material:MaterialBase = MaterialBase(AssetLibrary.getAsset(id));
+				//
+				//if (material is ColorMaterial)
+				//{
+					//ColorMaterial(material).alpha = alpha;
+				//}
+				//else //texture
+				//{
+					//TextureMaterial(material).alpha = alpha;
+//
+					//
+				//}
 			}
 		}
 		

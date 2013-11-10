@@ -28,13 +28,17 @@ package com.gestureworks.cml.away3d.elements {
 				}	
 				else if (cml.@ref == "VideoCamera") {
 					cml.@ref = "VideoCameraTexture";
-				}				
+				}	
+				else if (cml.@ref == "Render2D") {
+					cml.@ref = "Render2DTexture";
+				}					
 				var ref:String = String(cml.@ref);
 				var cp:XMLList = cml.copy();
 				cp.setName(ref);
 				delete cp.@ref;
 				rXML = cp;
 			}
+			
 			return rXML;
 		}		
 	}

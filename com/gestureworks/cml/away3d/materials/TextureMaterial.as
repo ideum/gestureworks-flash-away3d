@@ -29,6 +29,7 @@ package com.gestureworks.cml.away3d.materials {
 		
 		// 3D 
 		private var _tref:XML;
+		private var _lpref:XML;
 		
 		/**
 		 * @inheritDoc
@@ -47,11 +48,19 @@ package com.gestureworks.cml.away3d.materials {
 			var s:String;
 			
 			if (tref) {
-				if (String(tref).charAt(0) == "#") {
-					s = String(tref).substr(1);
+				s = String(tref);
+				if (s.charAt(0) == "#") {
+					s = String(s).substr(1);
 				}
 				texture = document.getElementById(s); 	
-			}						
+			}	
+			if (lpref) {
+				s = String(lpref);
+				if (s.charAt(0) == "#") {
+					s = String(s).substr(1);
+				}
+				lightPicker = document.getElementById(s); 	
+			}					
 		}				
 		
 		//////////////////////////////////////////////////////////////
@@ -171,6 +180,14 @@ package com.gestureworks.cml.away3d.materials {
 		public function set tref(value:XML):void {
 			_tref = value;
 		}		
+		
+		/**
+		 * LightPicker reference
+		 */
+		public function get lpref():XML { return _lpref; }
+		public function set lpref(value:XML):void {
+			_lpref = value;
+		}
 		
 		/**
 		 * @inheritDoc

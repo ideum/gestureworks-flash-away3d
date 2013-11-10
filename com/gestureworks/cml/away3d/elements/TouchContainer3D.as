@@ -1,6 +1,5 @@
 package com.gestureworks.cml.away3d.elements
 {
-	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
 	import com.gestureworks.away3d.TouchManager3D;
@@ -8,9 +7,7 @@ package com.gestureworks.cml.away3d.elements
 	import com.gestureworks.cml.elements.*;
 	import com.gestureworks.cml.interfaces.*;
 	import com.gestureworks.cml.managers.*;
-	import flash.display.DisplayObject;
 	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
 		
 	
 	public class TouchContainer3D extends TouchContainer
@@ -19,8 +16,7 @@ package com.gestureworks.cml.away3d.elements
 		private var _pivot:String = "0,0,0";
 		private var _obj3D:ObjectContainer3D; 
 		private var _distance:Number;
-		public var centerTransform:Boolean = true;
-		//public var camera:Camera3D;		
+		public var centerTransform:Boolean = false;
 		
 		/**
 		 * Constructor

@@ -1,88 +1,189 @@
 package com.gestureworks.cml.away3d.elements {
-	import away3d.lights.DirectionalLight;
-	import away3d.materials.lightpickers.StaticLightPicker;
+	import away3d.lights.LightBase;
+	import com.gestureworks.cml.away3d.utils.StaticLightPickerMod;
 	import com.gestureworks.cml.core.CMLParser;
+	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.interfaces.ICSS;
+	import com.gestureworks.cml.interfaces.IObject;
+	import com.gestureworks.cml.interfaces.IState;
+	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.document;
+	import com.gestureworks.cml.utils.StateUtils;
+	import flash.utils.Dictionary;
 	
 	/**
-	 * LightPicker is used to apply single or multiple Lights to a Material.
-	 * The Material references the LightPicker id by the Materials lightPicker.
-	 * A Material can only have one light picker assigned.
-	 * LightPickers lightIDs reference the Lights id.
-	 * Lights can be shared by LightPickers and placed anywhere in the display list.
-	 *
+	 * This class creates a LightPicker. It extends the Away3D StaticLightPickerMod class to add CML support.
 	 */
-	public class LightPicker extends Container3D {
+	public class LightPicker extends com.gestureworks.cml.away3d.utils.StaticLightPickerMod implements IObject, ICSS, IState  {
 		
-		private var _slp:StaticLightPicker;
-		private var _lights:Vector.<Light> = new Vector.<Light>();
-		private var lightPickerLightsArr:Array = [];
-		private var _shadowLight:DirectionalLight;
+		// IObject
+		private var _cmlIndex:int;
+		private var _childList:ChildList;
 		
-		public function LightPicker() {
-			super();
-		}
+		// ICSS
+		private var _className:String;			
 		
-		/**
-		 * Initialisation method
-		*/ 
-		override public function init():void {			
-			
-			for each(var light:Light in lights){
-				if (light.castsShadows && light.type == Light.DIRECTIONAL )
-					shadowLight = DirectionalLight(light.light);				
-				lightPickerLightsArr.push(light.light);
-			}
-			
-			_slp = new StaticLightPicker(lightPickerLightsArr);
-		}
+		// IState
+		private var _stateId:String;	
 		
-		public function get slp():StaticLightPicker { return _slp; }	
-		public function set slp(value:StaticLightPicker):void {
-			_slp = value;
-		}
-		
-		public function get lights():Vector.<Light> { return _lights; }
-		public function set lights(value:*):void {
-			if (value is XML) {
-				var reg:RegExp = /[\s\r\n]*/gim;
-				for each(var id:String in String(value).split(",")) {
-					id = id.replace(reg, '');				
-					_lights.push(document.getElementById(id));
-				}
-			}
-		}
-		
-		public function get shadowLight():DirectionalLight { return _shadowLight; }		
-		public function set shadowLight(value:DirectionalLight):void {
-			_shadowLight = value;
-		}
-		
-		/**
-		 * Custom CML parse routine to add local Light 
-		 * @param	cml
-		 * @return
-		 */
-		override public function parseCML(cml:XMLList):XMLList {
-			var node:XML = XML(cml);
-			var obj:Object;
-			
-			for each(var item:XML in node.*) {
-				
-				if (item.name() == "Light") {					
-					obj = CMLParser.instance.createObject(item.name());
-					CMLParser.instance.attrLoop(obj, XMLList(item)); 
-					obj.updateProperties();
-					obj.init();
-					delete cml[item.name()];
-					lights.push(obj);
-				}					
-			}
-			
-			CMLParser.instance.parseCML(this, cml);
-			return cml.*;
-		}		
-	
-	}
+		// 3D
+		private var _lref:XML;
 
+		/**
+		 * @inheritDoc
+		 */	
+		public function LightPicker(lights:Array=null) {
+			super(lights);
+			state = new Dictionary(false);
+			state[0] = new State(false);
+			_childList = new ChildList;				
+		}
+		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {
+			var larray:Array;
+			var lightp:Array = [];
+			var reg:RegExp = /[\s\r\n]*/gim;
+			
+			if (lref) {
+				larray = String(lref).split(",");
+			}
+			
+			for each(var l:String in larray) {
+				l = l.replace(reg, '');	
+				
+				if (l.charAt(0) == "#") {
+					l = l.substr(1);
+				}
+				
+				var light:LightBase = document.getElementById(l);
+				lightp.push(light);		
+				//if (light.castsShadows && light.type == LightBase.DIRECTIONAL )
+				//	shadowLight = DirectionalLight(light.light);
+			}
+			
+			lights = lightp;			
+		}			
+		
+		//////////////////////////////////////////////////////////////
+		// ICML
+		//////////////////////////////////////////////////////////////	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function parseCML(cml:XMLList):XMLList {
+			if (cml.@lights != undefined) {
+				cml.@lref = cml.@lights;
+				delete cml.@lights;
+			}				
+			return CMLParser.parseCML(this, cml);
+		}
+		
+		//////////////////////////////////////////////////////////////
+		// IOBJECT
+		//////////////////////////////////////////////////////////////		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public var state:Dictionary;		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get cmlIndex():int { return _cmlIndex; }
+		public function set cmlIndex(value:int):void {
+			_cmlIndex = value;
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get childList():ChildList { return _childList; }
+		public function set childList(value:ChildList):void { 
+			_childList = value;
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function postparseCML(cml:XMLList):void {}
+			
+		/**
+		 * @inheritDoc
+		 */
+		public function updateProperties(state:*=0):void {
+			CMLParser.updateProperties(this, state);		
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function dispose():void {
+			super.dispose();
+		}		
+		
+		
+		//////////////////////////////////////////////////////////////
+		//  ICSS 
+		//////////////////////////////////////////////////////////////
+
+		/**
+		 * @inheritDoc
+		 */
+		public function get className():String { return _className; }
+		public function set className(value:String):void {
+			_className = value;
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// ISTATE
+		//////////////////////////////////////////////////////////////				
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get stateId():* { return _stateId; }
+		public function set stateId(value:*):void {
+			_stateId = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function loadState(sId:* = null, recursion:Boolean = false):void { 
+			if (StateUtils.loadState(this, sId, recursion)) {
+				_stateId = sId;
+			}
+		}	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function saveState(sId:* = null, recursion:Boolean = false):void { 
+			StateUtils.saveState(this, sId, recursion); 
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+			if (StateUtils.tweenState(this, sId, tweenTime)) {
+				_stateId = sId;
+			}
+		}		
+		
+		//////////////////////////////////////////////////////////////
+		// 3D
+		//////////////////////////////////////////////////////////////		
+		
+		public function get lref():XML { return _lref; }
+		public function set lref(value:XML):void {
+			_lref = value;
+		}		
+	}
 }
