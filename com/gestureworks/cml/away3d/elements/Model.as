@@ -52,7 +52,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Model() {
 			super();	
 			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;
-			vto.away3d = true;
+			//vto.away3d = true;
 			mouseEnabled = true;
 			state = new Dictionary(false);
 			state[0] = new State(false);
@@ -250,7 +250,7 @@ package com.gestureworks.cml.away3d.elements {
 
 			if (e.asset is ObjectContainer3D && ObjectContainer3D(e.asset).parent == null) {
 				mesh = ObjectContainer3D(e.asset);
-				if (this.parent is TouchContainer3D)
+				if (this.parent is ObjectContainer3D)
 					TouchContainer3D(this.parent).addChild3D(ObjectContainer3D(mesh));
 				else {
 					addChild(mesh);
@@ -275,7 +275,5 @@ package com.gestureworks.cml.away3d.elements {
 			}
 		}
 
-	
 	}
-
 }

@@ -7,10 +7,11 @@ package com.gestureworks.cml.away3d.elements
 	import com.gestureworks.cml.elements.*;
 	import com.gestureworks.cml.interfaces.*;
 	import com.gestureworks.cml.managers.*;
+	import com.gestureworks.interfaces.IAway3D;
 	import flash.geom.Vector3D;
 		
 	
-	public class TouchContainer3D extends TouchContainer
+	public class TouchContainer3D extends TouchContainer implements IAway3D
 	{		
 		private var _lookat:String;
 		private var _pivot:String = "0,0,0";
@@ -57,8 +58,7 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Current distance from the target to camera
 		 */
-		public function get distance():Number 
-		{
+		public function get distance():Number {
 			var d:Number = 0;
 			if (vto && view) {
 				d = View3D(view).camera.project(vto.scenePosition).length; 

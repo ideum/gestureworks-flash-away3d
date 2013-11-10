@@ -38,7 +38,7 @@ package com.gestureworks.away3d
 				return null; 
 			}
 			else {
-				touchObjects[t] = new TouchContainer3D(t);
+				touchObjects[t] = new TouchContainer3D();
 				touchObjects[t].vto = t;
 				touchObjects[t].touch3d = touch3d;
 			}

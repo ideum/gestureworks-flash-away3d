@@ -23,28 +23,28 @@ package com.gestureworks.cml.away3d.elements
 		
 		public function update():void
 		{
-			if (AssetLibrary.getAsset(id).assetType == "mesh" || AssetLibrary.getAsset(id).assetType =="container")
-			{
-				var obj3D:ObjectContainer3D = ObjectContainer3D(AssetLibrary.getAsset(id));
-				
-				obj3D.x = x;
-				obj3D.y = y;
-				obj3D.z = z;
-				obj3D.pivotPoint = new Vector3D(pivot.split(",")[0], pivot.split(",")[1], pivot.split(",")[2]); 
-				obj3D.rotationX = rotationX;
-				obj3D.rotationY = rotationY;
-				obj3D.rotationZ = rotationZ;
-				if ( lookat) //overides any rotation above
-					obj3D.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
-				obj3D.scaleX = scaleX;
-				obj3D.scaleY = scaleY;
-				obj3D.scaleZ = scaleZ;
-				
-				if (mref)
-					material = mref;
-				if (material && obj3D is away3d.entities.Mesh )
-					away3d.entities.Mesh(obj3D).material = material;
-			}
+			//if (AssetLibrary.getAsset(id).assetType == "mesh" || AssetLibrary.getAsset(id).assetType =="container")
+			//{
+				//var obj3D:ObjectContainer3D = ObjectContainer3D(AssetLibrary.getAsset(id));
+				//
+				//obj3D.x = x;
+				//obj3D.y = y;
+				//obj3D.z = z;
+				//obj3D.pivotPoint = new Vector3D(pivot.split(",")[0], pivot.split(",")[1], pivot.split(",")[2]); 
+				//obj3D.rotationX = rotationX;
+				//obj3D.rotationY = rotationY;
+				//obj3D.rotationZ = rotationZ;
+				//if ( lookat) //overides any rotation above
+					//obj3D.lookAt(new Vector3D(lookat.split(",")[0], lookat.split(",")[1], lookat.split(",")[2]));
+				//obj3D.scaleX = scaleX;
+				//obj3D.scaleY = scaleY;
+				//obj3D.scaleZ = scaleZ;
+				//
+				//if (mref)
+					//material = mref;
+				//if (material && obj3D is away3d.entities.Mesh )
+					//away3d.entities.Mesh(obj3D).material = material;
+			//}
 			
 			if (AssetLibrary.getAsset(id).assetType == "material")
 			{

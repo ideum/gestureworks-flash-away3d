@@ -3,42 +3,38 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.textures.BitmapCubeTexture;
 	import away3d.utils.Cast;
 	import com.gestureworks.cml.elements.Image;
+	import com.gestureworks.cml.utils.document;
 	
 	/**
-	 * ...
-	 *
+	 * Create a new SkyBox object. Composed of away3d.primitives.SkyBox as property obj.
 	 */
 	public class SkyBox extends Container3D {
 		
 		private var cube_face:Array = new Array();
-		private var _skyBox:away3d.primitives.SkyBox;
+		public var obj:away3d.primitives.SkyBox;
 		
 		public function SkyBox() {
 			super();
 		}
 		
 		/**
-		 * Initialisation method
+		 * @inheritDoc
 		 */
 		override public function init():void {
-			
-			var counter:Number = 0;
-			while (this.numChildren > 0) {
-
-				if (this.getChildAt(0) is Image && counter < 6) {
-					cube_face.push(this.getChildAt(0));
-					counter++;
+			for each (var child:* in childList) {
+				if (child is Image) {
+					cube_face.push(child);
 				}
-				this.removeChildAt(0);
 			}
-			
-			var bmCubeText:BitmapCubeTexture = new BitmapCubeTexture(Cast.bitmapData(cube_face[0]), Cast.bitmapData(cube_face[1]), Cast.bitmapData(cube_face[2]), Cast.bitmapData(cube_face[3]), Cast.bitmapData(cube_face[4]), Cast.bitmapData(cube_face[5]));
-			//																						right										left							up							down							front							back
-			_skyBox = new away3d.primitives.SkyBox(bmCubeText);
-			
-			//find scene or camera tag? 
-			if (this.parent is Scene) 
-				Scene(this.parent).addChild3D(_skyBox);
+			var bmCubeText:BitmapCubeTexture = 
+				new BitmapCubeTexture(Cast.bitmapData(cube_face[0]), 
+					Cast.bitmapData(cube_face[1]), // right
+					Cast.bitmapData(cube_face[2]), // left
+					Cast.bitmapData(cube_face[3]), // up
+					Cast.bitmapData(cube_face[4]), // down
+					Cast.bitmapData(cube_face[5])); // back
+			obj = new away3d.primitives.SkyBox(bmCubeText);
+			document.getElementsByTagName(Scene)[0].addChild3D(obj);
 			
 		}
 	}

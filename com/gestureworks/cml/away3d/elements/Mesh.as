@@ -43,8 +43,6 @@ package com.gestureworks.cml.away3d.elements {
 		public function Mesh () {
 			super(null, null);
 			vto = TouchManager3D.registerTouchObject(this) as TouchContainer3D;
-			vto.away3d = true;
-			mouseEnabled = true;
 			state = new Dictionary(false);
 			state[0] = new State(false);
 			_childList = new ChildList;	

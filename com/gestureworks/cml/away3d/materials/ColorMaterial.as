@@ -148,10 +148,6 @@ package com.gestureworks.cml.away3d.materials {
 		// 3D
 		//////////////////////////////////////////////////////////////
 		
-		/**
-		 * @inheritDoc
-		 */
-		public function updateLightPicker():void {}
 		
 	}
 }

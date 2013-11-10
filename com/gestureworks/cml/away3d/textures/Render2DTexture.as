@@ -181,12 +181,5 @@ package com.gestureworks.cml.away3d.textures {
 		public function set src(value:String):void {
 			_src = value;
 		}		
-	
-		/**
-		 * @inheritDoc
-		 */
-		public function updateLightPicker():void {}
-		
-		
 	}
 }

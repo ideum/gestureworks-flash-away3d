@@ -44,11 +44,6 @@ package com.gestureworks.cml.away3d.interfaces {
 		 */
 		function get bothSides():Boolean;
 		function set bothSides(value:Boolean):void;
-
-		/**
-		 * Updates light picker
-		 */
-		function updateLightPicker():void;
 		
 		/**
 		 * Cleans up resources owned by the material, including passes. Textures are not owned by the material since they

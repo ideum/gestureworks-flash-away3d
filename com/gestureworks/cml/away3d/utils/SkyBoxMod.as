@@ -52,19 +52,20 @@ package com.gestureworks.cml.away3d.utils
 		 * Create a new SkyBox object.
 		 * @param cubeMap The CubeMap to use for the sky box's texture.
 		 */
-		public function SkyBoxMod(cubeMap:CubeTextureBase=null)
+		public function SkyBoxMod(__cubeMap:CubeTextureBase=null)
 		{
-			super();
-			this.cubeMap = cubeMap;
-			if (cubeMap) {
-				load();
-			}
+			//super();
+			//if (__cubeMap) {
+				//this.cubeMap = __cubeMap;
+				//
+				//load();
+			//}
 		}
 		
 		public var cubeMap:CubeTextureBase;
 		
-		public function load(cubeMap:CubeTextureBase=null):void {
-			if (cubeMap) this.cubeMap = cubeMap;
+		public function load(__cubeMap:CubeTextureBase=null):void {
+			if (__cubeMap) cubeMap = __cubeMap;
 			_material = new SkyBoxMaterial(cubeMap);
 			_material.addOwner(this);
 			_geometry = new SubGeometry();
@@ -159,7 +160,10 @@ package com.gestureworks.cml.away3d.utils
 		 */
 		override protected function createEntityPartitionNode():EntityNode
 		{
+			
+			if (cubeMap)
 			return new SkyBoxNode(this as SkyBox);
+			else return null;
 		}
 		
 		/**
