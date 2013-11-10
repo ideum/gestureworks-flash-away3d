@@ -38,5 +38,12 @@ package com.gestureworks.cml.away3d.elements {
 			return rXML;			
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
+		override public function init():void {
+			super.init();
+		}			
+		
 	}
 }

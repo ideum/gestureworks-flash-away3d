@@ -173,12 +173,15 @@ package com.gestureworks.cml.away3d.elements {
 		public function addAllChildren():void {		
 			var n:int = childList.length;
 			for (var i:int = 0; i < childList.length; i++) {
-				if (childList.getIndex(i) is ObjectContainer3D)				
-					addChild(childList.getIndex(i));
+				if (childList[i] is ObjectContainer3D)				
+					addChild(childList[i]);
+				else if (childList[i] is Light) {
+					addChild(childList[i].childList[0]);
+				}
 				if (n != childList.length)
 					i--;
 			}
-		}	
+		}			
 		
 		//////////////////////////////////////////////////////////////
 		// 3D

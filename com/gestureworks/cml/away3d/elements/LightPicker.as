@@ -14,7 +14,7 @@ package com.gestureworks.cml.away3d.elements {
 	/**
 	 * This class creates a LightPicker. It extends the Away3D StaticLightPickerMod class to add CML support.
 	 */
-	public class LightPicker extends com.gestureworks.cml.away3d.utils.StaticLightPickerMod implements IObject, ICSS, IState  {
+	public class LightPicker extends com.gestureworks.cml.away3d.utils.StaticLightPickerMod implements IObject, ICSS  {
 		
 		// IObject
 		private var _cmlIndex:int;
@@ -22,9 +22,6 @@ package com.gestureworks.cml.away3d.elements {
 		
 		// ICSS
 		private var _className:String;			
-		
-		// IState
-		private var _stateId:String;	
 		
 		// 3D
 		private var _lref:XML;
@@ -44,7 +41,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function init():void {
-			var larray:Array;
+			var larray:Array = [];
 			var lightp:Array = [];
 			var reg:RegExp = /[\s\r\n]*/gim;
 			
@@ -61,11 +58,9 @@ package com.gestureworks.cml.away3d.elements {
 				
 				var light:LightBase = document.getElementById(l);
 				lightp.push(light);		
-				//if (light.castsShadows && light.type == LightBase.DIRECTIONAL )
-				//	shadowLight = DirectionalLight(light.light);
 			}
 			
-			lights = lightp;			
+			lights = lightp;	
 		}			
 		
 		//////////////////////////////////////////////////////////////
@@ -138,44 +133,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function get className():String { return _className; }
 		public function set className(value:String):void {
 			_className = value;
-		}		
-		
-		//////////////////////////////////////////////////////////////
-		// ISTATE
-		//////////////////////////////////////////////////////////////				
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get stateId():* { return _stateId; }
-		public function set stateId(value:*):void {
-			_stateId = value;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function loadState(sId:* = null, recursion:Boolean = false):void { 
-			if (StateUtils.loadState(this, sId, recursion)) {
-				_stateId = sId;
-			}
-		}	
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function saveState(sId:* = null, recursion:Boolean = false):void { 
-			StateUtils.saveState(this, sId, recursion); 
-		}		
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
-			if (StateUtils.tweenState(this, sId, tweenTime)) {
-				_stateId = sId;
-			}
-		}		
+		}			
 		
 		//////////////////////////////////////////////////////////////
 		// 3D

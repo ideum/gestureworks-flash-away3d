@@ -1,6 +1,7 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.entities.Mesh;
+	import away3d.materials.MaterialBase;
 	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
@@ -71,7 +72,7 @@ package com.gestureworks.cml.away3d.elements {
 				if (s.charAt(0) == "#") {
 					s = s.substr(1);
 				}
-				material = document.getElementById(s); 
+				material = document.getElementById(s) as MaterialBase;
 			}	
 		}
 		

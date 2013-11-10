@@ -2,6 +2,9 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;
 	import away3d.containers.View3D;
+	import away3d.lights.DirectionalLight;
+	import away3d.lights.LightBase;
+	import com.gestureworks.cml.away3d.interfaces.ILight;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.Container;
 	import flash.events.Event;
@@ -51,7 +54,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Adds to the 3D display list.
 		 * @param	child
 		 */
-		public function addChild3D(child:ObjectContainer3D):void {
+		public function addChild3D(child:*):void {
 			scene3D.addChild(child);
 		}
 		
@@ -61,8 +64,11 @@ package com.gestureworks.cml.away3d.elements {
 		override public function addAllChildren():void {		
 			var n:int = childList.length;
 			for (var i:int = 0; i < childList.length; i++) {
-				if (childList.getIndex(i) is ObjectContainer3D)				
-					scene3D.addChild(childList.getIndex(i));
+				if (childList[i] is ObjectContainer3D)				
+					scene3D.addChild(childList[i]);
+				else if (childList[i] is Light) {
+					addChild3D(childList[i].childList[0]);
+				}
 				if (n != childList.length)
 					i--;
 			}

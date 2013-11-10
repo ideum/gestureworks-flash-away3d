@@ -1,12 +1,16 @@
 package com.gestureworks.cml.away3d.materials {
+	import away3d.lights.LightBase;
 	import away3d.materials.ColorMaterial;
+	import away3d.materials.lightpickers.LightPickerBase;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IObject;
 	import com.gestureworks.cml.interfaces.IState;
 	import com.gestureworks.cml.utils.ChildList;
+	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.cml.utils.StateUtils;
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -24,6 +28,9 @@ package com.gestureworks.cml.away3d.materials {
 		// IState
 		private var _stateId:String;	
 		
+		// 3D
+		private var _lpref:XML;		
+		
 		/**
 		 * @inheritDoc
 		 */	
@@ -31,8 +38,38 @@ package com.gestureworks.cml.away3d.materials {
 			super(color, alpha);
 			state = new Dictionary(false);
 			state[0] = new State(false);
-			_childList = new ChildList;				
+			_childList = new ChildList;
+			CMLParser.addEventListener(CMLParser.COMPLETE, cmlInit);
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function init():void {
+			var s:String;
+	
+			if (lpref) {
+				s = String(lpref);
+				if (s.charAt(0) == "#") {
+					s = String(s).substr(1);
+				}
+				lightPicker = document.getElementById(s); 
+			}					
+		}	
+		
+		/**
+		 * @private
+		 * Ensures that this comes last
+		 */
+		private function cmlInit(e:Event):void {
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlInit);	
+			for each (var l:* in LightPickerBase(lightPicker).allPickedLights) {
+				if (l.shadowMethod) {
+					shadowMethod = l.shadowMethod;
+				}
+			}			
+		}
+				
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
@@ -68,12 +105,7 @@ package com.gestureworks.cml.away3d.materials {
 		public function get childList():ChildList { return _childList; }
 		public function set childList(value:ChildList):void { 
 			_childList = value;
-		}
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function init():void {}		
+		}	
 		
 		/**
 		 * @inheritDoc
@@ -148,6 +180,12 @@ package com.gestureworks.cml.away3d.materials {
 		// 3D
 		//////////////////////////////////////////////////////////////
 		
-		
+		/**
+		 * LightPicker reference
+		 */
+		public function get lpref():XML { return _lpref; }
+		public function set lpref(value:XML):void {
+			_lpref = value;
+		}		
 	}
 }
