@@ -8,6 +8,7 @@ package com.gestureworks.cml.away3d.elements
 	import away3d.materials.MaterialBase;
 	import away3d.materials.TextureMaterial;
 	import com.gestureworks.away3d.TouchManager3D;
+	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.utils.document;
 	import flash.geom.Vector3D;
 	
@@ -15,18 +16,47 @@ package com.gestureworks.cml.away3d.elements
 	{
 		public var mesh:away3d.entities.Mesh;
 		public var container3D:ObjectContainer3D;
-		public var _material:MaterialBase;		
+		public var material:MaterialBase;		
 		public var geometry:away3d.core.base.Geometry;
 		
-		private var mref:XML;
+		private var _mref:XML;
 		
-		public function ModelAsset() 
-		{
+		public function ModelAsset() {
 			super();
 		}
 		
-		public function update():void
-		{
+		/**
+		 * @inheritDoc
+		 */
+		override public function init():void {
+			var s:String;
+
+			if (mref) {
+				s = String(mref);
+				if (s.charAt(0) == "#") {
+					s = s.substr(1);
+				}
+				material = document.getElementById(s); 
+			}	
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function parseCML(cml:XMLList):XMLList {
+		
+			if (cml.@material != undefined) {
+				cml.@mref = cml.@material;
+				delete cml.@material;
+			}				
+			
+			return CMLParser.parseCML(this, cml);
+		}	
+		
+		/**
+		 * Updates linkage
+		 */
+		public function update():void {
 			var t:String = AssetLibrary.getAsset(id).assetType;
 			
 			if (t == "mesh") {
@@ -70,9 +100,7 @@ package com.gestureworks.cml.away3d.elements
 				vto = obj;								
 				TouchManager3D.registerTouchObject(this);
 				
-				
-				if (mref)
-					material = mref;
+
 				if (material && obj is away3d.entities.Mesh ) {
 					away3d.entities.Mesh(obj).material = material;
 				}
@@ -80,7 +108,7 @@ package com.gestureworks.cml.away3d.elements
 			}
 			
 			if (AssetLibrary.getAsset(id).assetType == "material") {
-				var material:MaterialBase = MaterialBase(AssetLibrary.getAsset(id));
+				material = MaterialBase(AssetLibrary.getAsset(id));
 				if (material is ColorMaterial) {
 					ColorMaterial(material).alpha = alpha;
 				}
@@ -89,15 +117,12 @@ package com.gestureworks.cml.away3d.elements
 			}
 		}
 		
-		public function get material():* { return _material; }		
-		public function set material(value:*):void {
-			if (value is XML) {
-				mref = value;
-				value = document.getElementById(value);
-			}
-			if (value is MaterialBase)
-				_material = value;
-				
+		/*
+		 * Material reference
+		 */
+		public function get mref():* { return _mref; }		
+		public function set mref(mat:*):void { 
+			_mref = mat;
 		}
 		
 	}

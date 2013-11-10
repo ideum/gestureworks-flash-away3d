@@ -79,12 +79,8 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function parseCML(cml:XMLList):XMLList {
-			var node:XML = XML(cml);
-			var obj:Object;
-			var tag:String;
-			var isGeo:Boolean;
 			
-			if (node.@geometry != undefined) {
+			if (cml.@geometry != undefined) {
 				cml.@gref = cml.@geometry;
 				delete cml.@geometry;
 			}			
