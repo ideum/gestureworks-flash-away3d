@@ -31,7 +31,7 @@ package com.gestureworks.away3d
 		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
-			touchPicker.onlyMouseEnabled = false;
+			touchPicker.onlyMouseEnabled = true;
 			InteractionManager.hitTest3D = TouchManager3D.hitTest3D;
 			KineMetric.hitTest3D = TouchManager3D.hitTest3D; 
 		}
