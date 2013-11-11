@@ -111,16 +111,16 @@ package com.gestureworks.away3d
 		}
 		
 		
-		public static function hitTest3D(target: TouchObject3D, view:View3D, x:Number, y:Number):Boolean
+		public static function hitTest3D(target: TouchContainer3D, view:View3D, x:Number, y:Number):Boolean//TouchObject3D
 		{			
 			var hit:Boolean = false;
 			collider = touchPicker.getViewCollision(x, y, view);
 			
 			if (collider) {
 					//if( validTarget(collider.entity)) 
-					trace("hit object 3d", collider.entity);
+					trace("hit object 3d", collider.entity,collider.entity.assetType);
 					
-					if ( collider.entity.assetType == "Mesh"){//WireFrameCube
+					if ( collider.entity.assetType == "mesh"){//WireFrameCube
 						collider.entity.showBounds = true;
 					}
 					if ( collider.entity.assetType == "WireFrameCube"){//

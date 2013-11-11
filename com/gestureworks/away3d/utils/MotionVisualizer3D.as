@@ -85,18 +85,16 @@ package com.gestureworks.away3d.utils
 			// create hand object
 			//////////////////////////////////////////////////////////////////////
 			//// build sphere geometry
-			var sg2:SphereGeometry = new SphereGeometry(2);
+			var sg2:SphereGeometry = new SphereGeometry(2);		
 			var sg4:SphereGeometry = new SphereGeometry(4);
-			var sg6:SphereGeometry = new SphereGeometry(6);
+			var sg6:SphereGeometry = new SphereGeometry(6);			
 			var sg8:SphereGeometry = new SphereGeometry(8);
 			var sg10:SphereGeometry = new SphereGeometry(10);
 			//// build cylinder geometry
 			var cg1:CylinderGeometry = new CylinderGeometry(1, 1, 1, 2, 2, false, false, true, false);
 			var cg2:CylinderGeometry = new CylinderGeometry(1, 1, 1, 2, 2, false, false, true, false);
-			
 			//// build plane
 			var plane:PlaneGeometry = new PlaneGeometry(180, 220, 1, 1, true, true);
-			
 			///////////////////////////////////////////////////////////////////////////////////////
 			// fingertips
 			for (i = 0; i < 12; i++) 
@@ -106,6 +104,7 @@ package com.gestureworks.away3d.utils
 					//sMat.lightPicker = lightPicker;
 				var smesh:Mesh = new Mesh(sg4, sMat);
 				var ball:ObjectContainer3D = new ObjectContainer3D();
+					ball.mouseEnabled = false;
 					ball.addChild(smesh);
 					ballList.push(ball);
 				this.addChild(ball);
@@ -125,6 +124,7 @@ package com.gestureworks.away3d.utils
 				{
 					var ksmesh:Mesh = new Mesh(cg1, sMat8);
 					var finger:ObjectContainer3D = new ObjectContainer3D();
+						finger.mouseEnabled = false;
 						finger.addChild(ksmesh);
 						fingerList.push(finger);
 					this.addChild(finger);
@@ -138,6 +138,7 @@ package com.gestureworks.away3d.utils
 				{
 					var smesh2:Mesh = new Mesh(cg1, sMat9);
 					var vfinger:ObjectContainer3D = new ObjectContainer3D();
+						vfinger.mouseEnabled = false;
 						vfinger.addChild(smesh2);
 						vfingerList.push(vfinger);
 					this.addChild(vfinger);
@@ -147,6 +148,7 @@ package com.gestureworks.away3d.utils
 			{
 				var wsmesh:Mesh = new Mesh(sg2, sMat2);
 				var wball:ObjectContainer3D = new ObjectContainer3D();
+					wball.mouseEnabled = false;
 					wball.addChild(wsmesh);
 					wballList.push(wball);
 				this.addChild(wball);
@@ -162,7 +164,8 @@ package com.gestureworks.away3d.utils
 					palmList.push(palmplane);
 				this.addChild(palmplane);
 				
-				var cg50:WireframeCylinder = new WireframeCylinder(50,50, 1, 32, 16, 0xFFFFFF,1);
+				var cg50:WireframeCylinder = new WireframeCylinder(50, 50, 1, 32, 16, 0xFFFFFF, 1);
+					cg50.mouseEnabled = false;
 					ringList.push(cg50);
 				this.addChild(cg50);
 			}
@@ -176,12 +179,14 @@ package com.gestureworks.away3d.utils
 						//iMat1.lightPicker = lightPicker;
 					var ismesh1:Mesh = new Mesh(sg2, iMat1);
 					var iball:ObjectContainer3D = new ObjectContainer3D();
+						iball.mouseEnabled = false;
 						iball.addChild(ismesh1);
 						iballList.push(iball);
 					this.addChild(iball);
 					
 					// interative point ring
-					var cg3:WireframeCylinder = new WireframeCylinder(15,15, 1, 16,8, 0xFFFFFF,0.5);
+					var cg3:WireframeCylinder = new WireframeCylinder(15, 15, 1, 16, 8, 0xFFFFFF, 0.5);
+						cg3.mouseEnabled = false;
 						iringList.push(cg3);
 					this.addChild(cg3);
 				}
@@ -192,6 +197,7 @@ package com.gestureworks.away3d.utils
 				iMat.lightPicker = lightPicker;
 				var ismesh:Mesh = new Mesh(sg6, iMat);
 				var cball:ObjectContainer3D = new ObjectContainer3D();
+					cball.mouseEnabled = false;
 					cball.addChild(ismesh);
 					celementList.push(cball);
 				this.addChild(cball);
@@ -205,6 +211,7 @@ package com.gestureworks.away3d.utils
 				{
 					var smesh5:Mesh = new Mesh(cg2, sMat11);
 					var cline:ObjectContainer3D = new ObjectContainer3D();
+						cline.mouseEnabled = false;
 						cline.addChild(smesh5);
 						celementList.push(cline);
 					this.addChild(cline);
@@ -218,6 +225,7 @@ package com.gestureworks.away3d.utils
 				{
 					var smesh6:Mesh = new Mesh(cg2, sMat12);
 					var clinkline:ObjectContainer3D = new ObjectContainer3D();
+						clinkline.mouseEnabled = false;
 						clinkline.addChild(smesh6);
 						clinkList.push(clinkline);
 					this.addChild(clinkline);
@@ -231,6 +239,7 @@ package com.gestureworks.away3d.utils
 					iMat0.lightPicker = lightPicker;
 				var ismesh0:Mesh = new Mesh(sg10, iMat0);
 				var gball:ObjectContainer3D = new ObjectContainer3D();
+					gball.mouseEnabled = false;
 					gball.addChild(ismesh0);
 					gballList.push(gball);
 				this.addChild(gball);

@@ -3,9 +3,9 @@ package com.gestureworks.away3d
 	import away3d.cameras.Camera3D;
 	import away3d.containers.View3D;
 	import com.gestureworks.core.*;
-	import com.gestureworks.interfaces.IAway3D;
+	import com.gestureworks.interfaces.ITouchObject3D;
 	
-	public class TouchObject3D extends TouchSprite implements IAway3D
+	public class TouchObject3D extends TouchSprite implements ITouchObject3D
 	{	
 		private var _distance:Number;
 		public var centerTransform:Boolean = true;

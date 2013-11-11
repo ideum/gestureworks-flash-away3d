@@ -7,11 +7,11 @@ package com.gestureworks.cml.away3d.elements
 	import com.gestureworks.cml.elements.*;
 	import com.gestureworks.cml.interfaces.*;
 	import com.gestureworks.cml.managers.*;
-	import com.gestureworks.interfaces.IAway3D;
+	import com.gestureworks.interfaces.ITouchObject3D;
 	import flash.geom.Vector3D;
 		
 	
-	public class TouchContainer3D extends TouchContainer implements IAway3D
+	public class TouchContainer3D extends TouchContainer implements ITouchObject3D
 	{		
 		private var _vto:*;		
 		private var _centerTransform:Boolean = false;
