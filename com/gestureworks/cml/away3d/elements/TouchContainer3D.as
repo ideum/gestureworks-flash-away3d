@@ -32,6 +32,7 @@ package com.gestureworks.cml.away3d.elements
 				transform.matrix3D = _vto.transform.clone();
 			}			
 			touch3d = true;
+			affineTransform = false;
 		}
 		
 		override public function init():void 

@@ -18,6 +18,7 @@ package com.gestureworks.away3d
 				transform.matrix3D = vto.transform.clone();
 			}
 			touch3d = true;
+			affineTransform = false;			
 		}	
 		/**
 		 * Current distance from the target to camera
