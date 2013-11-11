@@ -1,4 +1,4 @@
-﻿package com.gestureworks.cml.elementss
+﻿package com.gestureworks.cml.elements
 {
 	import away3d.cameras.Camera3D;
 	import away3d.cameras.lenses.PerspectiveLens;
