@@ -5,6 +5,7 @@ package com.gestureworks.away3d
 	import away3d.core.pick.PickingCollisionVO;
 	import away3d.core.pick.PickingType;
 	import away3d.events.*;
+	import com.gestureworks.analysis.KineMetric;
 	import com.gestureworks.cml.away3d.elements.Scene;
 	import com.gestureworks.cml.away3d.elements.TouchContainer3D;
 	import com.gestureworks.core.*;
@@ -27,9 +28,12 @@ package com.gestureworks.away3d
 		private static var pointTargets:Dictionary = new Dictionary();
 		public static var touch3d:Boolean = true;
 		
+		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
-			touchPicker.onlyMouseEnabled = true;
+			touchPicker.onlyMouseEnabled = false;
+			InteractionManager.hitTest3D = TouchManager3D.hitTest3D;
+			KineMetric.hitTest3D = TouchManager3D.hitTest3D; 
 		}
 				
 		public static function registerTouchObject(t:*, touch3d:Boolean=true):ITouchObject
