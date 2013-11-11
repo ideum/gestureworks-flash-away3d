@@ -118,7 +118,7 @@ package com.gestureworks.away3d
 		public static function hitTest3D(target: TouchContainer3D, view:View3D, x:Number, y:Number):Boolean//TouchObject3D
 		{			
 			var hit:Boolean = false;
-			collider = touchPicker.getViewCollision(x, y, view);
+			collider = touchPicker.getViewCollision(x, y, target.view as View3D);
 			
 			if (collider) {
 					//if( validTarget(collider.entity)) 
@@ -139,7 +139,6 @@ package com.gestureworks.away3d
 			
 			//trace("touch manager",collider,target, hit,view)
 			return hit;
-			
 		}
 		
 
