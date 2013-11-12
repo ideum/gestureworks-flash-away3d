@@ -120,8 +120,8 @@ package com.gestureworks.away3d
 			collider = touchPicker.getViewCollision(x, y, target.view as View3D);
 			
 			if (collider) {
-					//if( validTarget(collider.entity)) 
-					trace("hit object 3d", collider.entity,collider.entity.assetType);
+					if( validTarget(collider.entity)) {
+				//	trace("hit object 3d", collider.entity,collider.entity.assetType);
 					
 					if ( collider.entity.assetType == "mesh"){//WireFrameCube
 						collider.entity.showBounds = true;
@@ -134,6 +134,7 @@ package com.gestureworks.away3d
 					}
 					
 					hit = true;
+				}
 			}
 			
 			//trace("touch manager",collider,target, hit,view)
