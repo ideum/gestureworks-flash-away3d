@@ -4,6 +4,7 @@ package com.gestureworks.cml.away3d.elements
 	import away3d.core.base.Geometry;
 	import away3d.entities.Mesh;
 	import away3d.library.AssetLibrary;
+	import away3d.library.AssetLibraryBundle;
 	import away3d.materials.ColorMaterial;
 	import away3d.materials.MaterialBase;
 	import away3d.materials.TextureMaterial;
@@ -56,24 +57,25 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Updates linkage
 		 */
-		public function update():void {
-			var t:String = AssetLibrary.getAsset(id).assetType;
+		public function update(_cmlIndex:String):void {			
+			
+			var t:String = AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex).assetType;
 			
 			if (t == "mesh") {
-				mesh = away3d.entities.Mesh(AssetLibrary.getAsset(id));
+				mesh = away3d.entities.Mesh(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 			}
 			else if (t == "container")	{
-				container3D = ObjectContainer3D(AssetLibrary.getAsset(id));
+				container3D = ObjectContainer3D(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 			}
 			else if (t == "material") {
-				material = MaterialBase(AssetLibrary.getAsset(id));
+				material = MaterialBase(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 			}		
 			else if (t == "geometry") {
-				geometry = away3d.core.base.Geometry(AssetLibrary.getAsset(id));
+				geometry = away3d.core.base.Geometry(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 			}
 			
 			if (t == "mesh" || t =="container") {
-				var obj:ObjectContainer3D = ObjectContainer3D(AssetLibrary.getAsset(id));
+				var obj:ObjectContainer3D = ObjectContainer3D(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 				
 				obj.x = x;
 				obj.y = y;
@@ -107,8 +109,8 @@ package com.gestureworks.cml.away3d.elements
 
 			}
 			
-			if (AssetLibrary.getAsset(id).assetType == "material") {
-				material = MaterialBase(AssetLibrary.getAsset(id));
+			if ((AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex)).assetType == "material") {
+				material = MaterialBase(AssetLibrary.getBundle(_cmlIndex).getAsset(id, _cmlIndex));
 				if (material is ColorMaterial) {
 					ColorMaterial(material).alpha = alpha;
 				}

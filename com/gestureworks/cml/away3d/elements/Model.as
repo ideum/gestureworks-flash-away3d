@@ -256,12 +256,9 @@ package com.gestureworks.cml.away3d.elements {
 		 * Assets loaded callback function.
 		 */
 		private function assetComplete(e:AssetEvent):void {
-			
 			if (e.asset.assetNamespace != String(cmlIndex)) 
 				return;
-			
-			trace(e.asset.name +"\t" + e.asset.assetType );	
-			
+						
 			if (e.asset is ObjectContainer3D) {
 				ObjectContainer3D(e.asset).mouseEnabled = mouseEnabled;								
 				ObjectContainer3D(e.asset).mouseChildren = mouseChildren;								
@@ -283,9 +280,8 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private function initObjects(e:LoaderEvent):void {
 			for each (var item:* in childList) {
-				
 				if (item is ModelAsset) {
-					ModelAsset(item).update()
+					ModelAsset(item).update(String(cmlIndex));
 				}
 			}
 		}
