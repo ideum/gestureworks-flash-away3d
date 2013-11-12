@@ -22,16 +22,15 @@ package com.gestureworks.away3d
 		private static var tBegin:GWTouchEvent;
 		private static var tMove:GWTouchEvent;
 		private static var tEnd:GWTouchEvent;
-		private static var touchPicker:IPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;  
+		public static var touchPicker:IPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;  
 		private static var touchObjects:Dictionary = new Dictionary(true);	
 		private static var collider:PickingCollisionVO; 
-		private static var pointTargets:Dictionary = new Dictionary();
-		public static var touch3d:Boolean = true;
-		
+		private static var pointTargets:Dictionary = new Dictionary();		
+		private static var _onlyTouchEnabled:Boolean = true;
 		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
-			touchPicker.onlyMouseEnabled = true;
+			touchPicker.onlyMouseEnabled = onlyTouchEnabled;
 			InteractionManager.hitTest3D = TouchManager3D.hitTest3D;
 			KineMetric.hitTest3D = TouchManager3D.hitTest3D; 
 		}
@@ -180,6 +179,17 @@ package com.gestureworks.away3d
 			}			
 			return e;
 		}			
+		
+		
+		/**
+		 * Sets whether touchEnabled is required for a sucessful hit test.
+		 */
+		static public function get onlyTouchEnabled():Boolean {
+			return touchPicker.onlyMouseEnabled;
+		}
+		static public function set onlyTouchEnabled(value:Boolean):void {
+			touchPicker.onlyMouseEnabled = value;
+		}
 		
 	}
 }
