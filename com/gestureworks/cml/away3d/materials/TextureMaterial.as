@@ -10,6 +10,7 @@ package com.gestureworks.cml.away3d.materials {
 	import com.gestureworks.cml.utils.ChildList;
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.cml.utils.StateUtils;
+	import flash.events.Event;
 	import flash.utils.Dictionary;
 	
 	/**
