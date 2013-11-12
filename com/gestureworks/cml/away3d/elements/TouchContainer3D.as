@@ -14,7 +14,7 @@ package com.gestureworks.cml.away3d.elements
 	public class TouchContainer3D extends TouchContainer implements ITouchObject3D
 	{		
 		private var _vto:*;		
-		private var _centerTransform:Boolean = false;
+		private var _centerTransform:Boolean;
 		private var _distance:Number;
 		
 		private var _sca:String;
@@ -33,6 +33,7 @@ package com.gestureworks.cml.away3d.elements
 			}			
 			touch3d = true;
 			affineTransform = false;
+			centerTransform = true;
 		}
 		
 		override public function init():void 
@@ -156,7 +157,10 @@ package com.gestureworks.cml.away3d.elements
 		override public function updateVTO():void
 		{
 			vto.transform = transform.matrix3D;			
-		}		
+		}	
+		
+		
+
 		
 	}
 }
