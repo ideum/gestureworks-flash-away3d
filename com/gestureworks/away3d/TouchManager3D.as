@@ -114,30 +114,25 @@ package com.gestureworks.away3d
 		}
 		
 		
-		public static function hitTest3D(target: TouchContainer3D, view:View3D, x:Number, y:Number):Boolean//TouchObject3D
+		public static function hitTest3D(target: TouchContainer3D, x:Number, y:Number):Boolean//TouchObject3D
 		{			
 			var hit:Boolean = false;
+			
 			collider = touchPicker.getViewCollision(x, y, target.view as View3D);
 			
-			if (collider) {
-					if( validTarget(collider.entity)) {
-				//	trace("hit object 3d", collider.entity,collider.entity.assetType);
-					
-					if ( collider.entity.assetType == "mesh"){//WireFrameCube
-						collider.entity.showBounds = true;
-					}
-					if ( collider.entity.assetType == "WireFrameCube"){//
-						collider.entity.showBounds = true;
-					}
-					if ( collider.entity.assetType == "WireframeCylinder"){//WireFrameCube
-						collider.entity.showBounds = true;
-					}
+			if ((collider) && (validTarget(collider.entity)))
+				{
+					if (target.vto==collider.entity) { 
 					
 					hit = true;
+					//collider.entity.showBounds = true;
+						
+					//trace("",target.vto==collider.entity, target.vto,target.vto.name,target.vto.assetType,collider,collider.entity, collider.entity.name, collider.entity.assetType);
+					//trace("touch manager",x,y,target,target.name, hit,target.view.name, target.view.name,collider,collider.entity, collider.entity.name, collider.entity.assetType, collider.entity.parent,collider.entity.parent.name,collider.entity.parent.parent,collider.entity.parent.parent.id,collider.entity.parent.parent.parent)
 				}
-			}
-			
-			//trace("touch manager",collider,target, hit,view)
+				}
+			else hit = false;
+
 			return hit;
 		}
 		
