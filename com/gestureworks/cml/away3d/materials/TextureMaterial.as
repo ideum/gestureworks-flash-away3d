@@ -1,5 +1,6 @@
 package com.gestureworks.cml.away3d.materials {
 	import away3d.materials.ColorMaterial;
+	import away3d.materials.lightpickers.LightPickerBase;
 	import away3d.materials.TextureMaterial;
 	import away3d.textures.Texture2DBase;
 	import com.gestureworks.cml.core.CMLParser;
