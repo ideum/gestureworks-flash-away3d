@@ -63,11 +63,13 @@ package com.gestureworks.cml.away3d.materials {
 		 */
 		private function cmlInit(e:Event):void {
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlInit);	
-			for each (var l:* in LightPickerBase(lightPicker).allPickedLights) {
-				if (l.shadowMethod) {
-					shadowMethod = l.shadowMethod;
+			if (lightPicker) {
+				for each (var l:* in LightPickerBase(lightPicker).allPickedLights) {
+					if (l.shadowMethod) {
+						shadowMethod = l.shadowMethod;
+					}
 				}
-			}			
+			}
 		}
 				
 		

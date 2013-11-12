@@ -38,7 +38,8 @@ package com.gestureworks.cml.away3d.materials {
 			super(texture, smooth, repeat, mipmap);
 			state = new Dictionary(false);
 			state[0] = new State(false);
-			_childList = new ChildList;				
+			_childList = new ChildList;	
+			CMLParser.addEventListener(CMLParser.COMPLETE, cmlInit);			
 		}
 		
 		/**
@@ -62,6 +63,21 @@ package com.gestureworks.cml.away3d.materials {
 				lightPicker = document.getElementById(s); 	
 			}					
 		}				
+		
+		/**
+		 * @private
+		 * Ensures that this comes last
+		 */
+		private function cmlInit(e:Event):void {
+			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlInit);	
+			if (lightPicker) {
+				for each (var l:* in LightPickerBase(lightPicker).allPickedLights) {
+					if (l.shadowMethod) {
+						shadowMethod = l.shadowMethod;
+					}
+				}
+			}
+		}		
 		
 		//////////////////////////////////////////////////////////////
 		// ICML
