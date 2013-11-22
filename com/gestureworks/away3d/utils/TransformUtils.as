@@ -24,7 +24,10 @@ package com.gestureworks.away3d.utils {
 		
 		/**
 		 * This method will update a dtheta gesture rotate value
-		 * so that applied transformation will snap to the nearest x,y,z 
+		 * so that applied transformation will snap to the nearest 
+		 * x,y,z axis perpendicular to the camera's view plane 
+		 * (meaning the applied rotational transformation will be 
+		 * approximately parallel to the camera's view plane).
 		 * axis on the object.
 		 */
 		public static function snapRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):void {
