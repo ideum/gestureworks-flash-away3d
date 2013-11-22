@@ -16,7 +16,7 @@ package com.gestureworks.away3d.utils {
 		 * so that applied transformation will be parallel 
 		 * to the camera's view plane.
 		 */
-		public static function alignRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):Vector {
+		public static function alignRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):Vector3D {
 			// return as vector (euler) or angle axis, this is up to you.
 			var v:Vector3D = new Vector3D;
 			return v;
@@ -30,7 +30,7 @@ package com.gestureworks.away3d.utils {
 		 * approximately parallel to the camera's view plane).
 		 * axis on the object.
 		 */
-		public static function snapRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):void {
+		public static function snapRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):Vector3D {
 			// return as vector (euler) or angle axis, this is up to you.
 			var v:Vector3D = new Vector3D;
 			return v;			
