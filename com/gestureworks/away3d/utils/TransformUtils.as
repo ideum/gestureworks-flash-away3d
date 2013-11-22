@@ -17,7 +17,7 @@ package com.gestureworks.away3d.utils {
 		 * to the camera's view plane.
 		 */
 		public static function alignRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):Vector3D {
-			// return as vector (euler) or angle axis, this is up to you.
+			// return as vector (euler), angle axis, or something else, this is up to you.
 			var v:Vector3D = new Vector3D;
 			return v;
 		}
@@ -31,7 +31,7 @@ package com.gestureworks.away3d.utils {
 		 * axis on the object.
 		 */
 		public static function snapRotateToCamera(obj3d:ObjectContainer3D, camera:Camera3D, dtheta:Number):Vector3D {
-			// return as vector (euler) or angle axis, this is up to you.
+			// return as vector (euler), angle axis, or something else, this is up to you.
 			var v:Vector3D = new Vector3D;
 			return v;			
 		}
