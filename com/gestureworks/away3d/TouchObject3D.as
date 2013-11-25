@@ -27,7 +27,7 @@ package com.gestureworks.away3d
 		{
 			var d:Number = 0;
 			if (vto && view) {
-				d = View3D(view).camera.project(vto.scenePosition).length;
+				d = View3D(view).camera.project(vto.scenePosition).z;
 				_distance = d;
 			}
 			return d; 

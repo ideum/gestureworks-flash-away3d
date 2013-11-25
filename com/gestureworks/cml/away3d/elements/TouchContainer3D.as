@@ -54,7 +54,7 @@ package com.gestureworks.cml.away3d.elements
 		public function get distance():Number {
 			var d:Number = 0;
 			if (vto && view) {
-				d = View3D(view).camera.project(vto.scenePosition).length; 
+				d = View3D(view).camera.project(vto.scenePosition).z; 
 				_distance = d;
 			}
 			return d; 
