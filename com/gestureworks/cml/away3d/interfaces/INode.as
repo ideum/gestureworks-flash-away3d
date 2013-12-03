@@ -86,7 +86,12 @@ package com.gestureworks.cml.away3d.interfaces {
 	/**
 	 * The heiarchy level relative to the root node
 	 */
-	function get level():int;
+	function get level():String;
+	
+	/**
+	 * The node hiearchy path 
+	 */
+	function get hierarchy():String;
 	
 	}
 }
