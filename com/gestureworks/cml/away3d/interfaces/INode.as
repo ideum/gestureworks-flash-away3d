@@ -6,7 +6,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 */
 	public interface INode { 
 	
-	//private edges:Vector<Edge>
+	//private linkNodes:Vector<NodeLink>
 	
 	/**
 	 * Fixes the orientation to the camera's view
@@ -15,47 +15,34 @@ package com.gestureworks.cml.away3d.interfaces {
 	function get lookAtCamera():Boolean;
 	function set lookAtCamera(val:Boolean):void;
 	
-	//addTarget function to manage child node linking
+	//addNode function to manage child node addition
 	
 	/**
 	 * Returns the expanded (child node display) state of the node
 	 * @return
 	 * @default false
 	 */
-	function get expanded():Boolean;
-	
-	/**
-	 * Flag indicating the node is directed (has directional edges) or undirected (standard edge)
-	 * @return
-	 * @default false
-	 */
-	function get directed():Boolean;
-	
-	/**
-	 * Flag indicating whether the node is a leaf (has no edges)
-	 * @return
-	 */
-	function get leaf():Boolean;	
+	function expanded():Boolean;
 	
 	/**
 	 * Display child nodes
 	 * @param level The child level to expand to
 	 */
-	function expand(level:int = 1):void;
+	function expand(level:int=int.MAX_VALUE):void;
 	
 	/**
 	 * Hide child nodes
-	 * @param level The child level to collapse to
+	 * @param level The child level to contract to
 	 */
-	function collapse(level:int=0):void;
+	function contract(level:int=0):void;
 	
 	/**
-	 * Expands/collapses based on current expanded state
+	 * Expands/contracts based on expanded state
 	 */
 	function toggle():void;
 	
 	/**
-	 * Automatically expands/collapses when the nodes surface is within a certain distance from the camera
+	 * Automatically expands/contracts when the nodes surface is within a certain distance from the camera
 	 * @return
 	 */
 	function autoToggle():Boolean;
@@ -67,22 +54,22 @@ package com.gestureworks.cml.away3d.interfaces {
 	function autoToggleThreshold():Number;
 	
 	/**
-	 * Hide on expand and displays on collapse
+	 * Hide on expand and displays on contract
 	 * @return
 	 */
 	function autoToggleVisibility():Boolean
 	
 	/**
-	 * Reset node transformations to initial state up to specified node level
-	 * @param level numerical level relative to 
+	 * Reset node transformations to initial state
+	 * @param level Resets all levels up to specified node level
 	 */
 	function reset(level:int = int.MAX_VALUE):void;
 	
 	/**
-	 * List of node index, class, or id references to link to
+	 * List of child node index references to link to
 	 */
-	function get targets():String;
-	function set targets(value:String):void;
+	function get links():String;
+	function set links(value:String):void;
 	
 	/**
 	 * The node content
@@ -91,7 +78,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	function set content(value:*):void;	
 	
 	/**
-	 * Sibling node index
+	 * Graph index only used when nested within a NodeGraph
 	 */
 	function get index():int;
 	function set index(value:int):void;
@@ -105,12 +92,6 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * The node hiearchy path 
 	 */
 	function get hierarchy():String;
-	
-	/**
-	 * Node label
-	 */
-	function get label():String;
-	function set label(value:String):void;
 	
 	}
 }
