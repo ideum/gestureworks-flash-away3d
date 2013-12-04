@@ -4,7 +4,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Implements Node objects.
 	 * @author Ideum
 	 */
-	public interface INode { 
+	public interface INode { }	
 	
 	//private linkNodes:Vector<NodeLink>
 	
@@ -88,5 +88,4 @@ package com.gestureworks.cml.away3d.interfaces {
 	 */
 	function get level():int;
 	
-	}
 }
