@@ -3,6 +3,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.primitives.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
+	import flash.geom.Vector3D;
 	/**
 	 * ...
 	 * @author Ideum
@@ -59,21 +60,24 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function expand(level:int = 1):void {
-			
+			_expanded = true;
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function collapse(level:int = 0):void {
-			
+			_expanded = false;
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
 		public function toggle():void {
-			
+			if (_expanded)
+				collapse();
+			else
+				expand();
 		}
 		
 		/**
@@ -104,7 +108,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function reset(level:int = int.MAX_VALUE):void {
-			
+			loadState(0);
 		}
 		
 		/**
@@ -149,14 +153,31 @@ package com.gestureworks.cml.away3d.elements {
 			_label = value;
 		}
 		
+		public function get vector3d():Vector3D { return new Vector3D(x, y, z); }
+		
 		override public function addChild(child:ObjectContainer3D):ObjectContainer3D {
+			super.addChild(child);
 			if (child is Node) {
-				var target:Node = child as Node;
-				target.geometry = geometry;
-				target.material = material;
-				target.x = x + 200;
+				addNode(child as Node);
 			}
-			return super.addChild(child);
+			else if (child is Edge){
+				edges.push(child);
+				Edge(child).init();
+			}
+			
+			return child;
+		}
+		
+		private function addNode(target:Node):void {
+			target.geometry = geometry;
+			target.material = material;
+			target.x = x + 200;
+			target.y = y + 200;
+			target.z = z + 50;
+			
+			var edge:Edge = new Edge();
+			edge.target = target;
+			addChild(edge);			
 		}
 		
 	}
