@@ -13,7 +13,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * @default true
 	 */
 	function get lookAtCamera():Boolean;
-	function set lookAtCamera(value:Boolean):void;
+	function set lookAtCamera(val:Boolean):void;
 	
 	//addTarget function to manage child node linking
 	
@@ -57,26 +57,20 @@ package com.gestureworks.cml.away3d.interfaces {
 	/**
 	 * Automatically expands/collapses when the nodes surface is within a certain distance from the camera
 	 * @return
-	 * @default false
 	 */
-	function get autoToggle():Boolean;
-	function set autoToggle(value:Boolean):void;
+	function autoToggle():Boolean;
 	
 	/**
 	 * Distance threshold that determines autoToggle
 	 * @return
-	 * @default 0
 	 */
-	function get autoToggleThreshold():Number;
-	function set autoToggleThreshold(value:Number):void;	
+	function autoToggleThreshold():Number;
 	
 	/**
 	 * Hide on expand and displays on collapse
 	 * @return
-	 * @default true
 	 */
-	function get autoToggleVisibility():Boolean;
-	function set autoToggleVisibility(value:Boolean):void;
+	function autoToggleVisibility():Boolean
 	
 	/**
 	 * Reset node transformations to initial state up to specified node level
