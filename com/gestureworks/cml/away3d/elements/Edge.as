@@ -2,9 +2,10 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.CylinderGeometry;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import flash.geom.Vector3D;
+	
 	/**
-	 * ...
-	 * @author 
+	 * Object linking source and target nodes
+	 * @author Ideum
 	 */
 	public class Edge extends Mesh {
 		
@@ -15,12 +16,18 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultGeometry:CylinderGeometry = new CylinderGeometry(10, 10);
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
 		
+		/**
+		 * Constructor
+		 */
 		public function Edge() {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;
 		}
 		
+		/**
+		 * Initialization function
+		 */
 		override public function init():void {
 			super.init();	
 			
