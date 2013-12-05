@@ -1,12 +1,11 @@
 package com.gestureworks.cml.away3d.interfaces {
 	import com.gestureworks.interfaces.ITouchObject3D;
+	
 	/**
 	 * Implements Node objects.
 	 * @author Ideum
 	 */
 	public interface INode { 
-	
-	//private edges:Vector<Edge>
 	
 	/**
 	 * Fixes the orientation to the camera's view
@@ -15,12 +14,10 @@ package com.gestureworks.cml.away3d.interfaces {
 	function get lookAtCamera():Boolean;
 	function set lookAtCamera(value:Boolean):void;
 	
-	//addTarget function to manage child node linking
-	
 	/**
 	 * Returns the expanded (child node display) state of the node
 	 * @return
-	 * @default false
+	 * @default true
 	 */
 	function get expanded():Boolean;
 	
@@ -41,7 +38,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Display child nodes
 	 * @param level The child level to expand to
 	 */
-	function expand(level:int = 1):void;
+	function expand(level:int = int.MAX_VALUE):void;
 	
 	/**
 	 * Hide child nodes
