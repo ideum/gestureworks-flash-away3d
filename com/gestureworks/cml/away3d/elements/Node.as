@@ -1,17 +1,17 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
-	import away3d.primitives.SphereGeometry;
+	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
-	import flash.geom.Vector3D;
+	
 	/**
-	 * ...
+	 * Provides Node hiearchy management and graph construction
 	 * @author Ideum
 	 */
 	public class Node extends Mesh implements INode {
 		
 		private var _lookAtCamera:Boolean = true;
-		private var _expanded:Boolean = false;
+		private var _expanded:Boolean = true;
 		private var _directed:Boolean = false;
 		private var _autoToggle:Boolean = false;
 		private var _autoToggleThreshold:Number = 0;
@@ -21,14 +21,24 @@ package com.gestureworks.cml.away3d.elements {
 		private var _index:int;
 		private var _label:String;
 		
+		private var defaultGeometry:SphereGeometry = new SphereGeometry();
+		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
+		
 		private var edges:Vector.<Edge> = new Vector.<Edge>();
 		
+		/**
+		 * Constructor
+		 */
 		public function Node() {
 			super();
-			geometry = new SphereGeometry();
-			material = new ColorMaterial();
+			geometry = defaultGeometry;
+			material = defaultMaterial;
+			mouseEnabled = true;
 		}
 		
+		/**
+		 * Initialization function
+		 */
 		override public function init():void {
 			super.init();
 		}
@@ -59,7 +69,12 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function expand(level:int = 1):void {
+		public function expand(level:int = int.MAX_VALUE):void {						
+			for each(var edge:Edge in edges) {
+				edge.visible = true;
+				edge.target.visible = true;
+				edge.target.expand();
+			}
 			_expanded = true;
 		}
 		
@@ -67,6 +82,11 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function collapse(level:int = 0):void {
+			for each(var edge:Edge in edges) {
+				edge.visible = false;
+				edge.target.visible = false;
+				edge.target.collapse();
+			}			
 			_expanded = false;
 		}
 		
@@ -153,8 +173,11 @@ package com.gestureworks.cml.away3d.elements {
 			_label = value;
 		}
 		
-		public function get vector3d():Vector3D { return new Vector3D(x, y, z); }
-		
+		/**
+		 * Override to handle child Node and Edge addition
+		 * @param	child 
+		 * @return
+		 */
 		override public function addChild(child:ObjectContainer3D):ObjectContainer3D {
 			super.addChild(child);
 			if (child is Node) {
@@ -168,16 +191,31 @@ package com.gestureworks.cml.away3d.elements {
 			return child;
 		}
 		
-		private function addNode(target:Node):void {
-			target.geometry = geometry;
-			target.material = material;
-			target.x = x + 200;
-			target.y = y + 200;
-			target.z = z + 50;
-			
+		/**
+		 * Auto-generates Edge child to link to target node
+		 * @param  target Target node
+		 */
+		public function addNode(target:Node):void {
+			target.inheritParentAttributes();
 			var edge:Edge = new Edge();
 			edge.target = target;
 			addChild(edge);			
+		}
+		
+		/**
+		 * If not customized, inherit parent node attributes
+		 */
+		private function inheritParentAttributes():void {
+			
+			if (!(parent is Node)) {
+				return;
+			}
+			if (geometry == defaultGeometry){
+				geometry = Node(parent).geometry;
+			}
+			if (material == defaultMaterial) {
+				material = Node(parent).material;
+			}
 		}
 		
 	}
