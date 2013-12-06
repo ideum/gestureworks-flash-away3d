@@ -3,12 +3,15 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
+	import flash.utils.Dictionary;
 	
 	/**
 	 * Provides Node hiearchy management and graph construction
 	 * @author Ideum
 	 */
 	public class Node extends Mesh implements INode {
+		
+		private const ASCII_START:int = 97;
 		
 		private var _lookAtCamera:Boolean = true;
 		private var _expanded:Boolean = true;
@@ -20,11 +23,13 @@ package com.gestureworks.cml.away3d.elements {
 		private var _content:*;
 		private var _index:int;
 		private var _label:String;
+		private var _numLevel:int = 0;
+		
+		private var _edges:Vector.<Edge> = new Vector.<Edge>();
+		private var _allEdges:Dictionary = new Dictionary();
 		
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
-		
-		private var edges:Vector.<Edge> = new Vector.<Edge>();
 		
 		/**
 		 * Constructor
@@ -64,16 +69,37 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function get leaf():Boolean { return edges.length == 0; }
+		public function get isLeaf():Boolean { return _edges.length == 0; }
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function expand(level:int = int.MAX_VALUE):void {						
-			for each(var edge:Edge in edges) {
+		public function get isRoot():Boolean { return !(parent is Node); }
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get root():INode { 
+			var a:Vector.<Node> = Node.ancestors(this);
+			if (a.length){
+				return a.pop();
+			}
+			return null;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function expand(level:int = int.MAX_VALUE):void {	
+			if (!level){
+				return;				
+			}	
+			
+			level--;
+			for each(var edge:Edge in _edges) {
 				edge.visible = true;
 				edge.target.visible = true;
-				edge.target.expand();
+				edge.target.expand(level);
 			}
 			_expanded = true;
 		}
@@ -82,7 +108,8 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function collapse(level:int = 0):void {
-			for each(var edge:Edge in edges) {
+			
+			for each(var edge:Edge in _edges) {
 				edge.visible = false;
 				edge.target.visible = false;
 				edge.target.collapse();
@@ -153,17 +180,58 @@ package com.gestureworks.cml.away3d.elements {
 		public function get index():int { return _index; }
 		public function set index(value:int):void {
 			_index = value;
+		}		
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get level():String { 
+			var lev:String = "";
+			for (var i:int = 0; i <= Math.floor(numLevel / 26); i++) {
+				lev += String.fromCharCode(_numLevel % 26 + ASCII_START); 
+			}
+			return lev;
 		}
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function get level():String { return "a"; }
+		public function get numLevel():int { return _numLevel; }
 		
 		/**
 		 * @inheritDoc
 		 */
-		public function get hierarchy():String { return level; }
+		public function get nodeId():String { return level + index; }	
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get hierarchy():String {
+			var h:String = "";
+			for each(var a:Node in Node.ancestors(this)) {
+				h += a.nodeId + "-";
+			}
+			if (h.charAt(h.length - 1) == "-"){
+				h = h.slice(0, h.length - 1);
+			}
+			return h;
+		}
+		
+		/**
+		 * Returns all ancestor Node objects of the provided Node
+		 */
+		public static function ancestors(n:Node):Vector.<Node> {
+			var a:Vector.<Node> = new Vector.<Node>();
+			if (!n) {
+				return a;
+			}
+			
+			a.push(n);
+			if (n.parent is Node) {
+				a = a.concat(ancestors(Node(n.parent)));
+			}
+			return a;
+		}
 		
 		/**
 		 * @inheritDoc
@@ -173,6 +241,11 @@ package com.gestureworks.cml.away3d.elements {
 			_label = value;
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
+		public function get edges():Vector.<Edge> { return _edges; }
+				
 		/**
 		 * Override to handle child Node and Edge addition
 		 * @param	child 
@@ -184,7 +257,7 @@ package com.gestureworks.cml.away3d.elements {
 				addNode(child as Node);
 			}
 			else if (child is Edge){
-				edges.push(child);
+				_edges.push(child);
 				Edge(child).init();
 			}
 			
@@ -196,27 +269,29 @@ package com.gestureworks.cml.away3d.elements {
 		 * @param  target Target node
 		 */
 		public function addNode(target:Node):void {
-			target.inheritParentAttributes();
 			var edge:Edge = new Edge();
-			edge.target = target;
+			edge.target = target;		
 			addChild(edge);			
+			target.inherit(edge.source);			
 		}
 		
 		/**
-		 * If not customized, inherit parent node attributes
+		 * If not customized, inherit source node attributes and set hierarchy properties
 		 */
-		private function inheritParentAttributes():void {
+		private function inherit(source:Node):void {
 			
-			if (!(parent is Node)) {
-				return;
-			}
 			if (geometry == defaultGeometry){
-				geometry = Node(parent).geometry;
+				geometry = source.geometry;
 			}
 			if (material == defaultMaterial) {
-				material = Node(parent).material;
+				material = source.material;
 			}
+			
+			index = source.edges.length - 1;
+			_numLevel = source.numLevel + 1; 
 		}
+		
+		
 		
 	}
 
