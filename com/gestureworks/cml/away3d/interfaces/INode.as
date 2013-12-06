@@ -1,4 +1,5 @@
 package com.gestureworks.cml.away3d.interfaces {
+	import com.gestureworks.cml.away3d.elements.Edge;
 	import com.gestureworks.interfaces.ITouchObject3D;
 	
 	/**
@@ -32,17 +33,28 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Flag indicating whether the node is a leaf (has no edges)
 	 * @return
 	 */
-	function get leaf():Boolean;	
+	function get isLeaf():Boolean;
+	
+	/**
+	 * Flag indicating whether the node is a root node (has no parent node)
+	 * @return
+	 */
+	function get isRoot():Boolean;
+	
+	/**
+	 * Returns the root node
+	 */
+	function get root():INode;
 	
 	/**
 	 * Display child nodes
-	 * @param level The child level to expand to
+	 * @param level The child level to expand down to
 	 */
 	function expand(level:int = int.MAX_VALUE):void;
 	
 	/**
 	 * Hide child nodes
-	 * @param level The child level to collapse to
+	 * @param level The child level to collapse up to
 	 */
 	function collapse(level:int=0):void;
 	
@@ -100,12 +112,26 @@ package com.gestureworks.cml.away3d.interfaces {
 	function set index(value:int):void;
 	
 	/**
-	 * The heiarchy level relative to the root node
+	 * The string corresponding to the numeric heiarchy level relative to the root node. The string convention is the lower-case character corresponding
+	 * to the numeric level position in alphabet (i.e. 0 -> a, 1 -> b, ...25 -> z). Characters are duplicated and appended on each level increment
+	 * of 26 (i.e. 26 -> aa, 27 -> bb, .... 52 -> aaa).
 	 */
 	function get level():String;
 	
 	/**
-	 * The node hiearchy path 
+	 * The numeric heiarchy level relative to the root node (i.e. root node is 0, children of root are on level 1, etc.).
+	 */
+	function get numLevel():int;
+	
+	/**
+	 * Id of the node in the heiarchy derived from its level and sibling index (i.e. second child of the root node is b1).
+	 * This id is not intended to be unique and can be shared by nodes on the same level with different parents. Relative referencing should
+	 * only be performed with hierarchy path. 
+	 */
+	function get nodeId():String;
+	
+	/**
+	 * The node hiearchy path. Concatenated string of node id's representing the ancestral path of the node (e.g. a1-b2-c0). 
 	 */
 	function get hierarchy():String;
 	
@@ -114,6 +140,11 @@ package com.gestureworks.cml.away3d.interfaces {
 	 */
 	function get label():String;
 	function set label(value:String):void;
+	
+	/**
+	 * Return node edges
+	 */
+	function get edges():Vector.<Edge>;
 	
 	}
 }
