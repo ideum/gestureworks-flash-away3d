@@ -90,16 +90,16 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function expand(level:int = int.MAX_VALUE):void {	
-			if (!level){
+		public function expand(levelCnt:int = int.MAX_VALUE):void {	
+			if (!levelCnt){
 				return;				
 			}	
 			
-			level--;
+			levelCnt--;
 			for each(var edge:Edge in _edges) {
 				edge.visible = true;
 				edge.target.visible = true;
-				edge.target.expand(level);
+				edge.target.expand(levelCnt);
 			}
 			_expanded = true;
 		}
@@ -107,13 +107,14 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function collapse(level:int = 0):void {
-			
-			for each(var edge:Edge in _edges) {
+		public function collapse(levelCnt:int = 0):void {			
+			var e:Vector.<Edge> = edgesAtLevel(levelCnt);
+			for each(var edge:Edge in e) {
 				edge.visible = false;
 				edge.target.visible = false;
 				edge.target.collapse();
-			}			
+			}					
+			
 			_expanded = false;
 		}
 		
@@ -245,6 +246,28 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function get edges():Vector.<Edge> { return _edges; }
+		
+		/**
+		 * Returns edges at a decendant level relative to this node
+		 * @param	level
+		 * @return
+		 */
+		public function edgesAtLevel(level:int = 0):Vector.<Edge> {
+			var lEdges:Vector.<Edge> = new Vector.<Edge>();
+			if (!level){
+				return edges;
+			}
+			for each(var edge:Edge in edges) {
+				if (edge.target.numLevel == numLevel + level) {
+					lEdges = lEdges.concat(edge.target.edges);
+					continue;
+				}
+				else {
+					lEdges = lEdges.concat(edge.target.edgesAtLevel(level-1));
+				}
+			}
+			return lEdges;
+		}
 				
 		/**
 		 * Override to handle child Node and Edge addition

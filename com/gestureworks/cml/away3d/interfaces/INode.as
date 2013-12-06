@@ -47,16 +47,16 @@ package com.gestureworks.cml.away3d.interfaces {
 	function get root():INode;
 	
 	/**
-	 * Display child nodes
-	 * @param level The child level to expand down to
+	 * Display child nodes down the number of levels specified
+	 * @param level The number of levels to expand down to
 	 */
-	function expand(level:int = int.MAX_VALUE):void;
+	function expand(levelCnt:int = int.MAX_VALUE):void;
 	
 	/**
-	 * Hide child nodes
-	 * @param level The child level to collapse up to
+	 * Hide child nodes up to the number of levels specified
+	 * @param level The number of levels to collapse up to
 	 */
-	function collapse(level:int=0):void;
+	function collapse(levelCnt:int=0):void;
 	
 	/**
 	 * Expands/collapses based on current expanded state
