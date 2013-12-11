@@ -1,5 +1,8 @@
 package com.gestureworks.cml.away3d.elements {
+	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
+	import away3d.containers.View3D;
+	import away3d.events.Object3DEvent;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
@@ -17,13 +20,14 @@ package com.gestureworks.cml.away3d.elements {
 		private var _expanded:Boolean = true;
 		private var _directed:Boolean = false;
 		private var _autoToggle:Boolean = false;
-		private var _autoToggleThreshold:Number = 0;
+		private var _autoToggleThreshold:Number = 500;
 		private var _autoToggleVisibility:Boolean = true;
 		private var _targets:String;
 		private var _content:*;
 		private var _index:int;
 		private var _label:String;
 		private var _numLevel:int = 0;
+		private var _camera:Camera3D;
 		
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
 		private var _allEdges:Dictionary = new Dictionary();
@@ -79,13 +83,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function get root():INode { 
-			var a:Vector.<Node> = Node.ancestors(this);
-			if (a.length){
-				return a.pop();
-			}
-			return null;
-		}
+		public function get root():INode { return Node.ancestors(this).pop(); }		
 		
 		/**
 		 * @inheritDoc
@@ -134,6 +132,12 @@ package com.gestureworks.cml.away3d.elements {
 		public function get autoToggle():Boolean { return _autoToggle; } 
 		public function set autoToggle(value:Boolean):void {
 			_autoToggle = value;
+			if (value && vto.view) {
+				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, cameraMove);				
+			}
+			else if(vto.view) {
+				View3D(vto.view).camera.removeEventListener(Object3DEvent.POSITION_CHANGED, cameraMove);								
+			}
 		}
 		
 		/**
@@ -156,7 +160,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function reset(level:int = int.MAX_VALUE):void {
-			loadState(0);
+			//loadState(0);
 		}
 		
 		/**
@@ -311,7 +315,18 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			index = source.edges.length - 1;
-			_numLevel = source.numLevel + 1; 
+			_numLevel = source.numLevel + 1; 				
+		}
+		
+		/**
+		 * Controls camera distance auto-toggling
+		 * @param	e
+		 */
+		private function cameraMove(e:Object3DEvent):void {
+			if (Math.abs(vto.distance) <= autoToggleThreshold && !expanded)
+				expand();
+			else if (Math.abs(vto.distance) > autoToggleThreshold && expanded)
+				collapse();
 		}
 		
 		

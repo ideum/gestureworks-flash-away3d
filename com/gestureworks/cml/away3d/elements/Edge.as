@@ -1,4 +1,5 @@
 package com.gestureworks.cml.away3d.elements {
+	import away3d.events.Object3DEvent;
 	import com.gestureworks.cml.away3d.geometries.CylinderGeometry;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import flash.geom.Vector3D;
@@ -36,14 +37,14 @@ package com.gestureworks.cml.away3d.elements {
 			//calculate length
 			var srcSurfaceOffset:Number = "radius" in source.geometry ? source.geometry["radius"] : source.geometry["width"] / 2;
 			var tgtSurfaceOffset:Number = "radius" in target.geometry ? target.geometry["radius"] : target.geometry["width"] / 2;
-			length = Vector3D.distance(source.scenePosition, target.scenePosition) - srcSurfaceOffset - tgtSurfaceOffset;		
+			length = distance;	
 			
 			geometry["height"] = length;
-			geometry["yUp"] = false;
+			geometry["yUp"] = false;			
 			
 			//connect edge to target node
-			lookAt(target.position);		
-			moveForward(length/2+tgtSurfaceOffset);
+			lookAt(target.position);
+			moveForward(length / 2);
 		}
 		
 		/**
@@ -52,6 +53,9 @@ package com.gestureworks.cml.away3d.elements {
 		public function get source():Node { return _source; }
 		public function set source(value:Node):void {
 			_source = value;
+			if (_source) {
+				_source.addEventListener(Object3DEvent.POSITION_CHANGED, followTarget);		
+			}
 		}
 		
 		/**
@@ -60,6 +64,9 @@ package com.gestureworks.cml.away3d.elements {
 		public function get target():Node { return _target; }
 		public function set target(value:Node):void {
 			_target = value;
+			if (_target) {
+				_target.addEventListener(Object3DEvent.POSITION_CHANGED, followTarget);
+			}
 		}
 		
 		/**
@@ -68,7 +75,19 @@ package com.gestureworks.cml.away3d.elements {
 		public function get length():Number { return _length; }
 		public function set length(value:Number):void {
 			_length = value;
-		}		
+		}
+	
+		public function get distance():Number { return Vector3D.distance(source.scenePosition, target.scenePosition); }
+		
+		/**
+		 * 
+		 * @param	e
+		 */
+		private function followTarget(e:Object3DEvent):void {
+			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
+			scaleZ = distance / length;	
+		}
+		
 	}
 
 }
