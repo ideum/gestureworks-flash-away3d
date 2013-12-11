@@ -43,7 +43,7 @@ package com.gestureworks.cml.away3d.elements {
 			geometry["yUp"] = false;			
 			
 			//connect edge to target node
-			lookAt(target.position);
+			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
 			moveForward(length / 2);
 		}
 		
