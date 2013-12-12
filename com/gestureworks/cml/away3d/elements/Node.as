@@ -299,7 +299,7 @@ package com.gestureworks.cml.away3d.elements {
 			var edge:Edge = new Edge();
 			edge.target = target;		
 			addChild(edge);			
-			target.inherit(edge.source);			
+			target.inherit(this);			
 		}
 		
 		/**
@@ -313,9 +313,15 @@ package com.gestureworks.cml.away3d.elements {
 			if (material == defaultMaterial) {
 				material = source.material;
 			}
+			if (!gref) {
+				gref = source.gref;				
+			}
+			if (!mref) {
+				mref = source.mref;				
+			}
 			
 			index = source.edges.length - 1;
-			_numLevel = source.numLevel + 1; 				
+			_numLevel = source.numLevel + 1; 
 		}
 		
 		/**

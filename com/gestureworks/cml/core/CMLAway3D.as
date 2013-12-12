@@ -39,6 +39,7 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	import com.gestureworks.cml.away3d.elements.Texture; Texture;
+	import com.gestureworks.cml.away3d.elements.Node; Node;
 	
 	// light
 	import com.gestureworks.cml.away3d.lights.PointLight; PointLight;	
@@ -62,8 +63,6 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.textures.BitmapTexture; BitmapTexture;	
 	import com.gestureworks.cml.away3d.textures.VideoTexture; VideoTexture;	
 	import com.gestureworks.cml.away3d.textures.VideoCameraTexture; VideoCameraTexture;	
-	import com.gestureworks.cml.away3d.textures.Render2DTexture; Render2DTexture;	
-	
-
+	import com.gestureworks.cml.away3d.textures.Render2DTexture; Render2DTexture;
 	
 }
