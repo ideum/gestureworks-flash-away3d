@@ -37,14 +37,16 @@ package com.gestureworks.cml.away3d.elements {
 			//calculate length
 			var srcSurfaceOffset:Number = "radius" in source.geometry ? source.geometry["radius"] : source.geometry["width"] / 2;
 			var tgtSurfaceOffset:Number = "radius" in target.geometry ? target.geometry["radius"] : target.geometry["width"] / 2;
-			length = distance;	
+			length = distance - srcSurfaceOffset - tgtSurfaceOffset;	
 			
 			geometry["height"] = length;
 			geometry["yUp"] = false;			
 			
 			//connect edge to target node
 			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
-			moveForward(length / 2);
+			//movePivot(0, 0, -(length / 2+ tgtSurfaceOffset));
+			//z = length / 2 + tgtSurfaceOffset;
+			moveForward(length / 2 + tgtSurfaceOffset);
 		}
 		
 		/**
