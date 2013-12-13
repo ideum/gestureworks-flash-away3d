@@ -42,7 +42,6 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;
-			mouseEnabled = true;
 		}
 		
 		/**
