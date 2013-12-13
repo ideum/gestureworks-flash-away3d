@@ -94,7 +94,8 @@ package com.gestureworks.cml.away3d.interfaces {
 	function reset(level:int = int.MAX_VALUE):void;
 	
 	/**
-	 * List of node index, class, or id references to link to
+	 * Comma delimited string of node references to assign as target nodes. References can be a combination of ids (denoted by a prepended '#'), 
+	 * classes (denoted by a prepended '.'), sibling indices (valid child node integer), relative hiearchy paths. 
 	 */
 	function get targets():String;
 	function set targets(value:String):void;
@@ -145,6 +146,13 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Return node edges
 	 */
 	function get edges():Vector.<Edge>;
+	
+	/**
+	 * Auto-generates Edge child to link to target node. A target node does not have to be a child node but a child node is
+	 * always a target. 
+	 * @param  target Target node
+	 */	
+	function addTargetNode(target:INode):void;
 	
 	}
 }
