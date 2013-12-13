@@ -6,6 +6,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
+	import com.gestureworks.cml.utils.document;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -49,6 +50,9 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		override public function init():void {
 			super.init();
+			
+			if (targets)
+				parseTargets();
 		}
 		
 		/**
@@ -165,17 +169,93 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
+		public function get content():* { return _content; }
+		public function set content(value:*):void {
+			_content = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function get targets():String { return _targets; }
 		public function set targets(value:String):void {
 			_targets = value;
 		}
 		
 		/**
-		 * @inheritDoc
+		 * Parse target node references and assign corresponding targets
 		 */
-		public function get content():* { return _content; }
-		public function set content(value:*):void {
-			_content = value;
+		private function parseTargets():void {
+			var tgtRefs:Array = targets.split(",");
+			var tgts:Array = [];
+			var flag:String;
+			
+			for each(var tgtRef:String in tgtRefs) {
+				flag = tgtRef.charAt(0);
+				
+				if(flag == "#"){
+					tgts.push(document.getElementById(tgtRef));
+				}
+				else if(flag == "."){
+					tgts = tgts.concat(document.getElementsByClassName(tgtRef));
+				}
+				else if (!isNaN(parseInt(tgtRef))) {
+					tgts.push(siblingNode(parseInt(tgtRef)));
+				}
+				else {
+					tgts.push(nodeByHiearchy(tgtRef));
+				}				
+			}
+			
+			for each(var tgt:Node in tgts) {
+				if (tgt)
+					addTargetNode(tgt);
+			}
+		}		
+		
+		/**
+		 * Returns sibling node by target index
+		 * @param	index Target index
+		 * @return
+		 */
+		public function siblingNode(index:int):Node {
+			if (!parent is Node)
+				return null;
+			return Node(parent).nodeByIndex(index);
+		}		
+		
+		/**
+		 * Returns target node by index
+		 * @param	index Target index
+		 * @return
+		 */
+		public function nodeByIndex(index:int):Node {
+			for each(var edge:Edge in edges) {
+				if (edge.target.index == index)
+					return edge.target;
+			}
+			return null;
+		}
+		
+		/**
+		 * Recursivley search node tree for hiearchy path reference
+		 * @param	hiearchy
+		 * @param	node
+		 * @return
+		 */
+		private function nodeByHiearchy(hiearchy:String, node:Node=null):Node {
+			if (!node)
+				node = Node(root);
+				
+			if (node.hierarchy != hiearchy) {
+				for each(var edge:Edge in node.edges) {
+					node = nodeByHiearchy(hiearchy, edge.target);
+					if (node.hierarchy == hiearchy)
+						break;
+				}
+			}
+				
+			return node;
 		}
 		
 		/**
@@ -213,7 +293,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function get hierarchy():String {
 			var h:String = "";
 			for each(var a:Node in Node.ancestors(this)) {
-				h += a.nodeId + "-";
+				h = a.nodeId + "-" + h;
 			}
 			if (h.charAt(h.length - 1) == "-"){
 				h = h.slice(0, h.length - 1);
@@ -280,7 +360,7 @@ package com.gestureworks.cml.away3d.elements {
 		override public function addChild(child:ObjectContainer3D):ObjectContainer3D {
 			super.addChild(child);
 			if (child is Node) {
-				addNode(child as Node);
+				addTargetNode(child as Node);
 			}
 			else if (child is Edge){
 				_edges.push(child);
@@ -291,14 +371,13 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Auto-generates Edge child to link to target node
-		 * @param  target Target node
+		 * @inheritDoc
 		 */
-		public function addNode(target:Node):void {
+		public function addTargetNode(target:INode):void {
 			var edge:Edge = new Edge();
-			edge.target = target;		
+			edge.target = Node(target);		
 			addChild(edge);			
-			target.inherit(this);			
+			Node(target).inherit(this);			
 		}
 		
 		/**
