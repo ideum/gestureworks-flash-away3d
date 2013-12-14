@@ -7,6 +7,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.utils.document;
+	import com.gestureworks.events.GWGestureEvent;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -25,11 +26,13 @@ package com.gestureworks.cml.away3d.elements {
 		private var _autoToggleVisibility:Boolean = true;
 		private var _targets:String;
 		private var _content:*;
-		private var _index:int;
+		private var _index:int = NaN;
 		private var _label:String;
 		private var _numLevel:int = 0;
 		private var _camera:Camera3D;
+		private var _groupTransform:Boolean = true;
 		
+		private var _root:Node;		
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
 		private var _allEdges:Dictionary = new Dictionary();
 		
@@ -51,8 +54,22 @@ package com.gestureworks.cml.away3d.elements {
 		override public function init():void {
 			super.init();
 			
+			_root = Node.ancestors(this).pop();
+			
 			if (targets)
 				parseTargets();
+				
+			vto.gestureList = _root.vto.gestureList;
+				
+			if (groupTransform) {
+				touchEnabled = true;
+				vto.nativeTransform = false;
+				vto.addEventListener(GWGestureEvent.DRAG, function(e:GWGestureEvent):void {
+					_root.x += e.value.drag_dx;
+					_root.y += e.value.drag_dy;
+					_root.z += e.value.drag_dz;
+				});
+			}
 		}
 		
 		/**
@@ -86,7 +103,15 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function get root():INode { return Node.ancestors(this).pop(); }		
+		public function get root():Node { return _root; }	
+		
+		/**
+		 * Trasfer transformations to root node
+		 */
+		public function get groupTransform():Boolean { return _groupTransform; }
+		public function set groupTransform(value:Boolean):void {
+			_groupTransform = value;
+		}
 		
 		/**
 		 * @inheritDoc
@@ -202,7 +227,7 @@ package com.gestureworks.cml.away3d.elements {
 				else if (!isNaN(parseInt(tgtRef))) {
 					tgts.push(siblingNode(parseInt(tgtRef)));
 				}
-				else {
+				else{
 					tgts.push(nodeByHiearchy(tgtRef));
 				}				
 			}
@@ -373,11 +398,26 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function addTargetNode(target:INode):void {
+		public function addTargetNode(target:Node):void {
+			if (isTarget(target)){
+				return; 
+			}
 			var edge:Edge = new Edge();
-			edge.target = Node(target);		
+			edge.target = target;		
 			addChild(edge);			
-			Node(target).inherit(this);			
+			target.inherit(this);			
+		}
+		
+		/**
+		 * Determines if node is a target
+		 * @param	target
+		 */
+		public function isTarget(node:Node):Boolean {
+			for each(var edge:Edge in edges) {
+				if (edge.target == node)
+					return true;
+			}
+			return false;
 		}
 		
 		/**
@@ -397,7 +437,7 @@ package com.gestureworks.cml.away3d.elements {
 			if (!mref) {
 				mref = source.mref;				
 			}
-			
+
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
 		}

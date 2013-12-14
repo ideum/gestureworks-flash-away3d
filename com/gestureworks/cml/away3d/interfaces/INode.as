@@ -1,5 +1,6 @@
 package com.gestureworks.cml.away3d.interfaces {
 	import com.gestureworks.cml.away3d.elements.Edge;
+	import com.gestureworks.cml.away3d.elements.Node;
 	import com.gestureworks.interfaces.ITouchObject3D;
 	
 	/**
@@ -44,7 +45,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	/**
 	 * Returns the root node
 	 */
-	function get root():INode;
+	function get root():Node;
 	
 	/**
 	 * Display child nodes down the number of levels specified
@@ -152,7 +153,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * always a target. 
 	 * @param  target Target node
 	 */	
-	function addTargetNode(target:INode):void;
+	function addTargetNode(target:Node):void;
 	
 	}
 }
