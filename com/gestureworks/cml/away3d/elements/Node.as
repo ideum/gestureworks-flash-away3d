@@ -29,6 +29,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _index:int = NaN;
 		private var _label:String;
 		private var _numLevel:int = 0;
+		private var _hierarchy:String;
 		private var _camera:Camera3D;
 		private var _groupTransform:Boolean = true;
 		
@@ -316,14 +317,9 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function get hierarchy():String {
-			var h:String = "";
-			for each(var a:Node in Node.ancestors(this)) {
-				h = a.nodeId + "-" + h;
-			}
-			if (h.charAt(h.length - 1) == "-"){
-				h = h.slice(0, h.length - 1);
-			}
-			return h;
+			if (!_hierarchy)
+				_hierarchy = nodeId;
+			return _hierarchy;
 		}
 		
 		/**
@@ -378,7 +374,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 				
 		/**
-		 * Override to handle child Node and Edge addition
+		 * Override to handle special child registration
 		 * @param	child 
 		 * @return
 		 */
@@ -389,7 +385,14 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			else if (child is Edge){
 				_edges.push(child);
-				Edge(child).init();
+			}
+			//transfer node graph children to node parent
+			else if (child is NodeGraph) {
+				NodeGraph(child).init();
+				while(child.numChildren) {
+					addChild(child.getChildAt(0));
+				}
+				super.removeChild(child);
 			}
 			
 			return child;
@@ -440,6 +443,7 @@ package com.gestureworks.cml.away3d.elements {
 
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
+			_hierarchy = source.hierarchy+"-"+nodeId;
 		}
 		
 		/**
