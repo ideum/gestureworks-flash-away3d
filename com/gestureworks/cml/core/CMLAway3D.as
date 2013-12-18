@@ -40,6 +40,7 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	import com.gestureworks.cml.away3d.elements.Texture; Texture;
 	import com.gestureworks.cml.away3d.elements.Node; Node;
+	import com.gestureworks.cml.away3d.elements.NodeGraph; NodeGraph;
 	
 	// light
 	import com.gestureworks.cml.away3d.lights.PointLight; PointLight;	

@@ -4,7 +4,7 @@ package com.gestureworks.cml.away3d.elements {
 	 * ...
 	 * @author Ideum
 	 */
-	public class NodeGraph extends ObjectContainer3D {
+	public class NodeGraph extends Container3D {
 		
 		private var _graph:String;
 		
@@ -12,7 +12,8 @@ package com.gestureworks.cml.away3d.elements {
 			
 		}
 		
-		public function init():void {
+		override public function init():void {
+			super.init();
 			parseGraph();
 		}
 		
@@ -56,14 +57,17 @@ package com.gestureworks.cml.away3d.elements {
 			
 			for each(var link:String in links) {
 				indices = link.split("-");
+				try{
 				source = getChildAt(parseInt(indices[0])) as Node;
 				target = getChildAt(parseInt(indices[1])) as Node;
 				source.addTargetNode(target);
+				}
+				catch(e:Error){}
 			}						
 		}
 		
 		/**
-		 * Prevent addition of Non-Node children
+		 * Only allow the addition of Node children
 		 * @param	child
 		 * @return
 		 */
