@@ -3,11 +3,20 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
 	import away3d.events.Object3DEvent;
+	import away3d.tools.helpers.MeshHelper;
+	import away3d.utils.Cast;
+	import com.gestureworks.cml.away3d.geometries.PlaneGeometry;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
+	import com.gestureworks.cml.away3d.materials.TextureMaterial;
+	import com.gestureworks.cml.elements.Graphic;
+	import com.gestureworks.cml.elements.Text;
+	import com.gestureworks.cml.utils.DisplayUtils;
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.events.GWGestureEvent;
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -39,6 +48,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
+		private var labelMesh:Mesh;
 		
 		/**
 		 * Constructor
@@ -162,10 +172,10 @@ package com.gestureworks.cml.away3d.elements {
 		public function set autoToggle(value:Boolean):void {
 			_autoToggle = value;
 			if (value && vto.view) {
-				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, cameraMove);				
+				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, cameraDistance);				
 			}
 			else if(vto.view) {
-				View3D(vto.view).camera.removeEventListener(Object3DEvent.POSITION_CHANGED, cameraMove);								
+				View3D(vto.view).camera.removeEventListener(Object3DEvent.POSITION_CHANGED, cameraDistance);								
 			}
 		}
 		
@@ -343,7 +353,44 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		public function get label():String { return _label; }
 		public function set label(value:String):void {
+			if (_label == value)
+				return;
+				
 			_label = value;
+			
+			
+			var g:Graphic = new Graphic();
+			g.shape = "rectangel";
+			g.width = 256;
+			g.height = 100;
+			g.color = 0xFFFFFF;
+			
+			var text:Text = new Text();
+			text.str = value;
+			text.autosize = true;
+			text.color = 0xFFFFFF;
+			text.fontSize = 50;
+			
+			g.addChild(text);
+			
+						
+			var bmd:BitmapData = new BitmapData(256, 256, true, 0);
+			bmd.draw(text);
+			var bitmap:Bitmap = new Bitmap(bmd);
+			bitmap.smoothing = true;			
+			
+			labelMesh = new Mesh();
+			labelMesh.y = 50;
+			labelMesh.geometry = new PlaneGeometry();
+			PlaneGeometry(labelMesh.geometry).yUp = false;
+			MeshHelper.invertFaces(labelMesh,true);
+			labelMesh.material = new TextureMaterial(Cast.bitmapTexture(bitmap));
+			TextureMaterial(labelMesh.material).alphaBlending = true;
+			addChild(labelMesh);
+			
+			
+			View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);
+			
 		}
 		
 		/**
@@ -444,18 +491,23 @@ package com.gestureworks.cml.away3d.elements {
 
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
-			_hierarchy = source.hierarchy+"-"+nodeId;
+			_hierarchy = source.hierarchy + "-" + nodeId;
+			vto.view = source.vto.view;
 		}
 		
 		/**
 		 * Controls camera distance auto-toggling
 		 * @param	e
 		 */
-		private function cameraMove(e:Object3DEvent):void {
+		private function cameraDistance(e:Object3DEvent):void {
 			if (Math.abs(vto.distance) <= autoToggleThreshold && !expanded)
 				expand();
 			else if (Math.abs(vto.distance) > autoToggleThreshold && expanded)
 				collapse();
+		}
+		
+		private function faceCamera(e:Object3DEvent):void {
+			labelMesh.lookAt(View3D(vto.view).camera.scenePosition);			
 		}
 		
 		
