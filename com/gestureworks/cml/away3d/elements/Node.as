@@ -391,7 +391,7 @@ package com.gestureworks.cml.away3d.elements {
 			else if (child is NodeGraph) {
 				NodeGraph(child).init();
 				while(child.numChildren) {
-					addChild(child.getChildAt(0));
+					Node(addChild(child.getChildAt(0))).init();
 				}
 				super.removeChild(child);
 			}

@@ -58,9 +58,9 @@ package com.gestureworks.cml.away3d.elements {
 			for each(var link:String in links) {
 				indices = link.split("-");
 				try{
-				source = getChildAt(parseInt(indices[0])) as Node;
-				target = getChildAt(parseInt(indices[1])) as Node;
-				source.addTargetNode(target);
+					source = getChildAt(parseInt(indices[0])) as Node;
+					target = getChildAt(parseInt(indices[1])) as Node;
+					source.addTargetNode(target);
 				}
 				catch(e:Error){}
 			}						
