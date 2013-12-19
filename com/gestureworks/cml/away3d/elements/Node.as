@@ -383,7 +383,8 @@ package com.gestureworks.cml.away3d.elements {
 			if (child is Node) {
 				addTargetNode(child as Node);
 			}
-			else if (child is Edge){
+			else if (child is Edge) {
+				Edge(child).init();
 				_edges.push(child);
 			}
 			//transfer node graph children to node parent

@@ -10,6 +10,8 @@ package com.gestureworks.cml.away3d.elements {
 	 */
 	public class Edge extends Mesh {
 		
+		private var initialized:Boolean = false;
+		
 		private var _source:Node;
 		private var _target:Node;
 		private var _length:Number;
@@ -29,9 +31,15 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * Initialization function
 		 */
-		override public function init():void {
-			super.init();	
-			
+		override public function init():void {				
+			if (initialized) {
+				reset();				
+			}
+			else{
+				initialized = true;
+				super.init();				
+			}
+
 			source = Node(parent);
 			
 			//calculate length
@@ -47,6 +55,13 @@ package com.gestureworks.cml.away3d.elements {
 			//movePivot(0, 0, -(length / 2+ tgtSurfaceOffset));
 			//z = length / 2 + tgtSurfaceOffset;
 			moveForward(length / 2 + tgtSurfaceOffset);
+		}
+		
+		/**
+		 * Reset initial state
+		 */
+		public function reset():void {
+			position = new Vector3D(0, 0, 0);
 		}
 		
 		/**
