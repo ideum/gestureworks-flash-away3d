@@ -1,6 +1,8 @@
 package com.gestureworks.cml.core 
 {
 	import com.gestureworks.away3d.TouchManager3D;
+	import com.gestureworks.cml.away3d.layouts.Circle3DLayout;
+	import com.gestureworks.cml.away3d.layouts.Random3DLayout;
 	/** 
 	 * The CMLAway3D class is the registry file for classes that are capable of
 	 * being loaded by the CML Parser.
@@ -39,6 +41,7 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.SkyBox; SkyBox;
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	import com.gestureworks.cml.away3d.elements.Texture; Texture;
+	import com.gestureworks.cml.away3d.elements.Layout3D; Layout3D;
 	
 	// light
 	import com.gestureworks.cml.away3d.lights.PointLight; PointLight;	
@@ -64,6 +67,8 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.textures.VideoCameraTexture; VideoCameraTexture;	
 	import com.gestureworks.cml.away3d.textures.Render2DTexture; Render2DTexture;	
 	
-
+	// layouts
+	com.gestureworks.cml.away3d.layouts.Random3DLayout;	Random3DLayout;
+	com.gestureworks.cml.away3d.layouts.Circle3DLayout;	Circle3DLayout;
 	
 }
