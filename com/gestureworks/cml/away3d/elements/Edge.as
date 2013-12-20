@@ -70,9 +70,6 @@ package com.gestureworks.cml.away3d.elements {
 		public function get source():Node { return _source; }
 		public function set source(value:Node):void {
 			_source = value;
-			if (_source) {
-				_source.addEventListener(Object3DEvent.POSITION_CHANGED, followTarget);		
-			}
 		}
 		
 		/**
@@ -101,8 +98,10 @@ package com.gestureworks.cml.away3d.elements {
 		 * @param	e
 		 */
 		private function followTarget(e:Object3DEvent):void {
-			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
-			scaleZ = distance / length;	
+			if(source && target){
+				lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
+				scaleZ = distance / length;	
+			}
 		}
 		
 	}

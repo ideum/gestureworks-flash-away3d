@@ -8,6 +8,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.PlaneGeometry;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
+	import com.gestureworks.cml.away3d.layouts.Circle3DLayout;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
 	import com.gestureworks.cml.away3d.textures.VideoTexture;
@@ -53,6 +54,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var labelMesh:Mesh;
 		private var contentMesh:Mesh;
 		
+		public var layout:Layout3D;
+		
 		/**
 		 * Constructor
 		 */
@@ -60,6 +63,12 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;
+			
+			layout = new Circle3DLayout();
+			Circle3DLayout(layout).radius = 400;
+			layout.tween = true;
+			layout.tweenTime = 500;
+			layout.autoplay = true;
 		}
 		
 		/**
@@ -84,6 +93,12 @@ package com.gestureworks.cml.away3d.elements {
 					_root.z += e.value.drag_dz;
 				});
 			}
+			
+			if(layout){
+				layout.children = Layout3D.getChildren(this, [Node]);
+				layout.onComplete = initEdges;
+				layout.layout(this);				
+			}			
 		}
 		
 		/**
@@ -461,10 +476,6 @@ package com.gestureworks.cml.away3d.elements {
 			if (child is Node) {
 				addTargetNode(child as Node);
 			}
-			else if (child is Edge) {
-				Edge(child).init();
-				_edges.push(child);
-			}
 			//transfer node graph children to node parent
 			else if (child is NodeGraph) {
 				NodeGraph(child).init();
@@ -478,16 +489,27 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
+		 * Initialize all edges
+		 */
+		private function initEdges():void {
+			for each(var edge:Edge in edges) {
+				edge.init();
+			}
+		}
+		
+		/**
 		 * @inheritDoc
 		 */
 		public function addTargetNode(target:Node):void {
 			if (isTarget(target)){
 				return; 
 			}
+			
+			target.inherit(this);							
 			var edge:Edge = new Edge();
 			edge.target = target;		
-			addChild(edge);			
-			target.inherit(this);			
+			_edges.push(edge);	
+			addChild(edge);
 		}
 		
 		/**
