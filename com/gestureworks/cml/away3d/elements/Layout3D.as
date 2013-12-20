@@ -7,11 +7,10 @@ package com.gestureworks.cml.away3d.elements {
 	import com.greensock.easing.Ease;
 	import com.greensock.TimelineLite;
 	import com.greensock.TweenLite;
-	import com.leapmotion.leap.Matrix;
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
 
 	/**
 	 * Loads Layout3D instances in CML through the ref attribute 
@@ -20,17 +19,20 @@ package com.gestureworks.cml.away3d.elements {
 	public class Layout3D extends CMLObject implements ILayout3D {
 		
 		public var name:String;
+		public var children:Array;		
 		
 		private var _tween:Boolean = true;
 		private var _tweenTime:Number = 500;
 		private var _autoplay:Boolean = true;
 		private var _easing:Ease;
 		private var _onComplete:Function;
+		private var _onCompleteParams:Array;
 		private var _onUpdate:Function;		
+		private var _onUpdateParams:Array;		
 		
 		protected var childTransforms:Vector.<LayoutTransforms>;
 		protected var childTweens:Array;	
-		protected var _layoutTween:TimelineLite;	
+		protected var _layoutTween:TimelineLite;
 		
 		/**
 		 * Constructor
@@ -54,24 +56,43 @@ package com.gestureworks.cml.away3d.elements {
 			}			
 			return rXML;
 		}	
+		
+		/**
+		 * TODO: Move to utility class
+		 * @param	types
+		 */
+		public static function getChildren(container:ObjectContainer3D, types:Array = null):Array {
+			var children:Array = [];
+			var child:Object3D;
+			for (var i:int = 0; i < container.numChildren; i++) {
+				child = container.getChildAt(i);
+				if (!types || (types.indexOf(getDefinitionByName(getQualifiedClassName(child)) as Class) != -1)) {
+					children.push(child);
+				}				
+			}
+			return children; 
+		}
 					
 		public function layout(container:ObjectContainer3D):void {
 			var i:int;
 			var child:Object3D;
 			var t:LayoutTransforms;
 			
+			if (!children)
+				children = getChildren(container);
+			
 			if (tween) {
 								
 				if (_layoutTween && _layoutTween._active) {
-					_layoutTween.eventCallback("onUpdate", onUpdate);
-					_layoutTween.eventCallback("onComplete", onComplete);
+					_layoutTween.eventCallback("onUpdate", onUpdate, onUpdateParams);
+					_layoutTween.eventCallback("onComplete", onComplete, onCompleteParams);
 					return;
 				}
 				
 				childTweens = [];
 				
-				for (i = 0; i < container.numChildren; i++) {
-					child = Object3D(container.getChildAt(i));
+				for (i=0; i < children.length; i++){
+					child = Object3D(children[i]);
 					t = LayoutTransforms(childTransforms[i]);				
 					
 					// position
@@ -94,7 +115,7 @@ package com.gestureworks.cml.away3d.elements {
 					_layoutTween.clear();
 				}
 				else {
-					_layoutTween = new TimelineLite( { onComplete:onComplete, onUpdate:onUpdate } );
+					_layoutTween = new TimelineLite( { onComplete:onComplete, onCompleteParams:onCompleteParams, onUpdate:onUpdate, onUpdateParams:onUpdateParams } );
 				}
 				_layoutTween.pause();				
 				_layoutTween.appendMultiple(childTweens);
@@ -105,9 +126,9 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			else {
 				var m:Matrix3D = new Matrix3D;				
-				for (i = 0; i < container.numChildren; i++) {
+				for (i = 0; i < children.length; i++) {
 					m.identity();
-					child = Object3D(container.getChildAt(i));
+					child = Object3D(children[i]);
 					t = LayoutTransforms(childTransforms[i]);	
 					
 					m.appendTranslation(t.pos.x, t.pos.y, t.pos.z);	
@@ -186,12 +207,28 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
+		 * Parameters to pass to the onComplete function
+		 */
+		public function get onCompleteParams():Array { return _onCompleteParams; }
+		public function set onCompleteParams(params:Array):void {
+			_onCompleteParams = params;
+		}
+		
+		/**
 		 * Function to call on layout update
 		 */
 		public function get onUpdate():Function { return _onUpdate; }
 		public function set onUpdate(f:Function):void
 		{
 			_onUpdate = f;
+		}	
+		
+		/**
+		 * Parameters to pass to the onUpdate function
+		 */
+		public function get onUpdateParams():Array { return _onUpdateParams; }
+		public function set onUpdateParams(params:Array):void {
+			_onUpdateParams = params;
 		}		
 		
 		/**

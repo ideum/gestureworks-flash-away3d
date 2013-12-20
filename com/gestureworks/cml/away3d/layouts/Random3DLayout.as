@@ -51,7 +51,11 @@ package com.gestureworks.cml.away3d.layouts {
 			var layoutTransforms:LayoutTransforms;		
 			childTransforms.length = 0;
 			
-			for (i = 0; i < container.numChildren; i++) {								
+			if (!children) {
+				children = getChildren(container);
+			}
+			
+			for (i = 0; i < children.length; i++) {								
 				layoutTransforms = new LayoutTransforms;
 				
 				layoutTransforms.pos = new Vector3D(NumberUtils.randomNumber(posMin.x, posMax.x),

@@ -18,26 +18,29 @@ package com.gestureworks.cml.away3d.layouts {
 		private var _radius:Number = 100;
 				
 		public function Circle3DLayout() {
-			super();
-			
-			
+			super();						
 		}
 		
 		override public function layout(container:ObjectContainer3D):void {
 			
 			var i:int;
-			var cnt:int = container.numChildren;
+			var cnt:int;
 			var layoutTransforms:LayoutTransforms;		
 			var azi:Number;
 			var cart:Vector3D;
 			var child:Object3D;
 			childTransforms.length = 0;
 			
+			if(!children){
+				children = getChildren(container);
+			}
+			
+			cnt = children.length;	
 			for (i = 0; i < cnt; i++) {								
 				layoutTransforms = new LayoutTransforms;
 				azi = 360 / cnt * i;
 				cart = Math3DUtils.sphericalToCartesian( new Vector3D(azi, 0, radius) );
-				child = container.getChildAt(i);
+				child = children[i];
 				layoutTransforms.pos = cart;
 					
 				//layoutTransforms.rot = new Vector3D(NumberUtils.randomNumber(rotMin.x, rotMax.x),
