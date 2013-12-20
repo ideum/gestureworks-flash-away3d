@@ -10,9 +10,11 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
+	import com.gestureworks.cml.away3d.textures.VideoTexture;
 	import com.gestureworks.cml.elements.Graphic;
+	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Text;
-	import com.gestureworks.cml.utils.DisplayUtils;
+	import com.gestureworks.cml.elements.Video;
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.events.GWGestureEvent;
 	import flash.display.Bitmap;
@@ -49,6 +51,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Mesh;
+		private var contentMesh:Mesh;
 		
 		/**
 		 * Constructor
@@ -208,6 +211,35 @@ package com.gestureworks.cml.away3d.elements {
 		public function get content():* { return _content; }
 		public function set content(value:*):void {
 			_content = value;
+			
+			if(content is Image || content is Video){
+				contentMesh = new Mesh();			
+				contentMesh.geometry = new PlaneGeometry(content.width, content.height);
+				PlaneGeometry(contentMesh.geometry).yUp = false;
+				contentMesh.lookAt(View3D(vto.view).camera.scenePosition);
+				contentMesh.z = 70;
+				addChild(contentMesh);
+				
+				if(content is Image){
+					var bmd:BitmapData = new BitmapData(256, 256, false);
+					bmd.draw(content);
+					var bitmap:Bitmap = new Bitmap(bmd);
+					bitmap.smoothing = true;			
+					
+					contentMesh.material = new TextureMaterial(Cast.bitmapTexture(bitmap));
+				}
+				else if (content is Video) {
+					var vt:VideoTexture = new VideoTexture(content.src, 256, 256);
+					contentMesh.material = new TextureMaterial(vt);
+					vt.player.play();
+				}
+				
+				MeshHelper.invertFaces(contentMesh, true);			
+				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);			
+			}
+			else if (content is Model) {
+				addChild(content);
+			}
 		}
 		
 		/**
@@ -388,7 +420,6 @@ package com.gestureworks.cml.away3d.elements {
 			TextureMaterial(labelMesh.material).alphaBlending = true;
 			addChild(labelMesh);
 			
-			
 			View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);
 			
 		}
@@ -507,7 +538,10 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		private function faceCamera(e:Object3DEvent):void {
-			labelMesh.lookAt(View3D(vto.view).camera.scenePosition);			
+			if(labelMesh)
+				labelMesh.lookAt(View3D(vto.view).camera.scenePosition);			
+			if (contentMesh)
+				contentMesh.lookAt(View3D(vto.view).camera.scenePosition);			
 		}
 		
 		
