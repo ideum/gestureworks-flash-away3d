@@ -10,7 +10,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	
 	/**
 	 * Fixes the orientation to the camera's view
-	 * @default true
+	 * @default false
 	 */
 	function get lookAtCamera():Boolean;
 	function set lookAtCamera(value:Boolean):void;
@@ -111,12 +111,6 @@ package com.gestureworks.cml.away3d.interfaces {
 	 */
 	function get targets():String;
 	function set targets(value:String):void;
-	
-	/**
-	 * The node content
-	 */
-	function get content():*;
-	function set content(value:*):void;	
 	
 	/**
 	 * Sibling node index
