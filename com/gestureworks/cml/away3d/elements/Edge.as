@@ -51,9 +51,11 @@ package com.gestureworks.cml.away3d.elements {
 			geometry["yUp"] = false;			
 			
 			//connect edge to target node
+			//movePivot(0, 0, -length / 2);											
+			//lookAt(source.inverseSceneTransform.deltaTransformVector(target.scenePosition));						
+			//moveTo(0, 0, length / 2);
+			
 			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
-			//movePivot(0, 0, -(length / 2+ tgtSurfaceOffset));
-			//z = length / 2 + tgtSurfaceOffset;
 			moveForward(length / 2 + tgtSurfaceOffset);
 		}
 		
