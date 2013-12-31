@@ -42,6 +42,9 @@ package com.gestureworks.cml.core
 	import com.gestureworks.cml.away3d.elements.Geometry; Geometry;
 	import com.gestureworks.cml.away3d.elements.Texture; Texture;
 	import com.gestureworks.cml.away3d.elements.Layout3D; Layout3D;
+	import com.gestureworks.cml.away3d.elements.Node; Node;
+	import com.gestureworks.cml.away3d.elements.NodeGraph; NodeGraph;
+	import com.gestureworks.cml.away3d.elements.Edge; Edge;
 	
 	// light
 	import com.gestureworks.cml.away3d.lights.PointLight; PointLight;	

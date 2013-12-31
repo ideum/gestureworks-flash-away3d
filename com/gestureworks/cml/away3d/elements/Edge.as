@@ -41,6 +41,7 @@ package com.gestureworks.cml.away3d.elements {
 			}
 
 			source = Node(parent);
+			if (!source) return;
 			
 			//calculate length
 			var srcSurfaceOffset:Number = "radius" in source.geometry ? source.geometry["radius"] : source.geometry["width"] / 2;

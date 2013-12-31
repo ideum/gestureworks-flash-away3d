@@ -547,8 +547,8 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		private function initEdges():void {
 			for each(var edge:Edge in edges) {
-				if (edgeMesh) {
-					edge.geometry = edgeMesh.geometry;
+				if (edgeMesh) {					
+					//edge.geometry = edgeMesh.geometry;
 					edge.material = edgeMesh.material;
 				}				
 				edge.init();
