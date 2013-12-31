@@ -500,10 +500,6 @@ package com.gestureworks.cml.away3d.elements {
 			if (child is Node) {
 				addTargetNode(child as Node);
 			}
-			else if (child is Edge) {
-				_edges.push(child);	
-				Edge(child).init();
-			}
 			//transfer node graph children to node parent
 			else if (child is NodeGraph) {
 				NodeGraph(child).init();
@@ -539,7 +535,8 @@ package com.gestureworks.cml.away3d.elements {
 			
 			target.inherit(this);							
 			var edge:Edge = new Edge();
-			edge.target = target;		
+			edge.target = target;	
+			edges.push(edge);
 			addChild(edge);
 		}
 		
