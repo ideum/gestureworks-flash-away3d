@@ -1,7 +1,6 @@
 package com.gestureworks.cml.away3d.interfaces {
 	import com.gestureworks.cml.away3d.elements.Edge;
 	import com.gestureworks.cml.away3d.elements.Node;
-	import com.gestureworks.interfaces.ITouchObject3D;
 	
 	/**
 	 * Implements Node objects.
@@ -46,6 +45,18 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Returns the root node
 	 */
 	function get root():Node;
+	
+	/**
+	 * Determines if node is a target of this node
+	 * @param	node
+	 */	
+	function isTarget(node:Node):Boolean;
+	
+	/**
+	 * Trasfer transformations to root node
+	 */
+	function get groupTransform():Boolean;
+	function set groupTransform(value:Boolean):void;
 	
 	/**
 	 * Display child nodes down the number of levels specified
@@ -154,6 +165,26 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * @param  target Target node
 	 */	
 	function addTargetNode(target:Node):void;
+	
+	/**
+	 * Returns sibling node by target index
+	 * @param	index Target index
+	 * @return
+	 */	
+	function siblingNode(index:int):Node;
+	
+	/**
+	 * Returns target node by index
+	 * @param	index Target index
+	 * @return
+	 */	
+	function nodeByIndex(index:int):Node;
+	
+	/**
+	 * If assigned, all edges of this node will inherit this Edge object's geometry and material 
+	 */
+	function get edgeMesh():Edge;
+	function set edgeMesh(value:Edge):void;	
 	
 	}
 }

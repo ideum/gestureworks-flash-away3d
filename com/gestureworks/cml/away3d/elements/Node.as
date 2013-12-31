@@ -8,7 +8,6 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.PlaneGeometry;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
-	import com.gestureworks.cml.away3d.layouts.Circle3DLayout;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
 	import com.gestureworks.cml.away3d.textures.VideoTexture;
@@ -48,6 +47,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _root:Node;		
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
 		private var _allEdges:Dictionary = new Dictionary();
+		private var _edgeMesh:Edge;
 		
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
@@ -64,11 +64,11 @@ package com.gestureworks.cml.away3d.elements {
 			geometry = defaultGeometry;
 			material = defaultMaterial;
 			
-			layout = new Circle3DLayout();
-			Circle3DLayout(layout).radius = 400;
-			layout.tween = true;
-			layout.tweenTime = 500;
-			layout.autoplay = true;
+			//layout = new Circle3DLayout();
+			//Circle3DLayout(layout).radius = 400;
+			//layout.tween = true;
+			//layout.tweenTime = 500;
+			//layout.autoplay = true;
 		}
 		
 		/**
@@ -98,7 +98,10 @@ package com.gestureworks.cml.away3d.elements {
 				layout.children = Layout3D.getChildren(this, [Node]);
 				layout.onComplete = initEdges;
 				layout.layout(this);				
-			}			
+			}
+			else {
+				initEdges();
+			}
 		}
 		
 		/**
@@ -135,7 +138,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function get root():Node { return _root; }	
 		
 		/**
-		 * Trasfer transformations to root node
+		 * @inheritDoc
 		 */
 		public function get groupTransform():Boolean { return _groupTransform; }
 		public function set groupTransform(value:Boolean):void {
@@ -152,10 +155,19 @@ package com.gestureworks.cml.away3d.elements {
 			
 			levelCnt--;
 			for each(var edge:Edge in _edges) {
-				edge.visible = true;
-				edge.target.visible = true;
+				//edge.visible = true;
+				//edge.target.visible = true;
 				edge.target.expand(levelCnt);
 			}
+			
+			//layout = new Circle3DLayout;
+			//layout.children = Layout3D.getChildren(this, [Node]);
+			//Circle3DLayout(layout).radius = 400;			
+			//layout.tween = true;
+			//layout.tweenTime = 500;
+			//layout.autoplay = true;			
+			//layout.layout(this);
+			
 			_expanded = true;
 		}
 		
@@ -165,10 +177,18 @@ package com.gestureworks.cml.away3d.elements {
 		public function collapse(levelCnt:int = 0):void {			
 			var e:Vector.<Edge> = edgesAtLevel(levelCnt);
 			for each(var edge:Edge in e) {
-				edge.visible = false;
-				edge.target.visible = false;
+			//	edge.visible = false;
+				//edge.target.visible = false;
 				edge.target.collapse();
 			}					
+						
+			//layout = new Circle3DLayout;
+			//layout.children = Layout3D.getChildren(this, [Node]);			
+			//Circle3DLayout(layout).radius = 100;			
+			//layout.tween = true;
+			//layout.tweenTime = 500;
+			//layout.autoplay = true;			
+			//layout.layout(this);
 			
 			_expanded = false;
 		}
@@ -297,9 +317,7 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		/**
-		 * Returns sibling node by target index
-		 * @param	index Target index
-		 * @return
+		 * @inheritDoc
 		 */
 		public function siblingNode(index:int):Node {
 			if (!parent is Node)
@@ -308,9 +326,7 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		/**
-		 * Returns target node by index
-		 * @param	index Target index
-		 * @return
+		 * @inheritDoc
 		 */
 		public function nodeByIndex(index:int):Node {
 			for each(var edge:Edge in edges) {
@@ -465,6 +481,14 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			return lEdges;
 		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get edgeMesh():Edge { return  _edgeMesh; }
+		public function set edgeMesh(value:Edge):void {
+			_edgeMesh = value;
+		}
 				
 		/**
 		 * Override to handle special child registration
@@ -475,6 +499,10 @@ package com.gestureworks.cml.away3d.elements {
 			super.addChild(child);
 			if (child is Node) {
 				addTargetNode(child as Node);
+			}
+			else if (child is Edge) {
+				_edges.push(child);	
+				Edge(child).init();
 			}
 			//transfer node graph children to node parent
 			else if (child is NodeGraph) {
@@ -493,6 +521,10 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		private function initEdges():void {
 			for each(var edge:Edge in edges) {
+				if (edgeMesh) {
+					edge.geometry = edgeMesh.geometry;
+					edge.material = edgeMesh.material;
+				}				
 				edge.init();
 			}
 		}
@@ -508,13 +540,11 @@ package com.gestureworks.cml.away3d.elements {
 			target.inherit(this);							
 			var edge:Edge = new Edge();
 			edge.target = target;		
-			_edges.push(edge);	
 			addChild(edge);
 		}
 		
 		/**
-		 * Determines if node is a target
-		 * @param	target
+		 * @inheritDoc
 		 */
 		public function isTarget(node:Node):Boolean {
 			for each(var edge:Edge in edges) {
@@ -542,11 +572,17 @@ package com.gestureworks.cml.away3d.elements {
 				mref = source.mref;				
 			}
 
+			if (!edgeMesh) {
+				edgeMesh = source.edgeMesh;
+			}			
+
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
 			_hierarchy = source.hierarchy + "-" + nodeId;
 			vto.view = source.vto.view;
 		}
+		
+		
 		
 		/**
 		 * Controls camera distance auto-toggling
@@ -565,8 +601,6 @@ package com.gestureworks.cml.away3d.elements {
 			if (contentMesh)
 				contentMesh.lookAt(View3D(vto.view).camera.scenePosition);			
 		}
-		
-		
 		
 	}
 
