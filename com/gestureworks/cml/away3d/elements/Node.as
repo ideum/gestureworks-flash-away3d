@@ -48,6 +48,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
 		private var _allEdges:Dictionary = new Dictionary();
 		private var _edgeMesh:Edge;
+		private var _eref:XML; //edge mesh		
 		
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
@@ -77,6 +78,14 @@ package com.gestureworks.cml.away3d.elements {
 		override public function init():void {
 			super.init();
 			
+			if (eref) {
+				var s:String = String(eref);
+				if (s.charAt(0) == "#") {
+					s = s.substr(1);
+				}
+				edgeMesh = document.getElementById(s);
+			}
+			
 			_root = Node.ancestors(this).pop();
 			
 			if (targets)
@@ -102,6 +111,19 @@ package com.gestureworks.cml.away3d.elements {
 			else {
 				initEdges();
 			}
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		override public function parseCML(cml:XMLList):XMLList {
+			
+			if (cml.@edgeMesh != undefined) {
+				cml.@eref = cml.@edgeMesh;
+				delete cml.@edgeMesh;
+			}
+			
+			return super.parseCML(cml);
 		}
 		
 		/**
@@ -488,6 +510,14 @@ package com.gestureworks.cml.away3d.elements {
 		public function get edgeMesh():Edge { return  _edgeMesh; }
 		public function set edgeMesh(value:Edge):void {
 			_edgeMesh = value;
+		}
+		
+		/**
+		 * Edge mesh reference
+		 */
+		public function get eref():* { return _eref; }
+		public function set eref(value:*):void {
+			_eref = value;
 		}
 				
 		/**
