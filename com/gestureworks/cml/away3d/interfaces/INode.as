@@ -100,6 +100,14 @@ package com.gestureworks.cml.away3d.interfaces {
 	function set autoToggleVisibility(value:Boolean):void;
 	
 	/**
+	 * Hide children on collapse
+	 * @return 
+	 * @default false
+	 */
+	function get hideOnCollapse():Boolean;
+	function set hideOnCollapse(value:Boolean):void;
+	
+	/**
 	 * Reset node transformations to initial state up to specified node level
 	 * @param level numerical level relative to 
 	 */

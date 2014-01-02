@@ -36,6 +36,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _autoToggle:Boolean = false;
 		private var _autoToggleThreshold:Number = 500;
 		private var _autoToggleVisibility:Boolean = true;
+		private var _hideOnCollapse:Boolean = false;
 		private var _targets:String;
 		private var _content:*;
 		private var _index:int = NaN;
@@ -55,7 +56,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Mesh;
 		
-		public var layout:Layout3D;
+		public var expandLayout:Layout3D = new Circle3DLayout(400);
+		public var collapseLayout:Layout3D = new Circle3DLayout(100);
 		
 		/**
 		 * Constructor
@@ -63,13 +65,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Node() {
 			super();
 			geometry = defaultGeometry;
-			material = defaultMaterial;
-			
-			layout = new Circle3DLayout();
-			Circle3DLayout(layout).radius = 400;
-			layout.tween = true;
-			layout.tweenTime = 500;
-			layout.autoplay = true;
+			material = defaultMaterial;	
 		}
 		
 		/**
@@ -103,15 +99,18 @@ package com.gestureworks.cml.away3d.elements {
 				});
 			}
 			
-			if(layout){
-				layout.children = Layout3D.getChildren(this, [Node]);
-				layout.onComplete = initEdges;
-				layout.layout(this);				
+			if (collapseLayout) {
+				collapseLayout.children = Layout3D.getChildren(this, [Node]);
+			}			
+			if (expandLayout) {				
+				expandLayout.children = Layout3D.getChildren(this, [Node]);
+				expandLayout.onComplete = initEdges;
+				expandLayout.layout(this);				
 			}
 			else {
 				initEdges();
 			}
-		}
+		}		
 		
 		/**
 		 * @inheritDoc
@@ -180,18 +179,15 @@ package com.gestureworks.cml.away3d.elements {
 			
 			levelCnt--;
 			for each(var edge:Edge in _edges) {
-				//edge.visible = true;
-				//edge.target.visible = true;
 				edge.target.expand(levelCnt);
 			}
 			
-			//layout = new Circle3DLayout;
-			//layout.children = Layout3D.getChildren(this, [Node]);
-			//Circle3DLayout(layout).radius = 400;			
-			//layout.tween = true;
-			//layout.tweenTime = 500;
-			//layout.autoplay = true;			
-			//layout.layout(this);
+			if (expandLayout) {
+				expandLayout.layout(this);			
+			}
+			if (hideOnCollapse) {
+				hideChildren(false);
+			}
 			
 			_expanded = true;
 		}
@@ -202,18 +198,19 @@ package com.gestureworks.cml.away3d.elements {
 		public function collapse(levelCnt:int = 0):void {			
 			var e:Vector.<Edge> = edgesAtLevel(levelCnt);
 			for each(var edge:Edge in e) {
-			//	edge.visible = false;
-				//edge.target.visible = false;
 				edge.target.collapse();
-			}					
-						
-			//layout = new Circle3DLayout;
-			//layout.children = Layout3D.getChildren(this, [Node]);			
-			//Circle3DLayout(layout).radius = 100;			
-			//layout.tween = true;
-			//layout.tweenTime = 500;
-			//layout.autoplay = true;			
-			//layout.layout(this);
+			}				
+			
+			if (collapseLayout) {
+				if(hideOnCollapse){
+					collapseLayout.onComplete = hideChildren;
+					collapseLayout.onCompleteParams = [true];
+				}
+				collapseLayout.layout(this);				
+			}
+			else if (hideOnCollapse) {
+				hideChildren(true);
+			}
 			
 			_expanded = false;
 		}
@@ -256,6 +253,14 @@ package com.gestureworks.cml.away3d.elements {
 		public function get autoToggleVisibility():Boolean { return _autoToggleVisibility;  }
 		public function set autoToggleVisibility(value:Boolean):void {
 			_autoToggleVisibility = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get hideOnCollapse():Boolean { return _hideOnCollapse; }
+		public function set hideOnCollapse(value:Boolean):void {
+			_hideOnCollapse = value;
 		}
 		
 		/**
@@ -518,6 +523,9 @@ package com.gestureworks.cml.away3d.elements {
 				}				
 				edge.init();
 			}
+			if (expandLayout) {
+				expandLayout.onComplete = null;
+			}
 		}
 		
 		/**
@@ -567,15 +575,13 @@ package com.gestureworks.cml.away3d.elements {
 				edgeMesh = source.edgeMesh;
 			}			
 
-			layout = source.layout;
+			expandLayout = source.expandLayout;
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
 			_hierarchy = source.hierarchy + "-" + nodeId;
 			vto.view = source.vto.view;
 		}
-		
-		
-		
+				
 		/**
 		 * Controls camera distance auto-toggling
 		 * @param	e
@@ -588,7 +594,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * 
+		 * Orients node towards camera
 		 * @param	e
 		 */
 		private function faceCamera(e:Object3DEvent):void {
@@ -596,6 +602,17 @@ package com.gestureworks.cml.away3d.elements {
 				labelMesh.lookAt(View3D(vto.view).camera.scenePosition);
 			if (lookAtCamera)
 				lookAt(View3D(vto.view).camera.scenePosition);
+		}
+		
+		/**
+		 * Hide/displays edges and associated target nodes
+		 * @param	hide 
+		 */
+		private function hideChildren(hide:Boolean = true):void {
+			for each(var edge:Edge in edges) {
+				edge.visible = !hide;
+				edge.target.visible = !hide;
+			}
 		}
 		
 	}
