@@ -113,11 +113,15 @@ package com.gestureworks.cml.away3d.elements {
 				
 				if (_layoutTween) {
 					_layoutTween.clear();
+					_layoutTween.vars.onComplete = onComplete;
+					_layoutTween.vars.onCompleteParams = onCompleteParams;
+					_layoutTween.vars.onUpdate = onUpdateParams;
+					_layoutTween.vars.onUpdateParams = onUpdateParams;					
 				}
 				else {
 					_layoutTween = new TimelineLite( { onComplete:onComplete, onCompleteParams:onCompleteParams, onUpdate:onUpdate, onUpdateParams:onUpdateParams } );
 				}
-				_layoutTween.pause();				
+				_layoutTween.gotoAndStop(0);	
 				_layoutTween.appendMultiple(childTweens);
 				
 				if (_autoplay) {
