@@ -713,7 +713,7 @@ package com.gestureworks.away3d.utils
 						//trace(tiO.history.length)
 					if (tiO.history[i])
 						{
-						gestureEventArray = tiO.history[i].gestureEventArray;
+						gestureEventArray = tiO.history[i].gestureEventArray as Array;
 						//if(gestureEventArray.length)trace("gesture event array--------------------------------------------",gestureEventArray.length);
 
 								for (var j:uint=0; j < gestureEventArray.length; j++) 
