@@ -15,10 +15,11 @@ package com.gestureworks.cml.away3d.layouts {
 	 */
 	public class Circle3DLayout extends Layout3D {
 		
-		private var _radius:Number = 100;
+		private var _radius:Number;
 				
-		public function Circle3DLayout() {
-			super();						
+		public function Circle3DLayout(radius:Number = 100) {
+			super();				
+			_radius = radius;
 		}
 		
 		override public function layout(container:ObjectContainer3D):void {
@@ -34,7 +35,7 @@ package com.gestureworks.cml.away3d.layouts {
 			if(!children){
 				children = getChildren(container);
 			}
-			
+
 			cnt = children.length;	
 			for (i = 0; i < cnt; i++) {								
 				layoutTransforms = new LayoutTransforms;
