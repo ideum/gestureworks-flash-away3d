@@ -33,7 +33,7 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		override public function init():void {				
 			if (initialized) {
-				reset();				
+				return;				
 			}
 			else{
 				initialized = true;
@@ -52,12 +52,12 @@ package com.gestureworks.cml.away3d.elements {
 			geometry["yUp"] = false;			
 			
 			//connect edge to target node
-			//movePivot(0, 0, -length / 2);											
-			//lookAt(source.inverseSceneTransform.deltaTransformVector(target.scenePosition));						
-			//moveTo(0, 0, length / 2);
+			movePivot(0, 0, -length / 2);	
+			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));						
+			moveTo(0, 0, length / 2);
 			
-			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
-			moveForward(length / 2 );
+			//lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));
+			//moveForward(length / 2 );
 		}
 		
 		/**
@@ -65,6 +65,7 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		public function reset():void {
 			position = new Vector3D(0, 0, 0);
+			pivotPoint = new Vector3D(0, 0, 0);
 		}
 		
 		/**
