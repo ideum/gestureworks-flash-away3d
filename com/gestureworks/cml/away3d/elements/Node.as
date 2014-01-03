@@ -11,13 +11,9 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.layouts.Circle3DLayout;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
-	import com.gestureworks.cml.away3d.textures.VideoTexture;
 	import com.gestureworks.cml.elements.Graphic;
-	import com.gestureworks.cml.elements.Image;
 	import com.gestureworks.cml.elements.Text;
-	import com.gestureworks.cml.elements.Video;
 	import com.gestureworks.cml.utils.document;
-	import com.gestureworks.events.GWGestureEvent;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
@@ -57,7 +53,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var labelMesh:Mesh;
 		
 		public var expandLayout:Layout3D = new Circle3DLayout(400);
-		public var collapseLayout:Layout3D = new Circle3DLayout(100);
+		public var collapseLayout:Layout3D = new Circle3DLayout(0);
 		
 		/**
 		 * Constructor
@@ -87,16 +83,15 @@ package com.gestureworks.cml.away3d.elements {
 			if (targets)
 				parseTargets();
 				
-			vto.gestureList = _root.vto.gestureList;
-				
 			if (groupTransform) {
-				touchEnabled = true;
-				vto.nativeTransform = false;
-				vto.addEventListener(GWGestureEvent.DRAG, function(e:GWGestureEvent):void {
-					_root.x += e.value.drag_dx;
-					_root.y += e.value.drag_dy;
-					_root.z += e.value.drag_dz;
-				});
+				vto.gestureList = _root.vto.gestureList;				
+				//touchEnabled = true;
+				//vto.nativeTransform = false;
+				//vto.addEventListener(GWGestureEvent.DRAG, function(e:GWGestureEvent):void {
+					//_root.x += e.value.drag_dx;
+					//_root.y += e.value.drag_dy;
+					//_root.z += e.value.drag_dz;
+				//});
 			}
 			
 			if (collapseLayout) {
@@ -104,12 +99,11 @@ package com.gestureworks.cml.away3d.elements {
 			}			
 			if (expandLayout) {				
 				expandLayout.children = Layout3D.getChildren(this, [Node]);
-				expandLayout.onComplete = initEdges;
+				expandLayout.tween = false;
 				expandLayout.layout(this);				
 			}
-			else {
-				initEdges();
-			}
+			
+			initEdges();
 		}		
 		
 		/**
@@ -183,6 +177,8 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			if (expandLayout) {
+				expandLayout.children = Layout3D.getChildren(this, [Node]);
+				expandLayout.tween = true;
 				expandLayout.layout(this);			
 			}
 			if (hideOnCollapse) {
