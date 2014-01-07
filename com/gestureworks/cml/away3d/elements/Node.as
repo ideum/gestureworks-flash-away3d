@@ -52,8 +52,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Mesh;
 		
-		public var expandLayout:Layout3D = new Circle3DLayout(400);
-		public var collapseLayout:Layout3D = new Circle3DLayout(0);
+		public var expandLayout:Layout3D = new CircleLayout3D(400);
+		public var collapseLayout:Layout3D = new CircleLayout3D(0);
 		
 		/**
 		 * Constructor
