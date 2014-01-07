@@ -11,7 +11,7 @@ package com.gestureworks.cml.away3d.layouts {
 	 * ...
 	 * @author 
 	 */
-	public class Random3DLayout extends Layout3D {
+	public class RandomLayout3D extends Layout3D {
 		
 		private var _posMin:Vector3D;
 		private var _posMax:Vector3D;
@@ -27,7 +27,7 @@ package com.gestureworks.cml.away3d.layouts {
 		
 		private var scaleSet:Boolean;
 				
-		public function Random3DLayout() {
+		public function RandomLayout3D() {
 			super();
 			
 			posMin = new Vector3D(0, 0, 0);
