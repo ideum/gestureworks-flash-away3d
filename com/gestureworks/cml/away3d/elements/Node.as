@@ -8,7 +8,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.geometries.PlaneGeometry;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
-	import com.gestureworks.cml.away3d.layouts.Circle3DLayout;
+	import com.gestureworks.cml.away3d.layouts.CircleLayout3D;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
 	import com.gestureworks.cml.elements.Graphic;
