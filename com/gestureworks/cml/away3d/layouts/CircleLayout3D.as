@@ -13,11 +13,11 @@ package com.gestureworks.cml.away3d.layouts {
 	 * ...
 	 * @author 
 	 */
-	public class Circle3DLayout extends Layout3D {
+	public class CircleLayout3D extends Layout3D {
 		
 		private var _radius:Number = 100;
 				
-		public function Circle3DLayout() {
+		public function CircleLayout3D() {
 			super();
 			
 			
