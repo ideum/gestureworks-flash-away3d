@@ -14,6 +14,8 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.utils.document;
+	import com.gestureworks.events.GWGestureEvent;
+	import com.gestureworks.objects.GestureObject;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.utils.Dictionary;
@@ -87,7 +89,50 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if (targets)
 				parseTargets();
-				
+			
+			initLayouts();			
+			initEdges();
+			
+			if (!initializeExpanded) {	
+				hideChildren();
+				collapse();
+			}
+			if(vto.view && (label || lookAtCamera)){
+				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);
+				faceCamera();
+			}
+			
+			registerListeners();
+		}	
+		
+		
+		/**
+		 * Initialize expanded and collapsed state layouts
+		 */
+		private function initLayouts():void {
+			if (collapseLayout) {
+				collapseLayout.children = Layout3D.getChildren(this, [Node]);
+			}			
+			if (expandLayout) {				
+				expandLayout.children = Layout3D.getChildren(this, [Node]);
+				expandLayout.tween = false;
+				expandLayout.layout(this);				
+			}			
+		}
+		
+		/**
+		 * Register listeners based on settings and active gestures
+		 */
+		private function registerListeners():void {
+			if (toggleOnTap) {
+				for each(var go:GestureObject in vto.gO.pOList) {
+					if (go.gesture_type == "tap") {
+						vto.addEventListener(GWGestureEvent.TAP, toggle);
+						break;
+					}
+				}
+			}
+			
 			if (groupTransform) {
 				vto.gestureList = _root.vto.gestureList;				
 				//touchEnabled = true;
@@ -97,23 +142,8 @@ package com.gestureworks.cml.away3d.elements {
 					//_root.y += e.value.drag_dy;
 					//_root.z += e.value.drag_dz;
 				//});
-			}
-			
-			if (collapseLayout) {
-				collapseLayout.children = Layout3D.getChildren(this, [Node]);
-			}			
-			if (expandLayout) {				
-				expandLayout.children = Layout3D.getChildren(this, [Node]);
-				expandLayout.tween = false;
-				expandLayout.layout(this);				
-			}
-			
-			initEdges();
-			
-			if (!initializeExpanded) {				
-				collapse();
-			}
-		}		
+			}						
+		}
 		
 		/**
 		 * @inheritDoc
@@ -133,10 +163,7 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		public function get lookAtCamera():Boolean { return _lookAtCamera; }
 		public function set lookAtCamera(value:Boolean):void {
-			_lookAtCamera = value;
-			if (_lookAtCamera && vto.view)
-				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);
-				
+			_lookAtCamera = value;				
 		}
 		
 		/**
@@ -231,7 +258,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function toggle():void {
+		public function toggle(e:GWGestureEvent=null):void {
 			if (_expanded)
 				collapse();
 			else
@@ -442,9 +469,8 @@ package com.gestureworks.cml.away3d.elements {
 			text.color = 0;
 			text.fontSize = 50;
 			
-			var bw:Number = text.width > 50 ? 512 : 256;
-			
-			var pw:Number = text.width *3;
+			var bw:Number = 256;// text.width > 50 ? 512 : 256;			
+			var pw:Number = 100; // text.width * 3;
 			
 			text.width = bw;
 								
@@ -460,10 +486,7 @@ package com.gestureworks.cml.away3d.elements {
 			MeshHelper.invertFaces(labelMesh,true);
 			labelMesh.material = new TextureMaterial(Cast.bitmapTexture(bitmap));
 			TextureMaterial(labelMesh.material).alphaBlending = true;
-			addChild(labelMesh);
-			
-			if(vto.view)
-				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);			
+			addChild(labelMesh);			
 		}
 		
 		/**
@@ -600,15 +623,30 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			if (!edgeMesh) {
 				edgeMesh = source.edgeMesh;
-			}			
+			}	
+			if (emptyGestureList) {
+				vto.gestureList = source.vto.gestureList;
+			}
 
+			touchEnabled = source.touchEnabled;
+			toggleOnTap = source.toggleOnTap;
 			initializeExpanded = source.initializeExpanded;
 			hideOnCollapse = source.hideOnCollapse;
-			expandLayout = source.expandLayout;
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 
 			_hierarchy = source.hierarchy + "-" + nodeId;
-			vto.view = source.vto.view;
+		}
+		
+		/**
+		 * Returns true if gestureList is empty and false otherwise
+		 */
+		private function get emptyGestureList():Boolean {
+			var isEmpty:Boolean = true;
+			for (var n:* in vto.gestureList) {
+				isEmpty = false;
+				break;
+			}
+			return isEmpty;
 		}
 				
 		/**
@@ -626,7 +664,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Orients node towards camera
 		 * @param	e
 		 */
-		private function faceCamera(e:Object3DEvent):void {
+		private function faceCamera(e:Object3DEvent = null):void {
 			if(labelMesh)
 				labelMesh.lookAt(View3D(vto.view).camera.scenePosition);
 			if (lookAtCamera)

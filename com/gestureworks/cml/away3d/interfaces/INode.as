@@ -2,6 +2,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	import com.gestureworks.cml.away3d.elements.Edge;
 	import com.gestureworks.cml.away3d.elements.Node;
 	import com.gestureworks.cml.elements.Text;
+	import com.gestureworks.events.GWGestureEvent;
 	
 	/**
 	 * Implements Node objects.
@@ -80,10 +81,10 @@ package com.gestureworks.cml.away3d.interfaces {
 	/**
 	 * Expands/collapses based on current expanded state
 	 */
-	function toggle():void;
+	function toggle(e:GWGestureEvent=null):void;
 	
 	/**
-	 * Automatically expands/collpases on the first tap gesture in the gestureList. 
+	 * Automatically expands/collpases on tap event. Requires an event of type "tap" to be enable in the <code>gestureList</code>.
 	 * @default false
 	 */
 	function get toggleOnTap():Boolean;
