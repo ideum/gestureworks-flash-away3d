@@ -1,10 +1,12 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
+	import away3d.containers.Scene3D;
 	import away3d.entities.Mesh;
 	import away3d.materials.MaterialBase;
 	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.interfaces.IContainer;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IState;
@@ -73,7 +75,7 @@ package com.gestureworks.cml.away3d.elements {
 					s = s.substr(1);
 				}
 				material = document.getElementById(s) as MaterialBase;
-			}	
+			}
 		}
 		
 		/**
@@ -237,6 +239,20 @@ package com.gestureworks.cml.away3d.elements {
 			mouseEnabled = value;
 		}
 		
+		/**
+		 * Sets scene and handles the vto's view assignment when the scene is added to CML Camera.
+		 */
+		override public function set scene(value:Scene3D):void {
+			super.scene = value;
+			if (value) {
+				value.addEventListener(StateEvent.CHANGE, function addedToView(e:StateEvent):void {
+					if (e.property == "addedToView") {
+						value.removeEventListener(StateEvent.CHANGE, addedToView);
+						vto.view = e.value;
+					}
+				});
+			}
+		}
 		
 	}
 }

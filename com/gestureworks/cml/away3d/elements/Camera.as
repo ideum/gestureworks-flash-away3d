@@ -9,6 +9,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.away3d.TouchManager3D;
 	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.State;
+	import com.gestureworks.cml.events.StateEvent;
 	import com.gestureworks.cml.interfaces.ICSS;
 	import com.gestureworks.cml.interfaces.IObject;
 	import com.gestureworks.cml.interfaces.IState;
@@ -71,10 +72,11 @@ package com.gestureworks.cml.away3d.elements {
 			// scene
 			var scn:Scene = document.getElementsByTagName(Scene)[0];
 			scene = scn.scene3D;
-			
-			
+						
 			// view
-			view = new View3D(scene, this);			
+			view = new View3D(scene, this);		
+			scene.dispatchEvent(new StateEvent(StateEvent.CHANGE, null, "addedToView", view));
+			vto.view = view;
 			view.touchPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;
 			
 			if (viewDim) {
