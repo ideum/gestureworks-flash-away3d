@@ -92,6 +92,9 @@ package com.gestureworks.cml.away3d.elements {
 			_length = value;
 		}
 	
+		/**
+		 * Distance between source and target nodes
+		 */
 		public function get distance():Number { return Vector3D.distance(source.scenePosition, target.scenePosition); }
 		
 		/**
