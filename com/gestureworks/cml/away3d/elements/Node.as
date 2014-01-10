@@ -19,7 +19,8 @@ package com.gestureworks.cml.away3d.elements {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * Provides Node hiearchy management and graph construction
+	 * Provides Node hiearchy management and graph construction. By default, all <code>Node</code> descendants inherit attributes and settings
+	 * of the parent unless customized. 
 	 * @author Ideum
 	 */
 	public class Node extends Mesh implements INode {
@@ -28,7 +29,9 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private var _lookAtCamera:Boolean = false;
 		private var _expanded:Boolean = true;
+		private var _initializeExpanded:Boolean = true;
 		private var _directed:Boolean = false;
+		private var _toggleOnTap:Boolean = false;
 		private var _autoToggle:Boolean = false;
 		private var _autoToggleThreshold:Number = 500;
 		private var _autoToggleVisibility:Boolean = true;
@@ -37,6 +40,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _content:*;
 		private var _index:int = NaN;
 		private var _label:String;
+		private var _labelText:Text;
+		private var _labelBackground:Graphic;
 		private var _numLevel:int = 0;
 		private var _hierarchy:String;
 		private var _camera:Camera3D;
@@ -104,6 +109,10 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			initEdges();
+			
+			if (!initializeExpanded) {				
+				collapse();
+			}
 		}		
 		
 		/**
@@ -138,6 +147,14 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
+		public function get initializeExpanded():Boolean { return _initializeExpanded; }
+		public function set initializeExpanded(value:Boolean):void {
+			_initializeExpanded = value;
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
 		public function get directed():Boolean { return _directed; }
 		
 		/**
@@ -166,7 +183,7 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function expand(levelCnt:int = int.MAX_VALUE):void {	
+		public function expand(levelCnt:int = 1):void {	
 			if (!levelCnt){
 				return;				
 			}	
@@ -219,6 +236,14 @@ package com.gestureworks.cml.away3d.elements {
 				collapse();
 			else
 				expand();
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get toggleOnTap():Boolean { return _toggleOnTap; }
+		public function set toggleOnTap(value:Boolean):void {
+			_toggleOnTap = value;
 		}
 		
 		/**
@@ -410,29 +435,27 @@ package com.gestureworks.cml.away3d.elements {
 				
 			_label = value;
 			
-			
-			var g:Graphic = new Graphic();
-			g.shape = "rectangel";
-			g.width = 256;
-			g.height = 100;
-			g.color = 0xFFFFFF;
-			
 			var text:Text = new Text();
 			text.str = value;
+			text.background = true;
 			text.autosize = true;
-			text.color = 0xFFFFFF;
+			text.color = 0;
 			text.fontSize = 50;
 			
-			g.addChild(text);
+			var bw:Number = text.width > 50 ? 512 : 256;
+			
+			var pw:Number = text.width *3;
+			
+			text.width = bw;
 								
-			var bmd:BitmapData = new BitmapData(256, 256, true, 0);
+			var bmd:BitmapData = new BitmapData(bw, bw, true, 0);
 			bmd.draw(text);
 			var bitmap:Bitmap = new Bitmap(bmd);
 			bitmap.smoothing = true;			
 			
 			labelMesh = new Mesh();
 			labelMesh.y = 50;
-			labelMesh.geometry = new PlaneGeometry();
+			labelMesh.geometry = new PlaneGeometry(pw, pw);
 			PlaneGeometry(labelMesh.geometry).yUp = false;
 			MeshHelper.invertFaces(labelMesh,true);
 			labelMesh.material = new TextureMaterial(Cast.bitmapTexture(bitmap));
@@ -441,6 +464,14 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if(vto.view)
 				View3D(vto.view).camera.addEventListener(Object3DEvent.POSITION_CHANGED, faceCamera);			
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get labelText():* { return _labelText; }
+		public function set labelText(value:*):void {
+			
 		}
 		
 		/**
@@ -571,6 +602,8 @@ package com.gestureworks.cml.away3d.elements {
 				edgeMesh = source.edgeMesh;
 			}			
 
+			initializeExpanded = source.initializeExpanded;
+			hideOnCollapse = source.hideOnCollapse;
 			expandLayout = source.expandLayout;
 			index = source.edges.length - 1;
 			_numLevel = source.numLevel + 1; 

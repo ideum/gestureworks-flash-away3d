@@ -1,6 +1,7 @@
 package com.gestureworks.cml.away3d.interfaces {
 	import com.gestureworks.cml.away3d.elements.Edge;
 	import com.gestureworks.cml.away3d.elements.Node;
+	import com.gestureworks.cml.elements.Text;
 	
 	/**
 	 * Implements Node objects.
@@ -21,6 +22,12 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * @default true
 	 */
 	function get expanded():Boolean;
+	
+	/**
+	 * Flag indicating whether the Node is initialized in an expanded or collapsed state
+	 */
+	function get initializeExpanded():Boolean;
+	function set initializeExpanded(value:Boolean):void;
 	
 	/**
 	 * Flag indicating the node is directed (has directional edges) or undirected (standard edge)
@@ -62,7 +69,7 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Display child nodes down the number of levels specified
 	 * @param level The number of levels to expand down to
 	 */
-	function expand(levelCnt:int = int.MAX_VALUE):void;
+	function expand(levelCnt:int = 1):void;
 	
 	/**
 	 * Hide child nodes up to the number of levels specified
@@ -74,6 +81,13 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * Expands/collapses based on current expanded state
 	 */
 	function toggle():void;
+	
+	/**
+	 * Automatically expands/collpases on the first tap gesture in the gestureList. 
+	 * @default false
+	 */
+	function get toggleOnTap():Boolean;
+	function set toggleOnTap(value:Boolean):void;
 	
 	/**
 	 * Automatically expands/collapses when the nodes surface is within a certain distance from the camera
@@ -151,10 +165,16 @@ package com.gestureworks.cml.away3d.interfaces {
 	function get hierarchy():String;
 	
 	/**
-	 * Node label
+	 * Node label string
 	 */
 	function get label():String;
 	function set label(value:String):void;
+	
+	/**
+	 * Label <code>Text</code> element 
+	 */
+	function get labelText():*;
+	function set labelText(value:*):void;	
 	
 	/**
 	 * Return node edges
