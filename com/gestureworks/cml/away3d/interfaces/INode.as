@@ -61,12 +61,6 @@ package com.gestureworks.cml.away3d.interfaces {
 	function isTarget(node:Node):Boolean;
 	
 	/**
-	 * Trasfer transformations to root node
-	 */
-	function get groupTransform():Boolean;
-	function set groupTransform(value:Boolean):void;
-	
-	/**
 	 * Display child nodes down the number of levels specified
 	 * @param level The number of levels to expand down to
 	 */
@@ -164,6 +158,16 @@ package com.gestureworks.cml.away3d.interfaces {
 	 * The node hiearchy path. Concatenated string of node id's representing the ancestral path of the node (e.g. a1-b2-c0). 
 	 */
 	function get hierarchy():String;
+	
+	/**
+	 * Returns all ancestor Node objects 
+	 */
+	function get ancestors():Vector.<Node>;
+	
+	/**
+	 * Returns all descendant Node objects 
+	 */
+	function get descendants():Vector.<Node>;
 	
 	/**
 	 * Node label string

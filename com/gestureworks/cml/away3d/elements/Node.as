@@ -47,7 +47,6 @@ package com.gestureworks.cml.away3d.elements {
 		private var _numLevel:int = 0;
 		private var _hierarchy:String;
 		private var _camera:Camera3D;
-		private var _groupTransform:Boolean = true;
 		
 		private var _root:Node;		
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
@@ -87,7 +86,7 @@ package com.gestureworks.cml.away3d.elements {
 					edgeMesh.parent.removeChild(edgeMesh);
 			}
 			
-			_root = Node.ancestors(this).pop();
+			_root = ancestors.pop();
 			
 			if (targets)
 				parseTargets();
@@ -133,17 +132,6 @@ package com.gestureworks.cml.away3d.elements {
 						break;
 					}
 				}
-			}
-			
-			if (groupTransform) {
-				vto.gestureList = _root.vto.gestureList;				
-				//touchEnabled = true;
-				//vto.nativeTransform = false;
-				//vto.addEventListener(GWGestureEvent.DRAG, function(e:GWGestureEvent):void {
-					//_root.x += e.value.drag_dx;
-					//_root.y += e.value.drag_dy;
-					//_root.z += e.value.drag_dz;
-				//});
 			}						
 		}
 		
@@ -200,14 +188,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function get root():Node { return _root; }	
-		
-		/**
-		 * @inheritDoc
-		 */
-		public function get groupTransform():Boolean { return _groupTransform; }
-		public function set groupTransform(value:Boolean):void {
-			_groupTransform = value;
-		}
 		
 		/**
 		 * @inheritDoc
@@ -439,9 +419,18 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Returns all ancestor Node objects of the provided Node
+		 * @inheritDoc
 		 */
-		public static function ancestors(n:Node):Vector.<Node> {
+		public function get ancestors():Vector.<Node> {
+			return ancestorNodes(this);
+		}	
+		
+		/**
+		 * Recursively collects ancestors
+		 * @param	n 
+		 * @return
+		 */
+		private function ancestorNodes(n:Node):Vector.<Node> {
 			var a:Vector.<Node> = new Vector.<Node>();
 			if (!n) {
 				return a;
@@ -449,7 +438,30 @@ package com.gestureworks.cml.away3d.elements {
 			
 			a.push(n);
 			if (n.parent is Node) {
-				a = a.concat(ancestors(Node(n.parent)));
+				a = a.concat(ancestorNodes(Node(n.parent)));
+			}
+			return a;			
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get descendants():Vector.<Node> {
+			return descendantNodes(this);
+		}
+		
+		/**
+		 * Recursively collects descendants
+		 * @param	n
+		 * @return
+		 */
+		private function descendantNodes(n:Node):Vector.<Node> {
+			var a:Vector.<Node> = new Vector.<Node>();
+			if (n != this){
+				a.push(n);
+			}
+			for each(var edge:Edge in n.edges) {
+				a = a.concat(descendantNodes(edge.target));
 			}
 			return a;
 		}
