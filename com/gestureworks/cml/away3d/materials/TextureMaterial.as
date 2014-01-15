@@ -15,7 +15,7 @@ package com.gestureworks.cml.away3d.materials {
 	import flash.utils.Dictionary;
 	
 	/**
-	 * This class creates a color material that can be applied to a Mesh. It extends the Away3D ColorMaterial class to add CML support.
+	 * This class creates a texture material that can be applied to a Mesh. It extends the Away3D TextureMaterial class to add CML support.
 	 */
 	public class TextureMaterial extends away3d.materials.TextureMaterial implements IObject, ICSS, IState {
 		
@@ -74,7 +74,7 @@ package com.gestureworks.cml.away3d.materials {
 			CMLParser.removeEventListener(CMLParser.COMPLETE, cmlInit);	
 			if (lightPicker) {
 				for each (var l:* in LightPickerBase(lightPicker).allPickedLights) {
-					if (l.shadowMethod) {
+					if ("lightPicker" in l && l.shadowMethod) {
 						shadowMethod = l.shadowMethod;
 					}
 				}
