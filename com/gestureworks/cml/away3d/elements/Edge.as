@@ -25,7 +25,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Edge() {
 			super();
 			geometry = defaultGeometry;
-			material = defaultMaterial;
+			material = defaultMaterial;		
 		}
 		
 		/**
@@ -39,9 +39,9 @@ package com.gestureworks.cml.away3d.elements {
 				initialized = true;
 				super.init();				
 			}
-
-			source = Node(parent);
-			if (!source) return;
+			
+			try{ source = Node(parent); }
+			catch (e:Error) { return; }
 			
 			//calculate length
 			var srcSurfaceOffset:Number = "radius" in source.geometry ? source.geometry["radius"] : source.geometry["width"] / 2;
