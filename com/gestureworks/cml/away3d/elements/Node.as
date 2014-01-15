@@ -83,6 +83,8 @@ package com.gestureworks.cml.away3d.elements {
 					s = s.substr(1);
 				}
 				edgeMesh = document.getElementById(s);
+				if (edgeMesh.parent)
+					edgeMesh.parent.removeChild(edgeMesh);
 			}
 			
 			_root = Node.ancestors(this).pop();
@@ -620,6 +622,9 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			if (!mref) {
 				mref = source.mref;				
+			}
+			if (!eref) {
+				eref = source.eref;
 			}
 			if (!edgeMesh) {
 				edgeMesh = source.edgeMesh;
