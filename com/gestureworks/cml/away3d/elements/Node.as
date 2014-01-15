@@ -466,9 +466,9 @@ package com.gestureworks.cml.away3d.elements {
 			
 			var text:Text = new Text();
 			text.str = value;
-			text.background = true;
+			text.background = false;
 			text.autosize = true;
-			text.color = 0;
+			text.color = 0xFFFFFF;
 			text.fontSize = 50;
 			
 			var bw:Number = 256;// text.width > 50 ? 512 : 256;			
