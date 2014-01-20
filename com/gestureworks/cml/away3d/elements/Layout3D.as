@@ -95,24 +95,64 @@ package com.gestureworks.cml.away3d.elements {
 				
 				childTweens = [];
 				
+				var tx:Number;
+				var ty:Number;
+				var tz:Number;
+				
+				var rx:Number;
+				var ry:Number;
+				var rz:Number;
+				
+				var sx:Number;
+				var sy:Number;
+				var sz:Number;
+				
 				for (i=0; i < children.length; i++){
 					child = Object3D(children[i]);
-					t = LayoutTransforms(childTransforms[i]);				
+					
+					t = LayoutTransforms(childTransforms[i]);	
+										
+					tx = t.pos.x;
+					ty = t.pos.y;
+					tz = t.pos.z;
+					
+					rx = t.rot.x;
+					ry = t.rot.y;
+					rz = t.rot.z;
+					
+					sx = t.sca.x;
+					sy = t.sca.y;
+					sz = t.sca.z;					
+					
+					if (_continuousTransform) {
+						tx += child.x;
+						ty += child.y;
+						tz += child.z;
+						
+						rx += child.rotationX;
+						ry += child.rotationY;
+						rz += child.rotationZ;
+						
+						sx *= child.scaleX;
+						sy *= child.scaleY;
+						sz *= child.scaleZ;
+					}
+					
 					
 					// position
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { x:t.pos.x, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { y:t.pos.y, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { z:t.pos.z, ease:easing } ));	
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { x:tx, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { y:ty, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { z:tz, ease:easing } ));	
 					
 					// rotation
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationX:t.rot.x, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationY:t.rot.y, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationZ:t.rot.z, ease:easing } ));	
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationX:rx, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationY:ry, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { rotationZ:rz, ease:easing } ));	
 					
 					// scale
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleX:t.sca.x, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleY:t.sca.y, ease:easing } ));
-					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleZ:t.sca.z, ease:easing } ));						
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleX:sx, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleY:sy, ease:easing } ));
+					childTweens.push(TweenLite.to(child, tweenTime / 1000, { scaleZ:sz, ease:easing } ));						
 				}	
 				
 				if (_layoutTween) {
@@ -134,8 +174,15 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			else {
 				for (i = 0; i < children.length; i++) {
-					m.identity();
 					child = Object3D(children[i]);
+					
+					if (_continuousTransform) {
+						m = child.transform;
+					}
+					else {
+						m.identity();
+					}
+					
 					t = LayoutTransforms(childTransforms[i]);	
 					
 					m.appendTranslation(t.pos.x, t.pos.y, t.pos.z);	
