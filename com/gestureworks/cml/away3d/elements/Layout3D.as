@@ -20,7 +20,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		public var name:String;
 		public var children:Array;		
-		
+				
 		private var _tween:Boolean = true;
 		private var _tweenTime:Number = 500;
 		private var _autoplay:Boolean = true;
@@ -28,11 +28,14 @@ package com.gestureworks.cml.away3d.elements {
 		private var _onComplete:Function;
 		private var _onCompleteParams:Array;
 		private var _onUpdate:Function;		
-		private var _onUpdateParams:Array;		
+		private var _onUpdateParams:Array;
+		private var _continuousTransform:Boolean = false;
 		
+		protected var m:Matrix3D;
 		protected var childTransforms:Vector.<LayoutTransforms>;
 		protected var childTweens:Array;	
 		protected var _layoutTween:TimelineLite;
+
 		
 		/**
 		 * Constructor
@@ -40,6 +43,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function Layout3D() {
 			super();
 			childTransforms = new Vector.<LayoutTransforms>;
+			m = new Matrix3D;
 		}
 		
 		/**
@@ -129,7 +133,6 @@ package com.gestureworks.cml.away3d.elements {
 				}
 			}
 			else {
-				var m:Matrix3D = new Matrix3D;				
 				for (i = 0; i < children.length; i++) {
 					m.identity();
 					child = Object3D(children[i]);
@@ -172,7 +175,7 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		/**
-		 * The time(ms) the display objects will take to move into positions
+		 * The time(ms) the display objects will take to move into positions.
 		 * @default 500
 		 */
 		public function get tweenTime():Number { return _tweenTime; }
@@ -202,7 +205,7 @@ package com.gestureworks.cml.away3d.elements {
 		}		
 		
 		/**
-		 * Function to call on layout complete
+		 * Function to call on layout complete.
 		 */
 		public function get onComplete():Function { return _onComplete; }
 		public function set onComplete(f:Function):void
@@ -211,7 +214,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Parameters to pass to the onComplete function
+		 * Parameters to pass to the onComplete function.
 		 */
 		public function get onCompleteParams():Array { return _onCompleteParams; }
 		public function set onCompleteParams(params:Array):void {
@@ -219,7 +222,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		/**
-		 * Function to call on layout update
+		 * Function to call on layout update.
 		 */
 		public function get onUpdate():Function { return _onUpdate; }
 		public function set onUpdate(f:Function):void
@@ -228,7 +231,7 @@ package com.gestureworks.cml.away3d.elements {
 		}	
 		
 		/**
-		 * Parameters to pass to the onUpdate function
+		 * Parameters to pass to the onUpdate function.
 		 */
 		public function get onUpdateParams():Array { return _onUpdateParams; }
 		public function set onUpdateParams(params:Array):void {
@@ -252,6 +255,17 @@ package com.gestureworks.cml.away3d.elements {
 		public function set autoplay(value:Boolean):void {
 			_autoplay = value;
 		}
-		
+	
+		/**
+		 * Flag indicating the application of a transform relative to the current transform. If this flag is turned off, the transformation is 
+		 * reset with the principle layout attributes. (e.g. Given an object with a rotation of 45 degrees, applying a rotation of 10 in continuous mode
+		 * will set the object's rotation to 55. In non-continuous mode, applying a rotation of 10 degrees will set the object's rotation to 10).
+		 * @default true;
+		 */
+		public function get continuousTransform():Boolean { return _continuousTransform; }
+		public function set continuousTransform(c:Boolean):void
+		{
+			_continuousTransform = c;
+		}		
 	}
 }
