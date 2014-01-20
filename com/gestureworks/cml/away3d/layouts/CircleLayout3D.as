@@ -1,27 +1,34 @@
 package com.gestureworks.cml.away3d.layouts {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.core.base.Object3D;
+	import away3d.core.math.Vector3DUtils;
 	import com.gestureworks.away3d.utils.LayoutTransforms;
 	import com.gestureworks.away3d.utils.Math3DUtils;
 	import com.gestureworks.cml.away3d.elements.Layout3D;
-	import com.gestureworks.cml.layouts.Layout;
-	import com.gestureworks.cml.utils.NumberUtils;
-	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
-	import flash.utils.Dictionary;
+	
 	/**
-	 * ...
-	 * @author 
+	 * Circle layout that can be rotated in 3D.
+	 * @author Iduem
 	 */
 	public class CircleLayout3D extends Layout3D {
 		
 		private var _radius:Number;
-				
+		private var _rot:Vector3D;
+		
+		/**
+		 * Constructor
+		 * @param	radius
+		 */
 		public function CircleLayout3D(radius:Number = 100) {
 			super();				
 			_radius = radius;
+			_rot = new Vector3D(10, 0, 0);
 		}
 		
+		/**
+		 * @inheritDoc
+		 */
 		override public function layout(container:ObjectContainer3D):void {
 			
 			var i:int;
@@ -41,12 +48,9 @@ package com.gestureworks.cml.away3d.layouts {
 				layoutTransforms = new LayoutTransforms;
 				azi = 360 / cnt * i;
 				cart = Math3DUtils.sphericalToCartesian( new Vector3D(azi, 0, radius) );
+				cart = Vector3DUtils.rotatePoint(cart, rot);
 				child = children[i];
-				layoutTransforms.pos = cart;
-					
-				//layoutTransforms.rot = new Vector3D(NumberUtils.randomNumber(rotMin.x, rotMax.x),
-				//	NumberUtils.randomNumber(rotMin.y, rotMax.y),
-				//	NumberUtils.randomNumber(rotMin.z, rotMax.z));
+				layoutTransforms.pos = cart;				
 				
 				childTransforms.push(layoutTransforms);
 			}
@@ -64,5 +68,15 @@ package com.gestureworks.cml.away3d.layouts {
 			_radius = value;
 		}
 		
+		/**
+		 * Sets the rotation of the circle in 3D.
+		 */	
+		public function get rot():Vector3D {
+			return _rot;
+		}
+		public function set rot(value:Vector3D):void {
+			_rot = value;
+		}		
+
 	}
 }
