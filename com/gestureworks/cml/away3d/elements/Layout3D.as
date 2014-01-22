@@ -10,7 +10,6 @@ package com.gestureworks.cml.away3d.elements {
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
 
 	/**
 	 * Loads Layout3D instances in CML through the ref attribute 
@@ -63,16 +62,24 @@ package com.gestureworks.cml.away3d.elements {
 		
 		/**
 		 * TODO: Move to utility class
-		 * @param	types
+		 * @param	types Specific object types to include
 		 */
 		public static function getChildren(container:ObjectContainer3D, types:Array = null):Array {
 			var children:Array = [];
 			var child:Object3D;
+			var instance:*;
 			for (var i:int = 0; i < container.numChildren; i++) {
 				child = container.getChildAt(i);
-				if (!types || (types.indexOf(getDefinitionByName(getQualifiedClassName(child)) as Class) != -1)) {
+				if (!types) {
 					children.push(child);
-				}				
+				}			
+				else {
+					for each(var type:Class in types) {
+						if (child is type) {
+							children.push(child);
+						}
+					}
+				}
 			}
 			return children; 
 		}
