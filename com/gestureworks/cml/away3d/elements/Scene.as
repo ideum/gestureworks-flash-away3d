@@ -2,10 +2,6 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.Scene3D;
 	import away3d.containers.View3D;
-	import away3d.lights.DirectionalLight;
-	import away3d.lights.LightBase;
-	import com.gestureworks.cml.away3d.interfaces.ILight;
-	import com.gestureworks.cml.core.CMLParser;
 	import com.gestureworks.cml.elements.Container;
 	import flash.events.Event;
 	
@@ -15,7 +11,9 @@ package com.gestureworks.cml.away3d.elements {
 	public class Scene extends Container {				
 		
 		private var views:Vector.<View3D> = new Vector.<View3D>;		
-		public var scene3D:Scene3D;
+		public var scene3D:Scene3D;		
+		
+		private var _renderViews:Boolean = true;
 			
 		/**
 		 * Constructor
@@ -23,22 +21,17 @@ package com.gestureworks.cml.away3d.elements {
 		public function Scene() {
 			super();
 			scene3D = new Scene3D();
-			CMLParser.addEventListener(CMLParser.COMPLETE, cmlInit);
-		}
-		
-		/**
-		 * CML Initialization
-		 */
-		public function cmlInit(e:Event):void {
-			addEventListener(Event.ENTER_FRAME, tick);
-		}		
-				
+		}	
 		
 		/**
 		 * @inheritDoc
 		 */
 		override public function init():void {
 			super.init();
+			
+			if (renderViews) {
+				addEventListener(Event.ENTER_FRAME, tick);
+			}		
 		}				
 		
 		/**
@@ -91,6 +84,14 @@ package com.gestureworks.cml.away3d.elements {
 			super.dispose();
 			removeEventListener(Event.ENTER_FRAME, tick);
 			scene3D = null;
+		}
+		
+		/**
+		 * Render views on each frame
+		 */
+		public function get renderViews():Boolean { return _renderViews; }
+		public function set renderViews(value:Boolean):void {
+			_renderViews = value;
 		}
 	}
 }
