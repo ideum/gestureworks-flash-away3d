@@ -59,7 +59,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var labelMesh:Mesh;
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(400);
-		public var collapseLayout:Layout3D = new CircleLayout3D(0);
+		public var collapseLayout:Layout3D = new CircleLayout3D(.001);
 		
 		/**
 		 * Constructor
