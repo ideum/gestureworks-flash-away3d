@@ -47,6 +47,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _viewDim:String; //"w,h"
 		private var _color:uint = 0x000000;
 		
+		private var _sharedContext:Boolean = false;
+		
 		/**
 		 * Virtual transform object.
 		 */
@@ -78,6 +80,7 @@ package com.gestureworks.cml.away3d.elements {
 			scene.dispatchEvent(new StateEvent(StateEvent.CHANGE, null, "addedToView", view));
 			vto.view = view;
 			view.touchPicker = PickingType.RAYCAST_FIRST_ENCOUNTERED;
+			view.shareContext = sharedContext;
 			
 			if (viewDim) {
 				view.width = viewDim.split(",")[0];
@@ -286,6 +289,15 @@ package com.gestureworks.cml.away3d.elements {
 		public function get viewDim():String { return _viewDim; }		
 		public function set viewDim(value:String):void {
 			_viewDim = value;
+		}
+		
+		/**
+		 * Defers control of Context3D clear() and present() calls to Stage3DProxy, enabling multiple Stage3D frameworks
+		 * to share the same Context3D object.
+		 */
+		public function get sharedContext():Boolean { return _sharedContext; }
+		public function set sharedContext(value:Boolean):void {
+			_sharedContext = value;
 		}
 		
 	}
