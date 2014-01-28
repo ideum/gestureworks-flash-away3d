@@ -72,9 +72,9 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			Parsers.enableAllBundled();
-			AssetLibraryBundle.getInstance(String(cmlIndex)).addEventListener(LoaderEvent.RESOURCE_COMPLETE, initObjects);
-			AssetLibraryBundle.getInstance(String(cmlIndex)).addEventListener(AssetEvent.ASSET_COMPLETE, assetComplete);
-			AssetLibraryBundle.getInstance(String(cmlIndex)).load(new URLRequest(src), null, String(cmlIndex));			
+			AssetLibraryBundle.getInstance(vto.name).addEventListener(LoaderEvent.RESOURCE_COMPLETE, initObjects);
+			AssetLibraryBundle.getInstance(vto.name).addEventListener(AssetEvent.ASSET_COMPLETE, assetComplete);
+			AssetLibraryBundle.getInstance(vto.name).load(new URLRequest(src), null, String(cmlIndex));			
 		}
 		
 		/**
