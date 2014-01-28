@@ -11,9 +11,7 @@ package com.gestureworks.away3d.utils {
 	 * @author 
 	 */
 	public class TransformUtils {
-		
-		//*** ADJUST THE FUNCTION DEFINITIONS AS NEEDED ****//
-		
+				
 		/**
 		 * This method will update a dtheta gesture rotate value
 		 * so that applied transformation will be parallel 
