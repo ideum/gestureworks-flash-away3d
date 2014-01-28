@@ -52,9 +52,9 @@ package com.gestureworks.cml.away3d.elements {
 			geometry["yUp"] = false;			
 			
 			//connect edge to target node
-			movePivot(0, 0, -length / 2);	
+			position = new Vector3D();
 			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));						
-			moveTo(0, 0, length / 2);
+			moveForward(length * scaleZ / 2);
 		}
 		
 		/**
@@ -102,9 +102,11 @@ package com.gestureworks.cml.away3d.elements {
 		 * @param	e
 		 */
 		private function followTarget(e:Object3DEvent):void {
-			if (source && target) {					
-				//lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));				
-				scaleZ = distance / length;				
+			if (source && target) {				
+				position = new Vector3D();
+				lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));				
+				scaleZ = distance / length;	
+				moveForward(length * scaleZ / 2);
 			}
 		}
 		
