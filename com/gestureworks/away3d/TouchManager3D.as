@@ -90,7 +90,7 @@ package com.gestureworks.away3d
 				else {
 					var view:View3D = e.target.parent as View3D;
 					e.view = view as DisplayObjectContainer;
-					collider = touchPicker.getViewCollision(e.stageX, e.stageY, view);
+					collider = touchPicker.getViewCollision(e.stageX - view.x, e.stageY - view.y, view);
 				}
 				
 				if (collider) {
