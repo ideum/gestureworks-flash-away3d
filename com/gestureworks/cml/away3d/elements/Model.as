@@ -284,6 +284,7 @@ package com.gestureworks.cml.away3d.elements {
 					ModelAsset(item).update(String(cmlIndex));
 				}
 			}
+			dispatchEvent(e);
 		}
 
 	}
