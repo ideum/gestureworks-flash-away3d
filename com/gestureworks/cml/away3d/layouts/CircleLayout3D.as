@@ -20,10 +20,10 @@ package com.gestureworks.cml.away3d.layouts {
 		 * Constructor
 		 * @param	radius
 		 */
-		public function CircleLayout3D(radius:Number = 100) {
+		public function CircleLayout3D(radius:Number = 100, rot:Vector3D = null) {
 			super();				
 			_radius = radius;
-			_rot = new Vector3D(10, 0, 0);
+			_rot = rot ||= new Vector3D(10, 0, 0);
 		}
 		
 		/**
