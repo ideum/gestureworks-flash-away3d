@@ -18,6 +18,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.objects.GestureObject;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -58,8 +59,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Mesh;
 		
-		public var expandLayout:Layout3D = new CircleLayout3D(400);
-		public var collapseLayout:Layout3D = new CircleLayout3D(.001);
+		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
+		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
 		
 		/**
 		 * Constructor
@@ -95,7 +96,6 @@ package com.gestureworks.cml.away3d.elements {
 			initEdges();
 			
 			if (!initializeExpanded) {	
-				hideChildren();
 				collapse();
 			}
 			if(vto.view && (label || lookAtCamera)){
@@ -692,7 +692,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * Hide/displays edges and associated target nodes
 		 * @param	hide 
 		 */
-		private function hideChildren(hide:Boolean = true):void {
+		protected function hideChildren(hide:Boolean = true):void {
 			for each(var edge:Edge in edges) {
 				edge.visible = !hide;
 				edge.target.visible = !hide;
