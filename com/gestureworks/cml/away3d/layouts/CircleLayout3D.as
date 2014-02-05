@@ -15,15 +15,17 @@ package com.gestureworks.cml.away3d.layouts {
 		
 		private var _radius:Number;
 		private var _rot:Vector3D;
+		private var _sca:Vector3D;
 		
 		/**
 		 * Constructor
 		 * @param	radius
 		 */
-		public function CircleLayout3D(radius:Number = 100, rot:Vector3D = null) {
+		public function CircleLayout3D(radius:Number = 100, rot:Vector3D = null, sca:Vector3D=null) {
 			super();				
 			_radius = radius;
 			_rot = rot ||= new Vector3D(10, 0, 0);
+			_sca = sca ||= new Vector3D(1, 1, 1);
 		}
 		
 		/**
@@ -51,6 +53,7 @@ package com.gestureworks.cml.away3d.layouts {
 				cart = Vector3DUtils.rotatePoint(cart, rot);
 				child = children[i];
 				layoutTransforms.pos = cart;				
+				layoutTransforms.sca = sca;				
 				
 				childTransforms.push(layoutTransforms);
 			}
@@ -77,6 +80,16 @@ package com.gestureworks.cml.away3d.layouts {
 		public function set rot(value:Vector3D):void {
 			_rot = value;
 		}		
+		
+		/**
+		 * Sets the scale of the objects in 3D.
+		 */			
+		public function get sca():Vector3D {
+			return _sca;
+		}
+		public function set sca(value:Vector3D):void {
+			_sca = value;
+		}
 
 	}
 }
