@@ -497,12 +497,15 @@ package com.gestureworks.cml.away3d.elements {
 			text.width = TextureUtils.getBestPowerOf2(Math.max(text.width, text.height));
 			text.height = text.width;
 														
-			var bmd:BitmapData = new BitmapData(text.width, text.height, true, 0);
+			var bmd:BitmapData = new BitmapData(text.width, text.height, true, 0x00000000);
 			bmd.draw(text);
 			var bitmap:Bitmap = new Bitmap(bmd, "auto", true);
-
-			labelMesh = new Sprite3D(new TextureMaterial(new BitmapTexture(bitmap.bitmapData, true)), text.width, text.height);	
-			labelMesh.material.alphaPremultiplied = false;
+			
+			var texture:TextureMaterial = new TextureMaterial(new BitmapTexture(bitmap.bitmapData, true) );
+			texture.alphaBlending = true;
+			
+			labelMesh = new Sprite3D(texture, text.width, text.height);	
+			labelMesh.position = labelPosition;
 			addChild(labelMesh);			
 		}
 		
