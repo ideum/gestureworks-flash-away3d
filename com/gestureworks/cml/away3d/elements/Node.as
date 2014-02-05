@@ -2,10 +2,10 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
+	import away3d.entities.Sprite3D;
 	import away3d.events.Object3DEvent;
-	import away3d.tools.helpers.MeshHelper;
-	import away3d.utils.Cast;
-	import com.gestureworks.cml.away3d.geometries.PlaneGeometry;
+	import away3d.textures.BitmapTexture;
+	import away3d.tools.utils.TextureUtils;
 	import com.gestureworks.cml.away3d.geometries.SphereGeometry;
 	import com.gestureworks.cml.away3d.interfaces.INode;
 	import com.gestureworks.cml.away3d.layouts.CircleLayout3D;
@@ -48,6 +48,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var _numLevel:int = 0;
 		private var _hierarchy:String;
 		private var _camera:Camera3D;
+		private var _labelPosition:Vector3D = new Vector3D(50, 100, 0);
 		
 		private var _root:Node;		
 		private var _edges:Vector.<Edge> = new Vector.<Edge>();
@@ -57,7 +58,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
-		private var labelMesh:Mesh;
+		private var labelMesh:Sprite3D;
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
@@ -104,6 +105,11 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			registerListeners();
+			
+			// position label
+			labelPosition = labelPosition;
+
+
 		}	
 		
 		
@@ -479,27 +485,24 @@ package com.gestureworks.cml.away3d.elements {
 			var text:Text = new Text();
 			text.str = value;
 			text.background = false;
-			text.autosize = true;
 			text.color = 0xFFFFFF;
-			text.fontSize = 50;
+			text.fontSize = 40;
+			text.border = true;
+			text.borderColor = 0xFFFFFF;
+			text.autosize = true;
+			text.init();
+			text.width += 4;
+			text.height += 4;
 			
-			var bw:Number = 256;// text.width > 50 ? 512 : 256;			
-			var pw:Number = 100; // text.width * 3;
-			
-			text.width = bw;
-								
-			var bmd:BitmapData = new BitmapData(bw, bw, true, 0);
+			text.width = TextureUtils.getBestPowerOf2(Math.max(text.width, text.height));
+			text.height = text.width;
+														
+			var bmd:BitmapData = new BitmapData(text.width, text.height, true, 0);
 			bmd.draw(text);
-			var bitmap:Bitmap = new Bitmap(bmd);
-			bitmap.smoothing = true;			
-			
-			labelMesh = new Mesh();
-			labelMesh.y = 50;
-			labelMesh.geometry = new PlaneGeometry(pw, pw);
-			PlaneGeometry(labelMesh.geometry).yUp = false;
-			MeshHelper.invertFaces(labelMesh,true);
-			labelMesh.material = new TextureMaterial(Cast.bitmapTexture(bitmap));
-			TextureMaterial(labelMesh.material).alphaBlending = true;
+			var bitmap:Bitmap = new Bitmap(bmd, "auto", true);
+
+			labelMesh = new Sprite3D(new TextureMaterial(new BitmapTexture(bitmap.bitmapData, true)), text.width, text.height);	
+			labelMesh.material.alphaPremultiplied = false;
 			addChild(labelMesh);			
 		}
 		
@@ -665,6 +668,28 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			return isEmpty;
 		}
+		
+		/**
+		 * The node's label will align it's top-left corner to the center
+		 * of the node. This property will offset from that position.
+		 * @default Vector3D(50,35,0)
+		 */
+		public function get labelPosition():Vector3D {
+			return _labelPosition;
+		}
+		
+		public function set labelPosition(value:Vector3D):void {
+			_labelPosition = value;
+			
+			// offset to top left
+			labelMesh.x = labelMesh.width / 2;
+			labelMesh.y = -labelMesh.height / 2;
+			
+			// position from value
+			labelMesh.x += _labelPosition.x;
+			labelMesh.y += _labelPosition.y;
+			labelMesh.z += _labelPosition.z;
+		}
 				
 		/**
 		 * Controls camera distance auto-toggling
@@ -682,8 +707,6 @@ package com.gestureworks.cml.away3d.elements {
 		 * @param	e
 		 */
 		private function faceCamera(e:Object3DEvent = null):void {
-			if(labelMesh)
-				labelMesh.lookAt(View3D(vto.view).camera.scenePosition);
 			if (lookAtCamera)
 				lookAt(View3D(vto.view).camera.scenePosition);
 		}
