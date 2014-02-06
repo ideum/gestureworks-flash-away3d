@@ -237,6 +237,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function get touchEnabled():Boolean { return mouseEnabled; }
 		public function set touchEnabled(value:Boolean):void {
 			mouseEnabled = value;
+			vto.touchEnabled = value;
 		}
 		
 		/**

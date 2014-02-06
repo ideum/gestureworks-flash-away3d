@@ -182,6 +182,12 @@ package com.gestureworks.cml.away3d.interfaces {
 	function set labelText(value:*):void;	
 	
 	/**
+	 * Sets the label's visible state independent from the Node
+	 */
+	function get hideLabel():Boolean;
+	function set hideLabel(value:Boolean):void;
+	
+	/**
 	 * Return node edges
 	 */
 	function get edges():Vector.<Edge>;

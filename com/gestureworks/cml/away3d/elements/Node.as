@@ -59,6 +59,7 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultGeometry:SphereGeometry = new SphereGeometry();
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Sprite3D;
+		private var _hideLabel:Boolean;
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
@@ -487,7 +488,7 @@ package com.gestureworks.cml.away3d.elements {
 			text.background = false;
 			text.color = 0xFFFFFF;
 			text.fontSize = 40;
-			text.border = true;
+			text.border = false;
 			text.borderColor = 0xFFFFFF;
 			text.autosize = true;
 			text.init();
@@ -515,6 +516,16 @@ package com.gestureworks.cml.away3d.elements {
 		public function get labelText():* { return _labelText; }
 		public function set labelText(value:*):void {
 			
+		}
+		
+		/**
+		 * @inheritDoc
+		 */
+		public function get hideLabel():Boolean { return _hideLabel; }
+		public function set hideLabel(value:Boolean):void {
+			if (labelMesh) {
+				labelMesh.visible = !value;
+			}
 		}
 		
 		/**
@@ -723,8 +734,7 @@ package com.gestureworks.cml.away3d.elements {
 				edge.visible = !hide;
 				edge.target.visible = !hide;
 			}
-		}
-		
+		}		
 	}
 
 }
