@@ -27,8 +27,8 @@ package com.gestureworks.cml.away3d.elements {
 				return;				
 			}
 			else{
-				initialized = true;
 				super.init();
+				initialized = true;				
 			}		
 			
 			//connect edge to target node

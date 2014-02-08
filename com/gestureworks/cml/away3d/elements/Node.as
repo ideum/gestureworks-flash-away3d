@@ -601,7 +601,7 @@ package com.gestureworks.cml.away3d.elements {
 		private function initEdges():void {
 			for each(var edge:Edge in edges) {
 				if (edgeMesh) {					
-					//edge.geometry = edgeMesh.geometry;
+					edge.geometry = edgeMesh.geometry;
 					edge.material = edgeMesh.material;
 				}				
 				edge.init();
@@ -662,7 +662,8 @@ package com.gestureworks.cml.away3d.elements {
 			if (emptyGestureList) {
 				vto.gestureList = source.vto.gestureList;
 			}
-
+			
+			edgePlane = source.edgePlane;
 			touchEnabled = source.touchEnabled;
 			toggleOnTap = source.toggleOnTap;
 			initializeExpanded = source.initializeExpanded;
