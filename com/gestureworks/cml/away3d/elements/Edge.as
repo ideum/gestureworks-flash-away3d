@@ -10,14 +10,14 @@ package com.gestureworks.cml.away3d.elements {
 	 */
 	public class Edge extends Mesh {
 		
-		private var initialized:Boolean = false;
+		protected var initialized:Boolean = false;
 		
-		private var _source:Node;
-		private var _target:Node;
-		private var _length:Number;
+		protected var _source:Node;
+		protected var _target:Node;
+		protected var _length:Number;
 		
-		private var defaultGeometry:CylinderGeometry = new CylinderGeometry(10, 10);
-		private var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
+		protected var defaultGeometry:CylinderGeometry = new CylinderGeometry(10, 10);
+		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
 		
 		/**
 		 * Constructor
@@ -101,7 +101,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * 
 		 * @param	e
 		 */
-		private function followTarget(e:Object3DEvent):void {
+		protected function followTarget(e:Object3DEvent):void {
 			if (source && target) {				
 				position = new Vector3D();
 				lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));				
