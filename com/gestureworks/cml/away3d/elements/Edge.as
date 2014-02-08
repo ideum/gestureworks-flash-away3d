@@ -16,8 +16,8 @@ package com.gestureworks.cml.away3d.elements {
 		private var _target:Node;
 		private var _length:Number;
 		
-		private var defaultGeometry:CylinderGeometry;
-		private var defaultMaterial:ColorMaterial;
+		private var defaultGeometry:CylinderGeometry = new CylinderGeometry(10, 10);
+		private var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
 		
 		/**
 		 * Constructor
@@ -35,13 +35,7 @@ package com.gestureworks.cml.away3d.elements {
 			if (initialized) {
 				return;				
 			}
-			else {
-				if (geometry == null) {
-					defaultGeometry = new CylinderGeometry(10, 10);
-				}
-				if (material == null) {
-					defaultMaterial = new ColorMaterial(0x72CAED);
-				}
+			else{
 				initialized = true;
 				super.init();				
 			}
@@ -107,7 +101,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * 
 		 * @param	e
 		 */
-		protected function followTarget(e:Object3DEvent):void {
+		private function followTarget(e:Object3DEvent):void {
 			if (source && target) {				
 				position = new Vector3D();
 				lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));				
