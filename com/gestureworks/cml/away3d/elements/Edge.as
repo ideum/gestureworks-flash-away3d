@@ -101,7 +101,7 @@ package com.gestureworks.cml.away3d.elements {
 		 * 
 		 * @param	e
 		 */
-		protected function followTarget(e:Object3DEvent):void {
+		protected function followTarget(e:Object3DEvent=null):void {
 			if (source && target) {				
 				position = new Vector3D();
 				lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));				

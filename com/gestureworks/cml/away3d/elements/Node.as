@@ -60,9 +60,11 @@ package com.gestureworks.cml.away3d.elements {
 		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
 		private var labelMesh:Sprite3D;
 		private var _hideLabel:Boolean;
+		private var _edgePlane:Boolean = false;
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
+		
 		
 		/**
 		 * Constructor
@@ -616,9 +618,8 @@ package com.gestureworks.cml.away3d.elements {
 			if (isTarget(target)){
 				return; 
 			}
-			
-			target.inherit(this);							
-			var edge:Edge = new Edge();
+			target.inherit(this);	
+			var edge:Edge = (edgePlane) ? new EdgePlane : new Edge;
 			edge.target = target;	
 			edges.push(edge);
 			addChild(edge);
@@ -703,6 +704,16 @@ package com.gestureworks.cml.away3d.elements {
 			labelMesh.x += _labelPosition.x;
 			labelMesh.y += _labelPosition.y;
 			labelMesh.z += _labelPosition.z;
+		}
+		
+		/**
+		 * Sets whether edge is a plane
+		 */
+		public function get edgePlane():Boolean {
+			return _edgePlane;
+		}
+		public function set edgePlane(value:Boolean):void {
+			_edgePlane = value;
 		}
 				
 		/**

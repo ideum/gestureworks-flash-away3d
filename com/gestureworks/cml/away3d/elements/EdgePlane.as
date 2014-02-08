@@ -10,10 +10,7 @@ package com.gestureworks.cml.away3d.elements {
 	 * Object linking source and target nodes
 	 * @author Ideum
 	 */
-	public class EdgePlane extends Mesh {
-		
-		protected var defaultGeometry:CylinderGeometry = new PlaneGeometry(10, 10);
-		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
+	public class EdgePlane extends Edge {
 		
 		/**
 		 * Constructor
@@ -42,10 +39,10 @@ package com.gestureworks.cml.away3d.elements {
 		 * 
 		 * @param	e
 		 */
-		protected function followTarget(e:Object3DEvent=null):void {
+		override protected function followTarget(e:Object3DEvent=null):void {
 			if (source && target) {				
 				var targetPos:Vector3D = source.inverseSceneTransform.transformVector(target.scenePosition);
-				var sphr:Vector3D = Math3DUtils.cartesianToSpherical(targetPos.position.subtract(position));	
+				var sphr:Vector3D = Math3DUtils.cartesianToSpherical(targetPos.subtract(position));	
 				position = new Vector3D();
 				rotateTo(0, -sphr.x, sphr.y);
 				scaleX = distance / length;
