@@ -1,8 +1,10 @@
 package com.gestureworks.cml.away3d.elements {
 	import away3d.events.Object3DEvent;
 	import com.gestureworks.cml.away3d.geometries.CylinderGeometry;
+	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import flash.geom.Vector3D;
+	import away3d.core.base.Geometry;
 	
 	/**
 	 * Object linking source and target nodes
@@ -16,7 +18,7 @@ package com.gestureworks.cml.away3d.elements {
 		protected var _target:Node;
 		protected var _length:Number;
 		
-		protected var defaultGeometry:CylinderGeometry = new CylinderGeometry(10, 10);
+		protected var _defaultGeometry:away3d.core.base.Geometry;
 		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
 		
 		/**
@@ -24,7 +26,7 @@ package com.gestureworks.cml.away3d.elements {
 		 */
 		public function Edge() {
 			super();
-			geometry = defaultGeometry;
+			geometry = away3d.core.base.Geometry(defaultGeometry);
 			material = defaultMaterial;		
 		}
 		
@@ -55,6 +57,10 @@ package com.gestureworks.cml.away3d.elements {
 			position = new Vector3D();
 			lookAt(source.inverseSceneTransform.transformVector(target.scenePosition));						
 			moveForward(length * scaleZ / 2);
+		}
+		
+		public function superInit():void {
+			super.init();	
 		}
 		
 		/**
@@ -96,6 +102,15 @@ package com.gestureworks.cml.away3d.elements {
 		 * Distance between source and target nodes
 		 */
 		public function get distance():Number { return Vector3D.distance(source.scenePosition, target.scenePosition); }
+		
+		
+		/**
+		 * Sets default geometry
+		 */
+		public function get defaultGeometry():away3d.core.base.Geometry {
+			return new CylinderGeometry(10, 10);
+		}
+
 		
 		/**
 		 * 
