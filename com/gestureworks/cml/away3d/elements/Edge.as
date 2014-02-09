@@ -1,10 +1,10 @@
 package com.gestureworks.cml.away3d.elements {
+	import away3d.core.base.Geometry;
 	import away3d.events.Object3DEvent;
+	import away3d.materials.SinglePassMaterialBase;
 	import com.gestureworks.cml.away3d.geometries.CylinderGeometry;
-	import com.gestureworks.cml.away3d.interfaces.IGeometry;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import flash.geom.Vector3D;
-	import away3d.core.base.Geometry;
 	
 	/**
 	 * Object linking source and target nodes
@@ -17,9 +17,6 @@ package com.gestureworks.cml.away3d.elements {
 		protected var _source:Node;
 		protected var _target:Node;
 		protected var _length:Number;
-		
-		protected var _defaultGeometry:away3d.core.base.Geometry;
-		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0x72CAED);	
 		
 		/**
 		 * Constructor
@@ -105,13 +102,19 @@ package com.gestureworks.cml.away3d.elements {
 		
 		
 		/**
-		 * Sets default geometry
+		 * Gets default geometry
 		 */
 		public function get defaultGeometry():away3d.core.base.Geometry {
 			return new CylinderGeometry(10, 10);
 		}
-
 		
+		/**
+		 * Gets default material
+		 */
+		public function get defaultMaterial():SinglePassMaterialBase {
+			return new ColorMaterial(0x72CAED);	
+		}
+
 		/**
 		 * 
 		 * @param	e
