@@ -1,11 +1,9 @@
 package com.gestureworks.cml.away3d.elements {
+	import away3d.core.base.Geometry;
 	import away3d.events.Object3DEvent;
 	import away3d.primitives.PlaneGeometry;
 	import com.gestureworks.away3d.utils.Math3DUtils;
-	import com.gestureworks.cml.away3d.geometries.CylinderGeometry;
-	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import flash.geom.Vector3D;
-	import away3d.core.base.Geometry;
 	
 	/**
 	 * Object linking source and target nodes
@@ -61,7 +59,6 @@ package com.gestureworks.cml.away3d.elements {
 		override public function get defaultGeometry():away3d.core.base.Geometry {
 			return new PlaneGeometry(100, 10, 1, 1, false, false);
 		}
-		
+			
 	}
-
 }
