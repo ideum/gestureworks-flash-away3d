@@ -667,7 +667,7 @@ package com.gestureworks.cml.away3d.elements {
 			toggleOnTap = source.toggleOnTap;
 			initializeExpanded = source.initializeExpanded;
 			hideOnCollapse = source.hideOnCollapse;
-			index = source.edges.length - 1;
+			index = source.edges.length;
 			_numLevel = source.numLevel + 1; 
 			_hierarchy = source.hierarchy + "-" + nodeId;
 		}
