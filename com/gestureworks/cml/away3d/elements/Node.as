@@ -696,14 +696,16 @@ package com.gestureworks.cml.away3d.elements {
 		public function set labelPosition(value:Vector3D):void {
 			_labelPosition = value;
 			
-			// offset to top left
-			labelMesh.x = labelMesh.width / 2;
-			labelMesh.y = -labelMesh.height / 2;
-			
-			// position from value
-			labelMesh.x += _labelPosition.x;
-			labelMesh.y += _labelPosition.y;
-			labelMesh.z += _labelPosition.z;
+			if(labelMesh){
+				// offset to top left
+				labelMesh.x = labelMesh.width / 2;
+				labelMesh.y = -labelMesh.height / 2;
+				
+				// position from value
+				labelMesh.x += _labelPosition.x;
+				labelMesh.y += _labelPosition.y;
+				labelMesh.z += _labelPosition.z;
+			}
 		}
 				
 		/**
