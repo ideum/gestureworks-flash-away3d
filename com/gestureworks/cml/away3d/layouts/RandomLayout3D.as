@@ -27,17 +27,17 @@ package com.gestureworks.cml.away3d.layouts {
 		
 		private var scaleSet:Boolean;
 				
-		public function RandomLayout3D() {
+		public function RandomLayout3D(posMin:Vector3D = null, posMax:Vector3D = null, rotMin:Vector3D = null, rotMax:Vector3D = null, scaMin:Vector3D = null, scaMax:Vector3D = null) {
 			super();
 			
-			posMin = new Vector3D(0, 0, 0);
-			posMax = new Vector3D(0, 0, 0);	
+			_posMin = posMin ||= new Vector3D(0, 0, 0);
+			_posMax = posMax ||= new Vector3D(0, 0, 0);	
 			
-			rotMin = new Vector3D(0, 0, 0);
-			rotMax = new Vector3D(0, 0, 0);			
+			_rotMin = rotMin ||= new Vector3D(0, 0, 0);
+			_rotMax = rotMax ||= new Vector3D(0, 0, 0);			
 						
-			scaMin = new Vector3D(1, 1, 1);
-			scaMax = new Vector3D(1, 1, 1);
+			_scaMin = scaMin ||= new Vector3D(1, 1, 1);
+			_scaMax = scaMax ||= new Vector3D(1, 1, 1);
 			
 			scaleMin = 1; 
 			scaleMax = 1; 
