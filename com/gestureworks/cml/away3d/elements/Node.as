@@ -30,36 +30,35 @@ package com.gestureworks.cml.away3d.elements {
 		
 		private const ASCII_START:int = 97;
 		
-		private var _lookAtCamera:Boolean = false;
-		private var _expanded:Boolean = true;
-		private var _initializeExpanded:Boolean = true;
-		private var _directed:Boolean = false;
-		private var _toggleOnTap:Boolean = false;
-		private var _autoToggle:Boolean = false;
-		private var _autoToggleThreshold:Number = 500;
-		private var _autoToggleVisibility:Boolean = true;
-		private var _hideOnCollapse:Boolean = false;
-		private var _targets:String;
-		private var _content:*;
-		private var _index:int = NaN;
-		private var _label:String;
-		private var _labelText:Text;
-		private var _labelBackground:Graphic;
-		private var _numLevel:int = 0;
-		private var _hierarchy:String;
-		private var _camera:Camera3D;
-		private var _labelPosition:Vector3D = new Vector3D(50, 100, 0);
+		protected var _lookAtCamera:Boolean = false;
+		protected var _expanded:Boolean = true;
+		protected var _initializeExpanded:Boolean = true;
+		protected var _directed:Boolean = false;
+		protected var _toggleOnTap:Boolean = false;
+		protected var _autoToggle:Boolean = false;
+		protected var _autoToggleThreshold:Number = 500;
+		protected var _autoToggleVisibility:Boolean = true;
+		protected var _hideOnCollapse:Boolean = false;
+		protected var _targets:String;
+		protected var _content:*;
+		protected var _index:int = NaN;
+		protected var _label:String;
+		protected var _labelText:Text;
+		protected var _numLevel:int = 0;
+		protected var _hierarchy:String;
+		protected var _camera:Camera3D;
+		protected var _labelPosition:Vector3D = new Vector3D(50, 100, 0);
 		
-		private var _root:Node;		
-		private var _edges:Vector.<Edge> = new Vector.<Edge>();
-		private var _allEdges:Dictionary = new Dictionary();
-		private var _edgeMesh:Edge;
-		private var _eref:XML; //edge mesh		
+		protected var _root:Node;		
+		protected var _edges:Vector.<Edge> = new Vector.<Edge>();
+		protected var _allEdges:Dictionary = new Dictionary();
+		protected var _edgeMesh:Edge;
+		protected var _eref:XML; //edge mesh		
 		
-		private var defaultGeometry:SphereGeometry = new SphereGeometry();
-		private var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
-		private var labelMesh:Sprite3D;
-		private var _hideLabel:Boolean;
+		protected var defaultGeometry:SphereGeometry = new SphereGeometry();
+		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
+		protected var labelMesh:Sprite3D;
+		protected var _hideLabel:Boolean;
 		
 		public var edgeFactory:Function;
 		
