@@ -22,6 +22,8 @@ package com.gestureworks.cml.away3d.elements
 		private var _rot:String;
 		private var _lookat:String;
 		private var _pivot:String = "0,0,0";		
+		
+		private var _touchOnlyTranslate:Boolean = true;
 		/**
 		 * Constructor
 		 */
@@ -154,13 +156,15 @@ package com.gestureworks.cml.away3d.elements
 		/**
 		 * Updates target transform
 		 */		
-		override public function updateVTO():void
-		{
-			vto.transform = transform.matrix3D;			
-		}	
-		
-		
-
-		
+		private var _base_vector:Vector3D = new Vector3D(); // For garbage collection prevention
+ 		override public function updateVTO():void
+ 		{
+			if (_touchOnlyTranslate) {
+				vto.position = transform.matrix3D.transformVector(_base_vector);
+			}
+			else {
+				vto.transform = transform.matrix3D;
+			}
+		}
 	}
 }
