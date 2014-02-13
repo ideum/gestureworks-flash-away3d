@@ -11,7 +11,6 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.layouts.CircleLayout3D;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
-	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.events.GWGestureEvent;
@@ -56,7 +55,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		protected var defaultGeometry:SphereGeometry = new SphereGeometry();
 		protected var defaultMaterial:ColorMaterial = new ColorMaterial(0xFF0000); 
-		protected var labelMesh:Sprite3D;
+		protected var labelMesh:away3d.entities.Mesh;
 		protected var _hideLabel:Boolean;
 		
 		public var edgeFactory:Function;
@@ -505,7 +504,6 @@ package com.gestureworks.cml.away3d.elements {
 			var texture:TextureMaterial = new TextureMaterial(new BitmapTexture(bitmap.bitmapData, true) );
 			texture.alphaBlending = true;
 			
-			labelMesh = new Sprite3D(texture, text.width, text.height);	
 			labelMesh.position = labelPosition;
 			addChild(labelMesh);			
 		}
@@ -692,18 +690,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 		
 		public function set labelPosition(value:Vector3D):void {
-			_labelPosition = value;
 			
-			if(labelMesh){
-				// offset to top left
-				labelMesh.x = labelMesh.width / 2;
-				labelMesh.y = -labelMesh.height / 2;
-				
-				// position from value
-				labelMesh.x += _labelPosition.x;
-				labelMesh.y += _labelPosition.y;
-				labelMesh.z += _labelPosition.z;
-			}
 		}
 				
 		/**
