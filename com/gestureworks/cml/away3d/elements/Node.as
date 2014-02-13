@@ -20,6 +20,7 @@ package com.gestureworks.cml.away3d.elements {
 	import flash.display.BitmapData;
 	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
+	import physics.NodePhysics;
 	
 	/**
 	 * Provides Node hiearchy management and graph construction. By default, all <code>Node</code> descendants inherit attributes and settings
@@ -63,7 +64,9 @@ package com.gestureworks.cml.away3d.elements {
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
-				
+		
+		protected var _nodePhysics:NodePhysics = null;
+		
 		/**
 		 * Constructor
 		 */
@@ -71,6 +74,7 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;	
+			_nodePhysics = new NodePhysics(this);
 		}
 		
 		/**
@@ -735,7 +739,45 @@ package com.gestureworks.cml.away3d.elements {
 				edge.visible = !hide;
 				edge.target.visible = !hide;
 			}
-		}		
+		}	
+		
+		public function update(timeElapsed:Number):void {
+			
+		}
+		
+		public function get worldPosition():Vector3D {
+			invalidateSceneTransform();
+			return scenePosition;
+		}
+		
+		public function set worldPosition(worldPosition:Vector3D):void {
+			if (parent == null) {
+				return;
+			}
+			position = parent.inverseSceneTransform.transformVector(worldPosition);
+			invalidateSceneTransform();
+		}
+		
+		private var _startTouchPosition:Vector3D = new Vector3D();
+		
+		public function userBeganTouch():void {
+			trace("Node began touch");
+			_startTouchPosition = worldPosition.clone();
+			trace("Start Touch " + _startTouchPosition.x + " " + _startTouchPosition.y);
+		}
+		
+		public function userTouchUpdate():void {
+		//	trace("Node moved");
+		}
+
+		public function userTouchRelease():void {
+			trace("Node touch release");
+			
+			_nodePhysics.springToPosition(_startTouchPosition);
+			_nodePhysics.startUpdating();
+			
+			trace("Start Release" + _startTouchPosition.x + " " + _startTouchPosition.y);
+		}
 	}
 
 }

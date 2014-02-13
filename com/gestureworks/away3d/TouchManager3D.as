@@ -106,6 +106,8 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+						
+						e.target.userBeganTouch();
 					}
 				}
 			}
@@ -151,6 +153,7 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+					e.target.userTouchUpdate();
 				}
 			}
 			return e;
@@ -170,6 +173,8 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+					
+					e.target.userTouchRelease();
 				}
 				delete pointTargets[e.touchPointID];				
 			}			
