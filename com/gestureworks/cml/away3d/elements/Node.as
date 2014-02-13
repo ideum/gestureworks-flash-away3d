@@ -40,7 +40,6 @@ package com.gestureworks.cml.away3d.elements {
 		protected var _autoToggleVisibility:Boolean = true;
 		protected var _hideOnCollapse:Boolean = false;
 		protected var _targets:String;
-		protected var _content:*;
 		protected var _index:int = NaN;
 		protected var _label:String;
 		protected var _labelText:Text;
