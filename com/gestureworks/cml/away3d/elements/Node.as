@@ -65,7 +65,7 @@ package com.gestureworks.cml.away3d.elements {
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
 		
-		protected var _nodePhysics:NodePhysics = null;
+		public var _nodePhysics:NodePhysics = null;
 		
 		/**
 		 * Constructor
@@ -762,6 +762,7 @@ package com.gestureworks.cml.away3d.elements {
 		
 		public function userBeganTouch():void {
 			trace("Node began touch");
+			_nodePhysics.stopUpdating();
 			_startTouchPosition = worldPosition.clone();
 			trace("Start Touch " + _startTouchPosition.x + " " + _startTouchPosition.y);
 		}
