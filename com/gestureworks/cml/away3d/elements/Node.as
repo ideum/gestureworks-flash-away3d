@@ -816,14 +816,10 @@ package com.gestureworks.cml.away3d.elements {
 			
 			return position.add(scenePosition);
 		}
-		
-		private var _startTouchPosition:Vector3D = new Vector3D();
-		
+				
 		public function userBeganTouch():void {
 			trace("Node began touch");
-			_startTouchPosition = worldPosition.clone();
 			_nodePhysics.stopUpdatingSpring();
-			trace("Start Touch " + _startTouchPosition.x + " " + _startTouchPosition.y);
 		}
 		
 		public function userTouchUpdate():void {
@@ -837,7 +833,6 @@ package com.gestureworks.cml.away3d.elements {
 				_nodePhysics.springToPosition();
 				_nodePhysics.startUpdatingSpring();
 			}
-			trace("Start Release" + _startTouchPosition.x + " " + _startTouchPosition.y);
 		}
 	}
 
