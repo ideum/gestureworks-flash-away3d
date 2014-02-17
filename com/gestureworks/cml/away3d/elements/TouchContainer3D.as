@@ -166,8 +166,37 @@ package com.gestureworks.cml.away3d.elements
 			}		
 		}	
 		
+		public function userBeganTouch():void {
+			trace("User began touch");
+			
+			if (vto is Node) {
+				var node:Node = vto as Node;
+				if (node != null) {
+					node.userBeganTouch();
+				}
+			}
+		}
 		
+		public function userTouchUpdate():void {
+			// trace("User moved");
+			
+			if (vto is Node) {
+				var node:Node = vto as Node;
+				if (node != null) {
+					node.userTouchUpdate();
+				}
+			}
+		}
 
-		
+		public function userTouchRelease():void {
+			trace("User touch release");
+			
+			if (vto is Node) {
+				var node:Node = vto as Node;
+				if (node != null) {
+					node.userTouchRelease();
+				}
+			}
+		}
 	}
 }

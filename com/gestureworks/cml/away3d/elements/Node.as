@@ -2,6 +2,7 @@ package com.gestureworks.cml.away3d.elements {
 	import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
+	import away3d.core.math.Matrix3DUtils;
 	import away3d.entities.Sprite3D;
 	import away3d.events.Object3DEvent;
 	import away3d.textures.BitmapTexture;
@@ -11,14 +12,17 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.away3d.layouts.CircleLayout3D;
 	import com.gestureworks.cml.away3d.materials.ColorMaterial;
 	import com.gestureworks.cml.away3d.materials.TextureMaterial;
+	import com.gestureworks.cml.elements.Graphic;
 	import com.gestureworks.cml.elements.Text;
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.events.GWGestureEvent;
 	import com.gestureworks.objects.GestureObject;
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
+	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
+	import physics.NodePhysics;
 	
 	/**
 	 * Provides Node hiearchy management and graph construction. By default, all <code>Node</code> descendants inherit attributes and settings
@@ -62,7 +66,11 @@ package com.gestureworks.cml.away3d.elements {
 		
 		public var expandLayout:Layout3D = new CircleLayout3D(200, new Vector3D(90));
 		public var collapseLayout:Layout3D = new CircleLayout3D(.001, new Vector3D(90));
-				
+		
+		protected var _nodePhysics:NodePhysics = null;
+		public function get nodePhysics():NodePhysics { return _nodePhysics; }
+		protected var _childrenPositions:Dictionary = new Dictionary();
+		
 		/**
 		 * Constructor
 		 */
@@ -70,6 +78,7 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;	
+			_nodePhysics = new NodePhysics(this);
 		}
 		
 		/**
@@ -722,7 +731,97 @@ package com.gestureworks.cml.away3d.elements {
 				edge.visible = !hide;
 				edge.target.visible = !hide;
 			}
-		}		
+		}	
+		
+		public function update(timeElapsed:Number):void {
+			
+		}
+		
+		public function get worldPosition():Vector3D {
+			invalidateSceneTransform();
+			return scenePosition;
+		}
+		
+		public function set worldPosition(worldPosition:Vector3D):void {
+			if (parent == null) {
+				return;
+			}
+			position = parent.inverseSceneTransform.transformVector(worldPosition);
+			invalidateSceneTransform();
+		}
+		
+		private var _deltaMovement:Vector3D = new Vector3D();
+		public function get deltaMovement():Vector3D {
+			return _deltaMovement;
+		}
+		
+		public function set deltaMovement(delta:Vector3D):void {
+			_deltaMovement = delta;
+		}
+		
+		public function setChildPosition(child:*, position:Vector3D):void {
+			if (child == null) {
+				return;
+			}
+			
+			if (child is Node) {
+				var node:Node = child as Node;
+				if (node != null) {
+					_childrenPositions[node] = position;
+				}
+			}
+		}
+		
+		public function get concatenatedRotationZ():Number {
+			if (isRoot) {
+				return rotationZ;
+			}
+			else {
+				return Node(parent).concatenatedRotationZ + rotationZ; 
+			}
+		}
+		
+		public function getHasChild(node:Node):Boolean {
+			return (_childrenPositions[node] != null);
+		}
+		
+		public function getChildStartPosition(node:Node):Vector3D {
+			
+			if (!getHasChild(node)) {
+				return new Vector3D(0.0, 0.0, 0.0);
+			}
+			
+			var position:Vector3D = new Vector3D(_childrenPositions[node].x, _childrenPositions[node].y, 0.0);
+			if (position == null) {
+				return new Vector3D(0.0, 0.0, 0.0);
+			}
+			
+			var matrix:Matrix3D = new Matrix3D;
+			matrix.identity();
+			matrix.appendRotation(concatenatedRotationZ, Vector3D.Z_AXIS);
+			
+			position = matrix.transformVector(position);
+			
+			return position.add(scenePosition);
+		}
+				
+		public function userBeganTouch():void {
+			trace("Node began touch");
+			_nodePhysics.stopUpdatingSpring();
+		}
+		
+		public function userTouchUpdate():void {
+		//	trace("Node moved");
+		}
+
+		public function userTouchRelease():void {
+			trace("Node touch release");
+			
+			if(!isRoot) {
+				_nodePhysics.springToPosition();
+				_nodePhysics.startUpdatingSpring();
+			}
+		}
 	}
 
 }

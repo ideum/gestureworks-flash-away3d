@@ -106,6 +106,8 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+						
+						e.target.userBeganTouch();
 					}
 				}
 			}
@@ -114,16 +116,15 @@ package com.gestureworks.away3d
 		}
 		
 		
-		public static function hitTest3D(target: ObjectContainer3D, x:Number, y:Number, view:View3D):Boolean//TouchObject3D
+		public static function hitTest3D(target: TouchContainer3D, x:Number, y:Number):Boolean//TouchObject3D
 		{			
 			var hit:Boolean = false;
 			
-			collider = touchPicker.getViewCollision(x, y, view);
-			trace("drag hit", x, y);
+			collider = touchPicker.getViewCollision(x, y, target.view as View3D);
 			
-			if (collider)
-			{
-				if (target==collider.entity) { 
+			if ((collider) && (validTarget(collider.entity)))
+				{
+					if (target.vto==collider.entity) { 
 					
 					hit = true;
 					//collider.entity.showBounds = true;
@@ -131,7 +132,8 @@ package com.gestureworks.away3d
 					//trace("",target.vto==collider.entity, target.vto,target.vto.name,target.vto.assetType,collider,collider.entity, collider.entity.name, collider.entity.assetType);
 					//trace("touch manager",x,y,target,target.name, hit,target.view.name, target.view.name,collider,collider.entity, collider.entity.name, collider.entity.assetType, collider.entity.parent,collider.entity.parent.name,collider.entity.parent.parent,collider.entity.parent.parent.id,collider.entity.parent.parent.parent)
 				}
-			}
+				}
+			else hit = false;
 
 			return hit;
 		}
@@ -151,6 +153,7 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+					e.target.userTouchUpdate();
 				}
 			}
 			return e;
@@ -170,6 +173,8 @@ package com.gestureworks.away3d
 							e.stageY = v.y;
 							e.stageZ = v.z;
 						}
+					
+					e.target.userTouchRelease();
 				}
 				delete pointTargets[e.touchPointID];				
 			}			

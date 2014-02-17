@@ -10,6 +10,7 @@ package com.gestureworks.cml.away3d.elements {
 	import flash.geom.Matrix3D;
 	import flash.geom.Vector3D;
 	import flash.utils.getDefinitionByName;
+	import nodes.CategoryNode;
 
 	/**
 	 * Loads Layout3D instances in CML through the ref attribute 
@@ -89,6 +90,11 @@ package com.gestureworks.cml.away3d.elements {
 			var child:Object3D;
 			var t:LayoutTransforms;
 			
+			var node:CategoryNode = null;
+			if (container is CategoryNode) {
+				node = container as CategoryNode;
+			}
+			
 			if (!children)
 				children = getChildren(container);
 			
@@ -116,9 +122,7 @@ package com.gestureworks.cml.away3d.elements {
 				
 				for (i=0; i < children.length; i++){
 					child = Object3D(children[i]);
-					
-					t = LayoutTransforms(childTransforms[i]);	
-										
+					t = LayoutTransforms(childTransforms[i]);
 					tx = t.pos.x;
 					ty = t.pos.y;
 					tz = t.pos.z;
@@ -145,6 +149,9 @@ package com.gestureworks.cml.away3d.elements {
 						sz *= child.scaleZ;
 					}
 					
+					if(node != null) {
+						node.setChildPosition(child, t.pos);
+					}
 					
 					// position
 					childTweens.push(TweenLite.to(child, tweenTime / 1000, { x:tx, ease:easing } ));
@@ -191,6 +198,10 @@ package com.gestureworks.cml.away3d.elements {
 					}
 					
 					t = LayoutTransforms(childTransforms[i]);	
+					
+					if(node != null) {
+						node.setChildPosition(child, t.pos);
+					}
 					
 					m.appendTranslation(t.pos.x, t.pos.y, t.pos.z);	
 					m.appendRotation(t.rot.x, Vector3D.X_AXIS);
