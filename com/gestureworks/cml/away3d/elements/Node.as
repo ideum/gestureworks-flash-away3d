@@ -174,7 +174,26 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function get expanded():Boolean { return _expanded; }
+		public function get expanded():Boolean { 
+			return _expanded; 
+		}
+		
+		public function get childExpanded():Boolean {
+			
+			for (var i:int = 0; i != childList.length; ++i) {
+				var child:* = childList.getIndex(i);
+				if (child is Node) {
+					var node:Node = child as Node;
+					if (node != null) {
+						if (node.expanded) {
+							return true;
+						}
+					}
+				}
+			}
+			
+			return false;
+		}
 		
 		/**
 		 * @inheritDoc
@@ -232,7 +251,8 @@ package com.gestureworks.cml.away3d.elements {
 		/**
 		 * @inheritDoc
 		 */
-		public function collapse(levelCnt:int = 0):void {			
+		public function collapse(levelCnt:int = 0):void {		
+			
 			var e:Vector.<Edge> = edgesAtLevel(levelCnt);
 			for each(var edge:Edge in e) {
 				edge.target.collapse();
