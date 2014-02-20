@@ -79,11 +79,12 @@ package com.gestureworks.away3d
 			}
 		}
 		
-		private static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
+		public static function onTouchBegin(e:GWTouchEvent):GWTouchEvent 
 		{			
 			var sceneTouch:Boolean = e.target is Scene;
 			var viewTouch:Boolean = e.target && e.target.parent is View3D;
 			if (sceneTouch || viewTouch) {
+
 				
 				if (sceneTouch) {
 					//collider = touchPicker.getSceneCollision(e.stageX, e.stageY, Scene(e.target.));					
@@ -96,26 +97,32 @@ package com.gestureworks.away3d
 				
 				if (collider) {
 					e.target = validTarget(collider.entity);
-					
-					if(e.target){
-						pointTargets[e.touchPointID] = e.target;		
-						e.target.view = view;
-						
-						if ("touch3d" in e.target && e.target.touch3d) {
-							var v:Vector3D = view.unproject(e.stageX, e.stageY, e.target.distance);
-							e.stageX = v.x;
-							e.stageY = v.y;
-							e.stageZ = v.z;
-						}
-						
-						e.target.userBeganTouch();
-					}
+					e.target.view = view;
+					updateEvent(e);
 				}
+			}
+			else if (e.target) {
+				e.target = validTarget(e.target);
+				updateEvent(e);
 			}
 		
 			return e;
 		}
-		
+				
+		private static function updateEvent(e:GWTouchEvent):void {
+			if(e.target){
+				pointTargets[e.touchPointID] = e.target;		
+				
+				if ("touch3d" in e.target && e.target.touch3d) {
+					var v:Vector3D = e.target.view.unproject(e.stageX, e.stageY, e.target.distance);
+					e.stageX = v.x;
+					e.stageY = v.y;
+					e.stageZ = v.z;
+				}
+				
+				e.target.userBeganTouch();
+			}			
+		}
 		
 		public static function hitTest3D(target: TouchContainer3D, x:Number, y:Number):Boolean//TouchObject3D
 		{			
