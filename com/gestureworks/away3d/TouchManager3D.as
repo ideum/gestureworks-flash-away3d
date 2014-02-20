@@ -27,6 +27,7 @@ package com.gestureworks.away3d
 		private static var collider:PickingCollisionVO; 
 		private static var pointTargets:Dictionary = new Dictionary();		
 		private static var _onlyTouchEnabled:Boolean = true;
+		public static var touch3d:Boolean = true;
 		
 		public static function initialize():void {
 			TouchManager.registerHook(point3DListener);
@@ -35,7 +36,7 @@ package com.gestureworks.away3d
 			KineMetric.hitTest3D = TouchManager3D.hitTest3D; 
 		}
 				
-		public static function registerTouchObject(t:*, touch3d:Boolean=true):ITouchObject
+		public static function registerTouchObject(t:*):ITouchObject
 		{
 			if (t is TouchContainer3D){
 				touchObjects[t.vto] = t;
