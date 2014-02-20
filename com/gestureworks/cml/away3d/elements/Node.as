@@ -78,7 +78,6 @@ package com.gestureworks.cml.away3d.elements {
 			super();
 			geometry = defaultGeometry;
 			material = defaultMaterial;	
-			_nodePhysics = new NodePhysics(this);
 		}
 		
 		/**
@@ -117,9 +116,25 @@ package com.gestureworks.cml.away3d.elements {
 			
 			// position label
 			labelPosition = labelPosition;
-
 		}	
 		
+		public function initPhysics():void {
+			if (_nodePhysics != null) {
+				return;
+			}
+			
+			_nodePhysics = new NodePhysics(this);
+			
+			for (var i:int = 0; i != childList.length; ++i) {
+				var child:* = childList.getIndex(i);
+				if (child is Node) {
+					var node:Node = child as Node;
+					if (node != null) {
+						node.initPhysics();
+					}
+				}
+			}
+		}
 		
 		/**
 		 * Initialize expanded and collapsed state layouts
