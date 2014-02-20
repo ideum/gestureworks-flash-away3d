@@ -71,6 +71,8 @@ package com.gestureworks.cml.away3d.elements {
 		public function get nodePhysics():NodePhysics { return _nodePhysics; }
 		protected var _childrenPositions:Dictionary = new Dictionary();
 		
+		public var released:Boolean = true;
+		
 		/**
 		 * Constructor
 		 */
@@ -851,7 +853,7 @@ package com.gestureworks.cml.away3d.elements {
 
 		public function userTouchRelease():void {
 			trace("Node touch release");
-			
+			released = true;
 			if(!isRoot) {
 				_nodePhysics.springToPosition();
 				_nodePhysics.startUpdatingSpring();
