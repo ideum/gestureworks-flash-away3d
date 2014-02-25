@@ -102,8 +102,13 @@ package com.gestureworks.away3d
 				}
 			}
 			else if (e.target) {
-				e.target = validTarget(e.target);
-				updateEvent(e);
+				if (validTarget(e.target)) {
+					e.target = validTarget(e.target);
+					updateEvent(e);
+				}
+				else {
+					e = null;
+				}
 			}
 		
 			return e;
