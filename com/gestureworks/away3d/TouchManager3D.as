@@ -129,23 +129,25 @@ package com.gestureworks.away3d
 			}			
 		}
 		
-		public static function hitTest3D(target: TouchContainer3D, x:Number, y:Number):Boolean//TouchObject3D
+		public static function hitTest3D(target: TouchContainer3D, x:Number, y:Number, view:View3D = null):Boolean//TouchObject3D
 		{			
 			var hit:Boolean = false;
+			var validTgt:*;
 			
-			collider = touchPicker.getViewCollision(x, y, target.view as View3D);
+			if (!view)
+				view = target.view as View3D;
+			if (!view)
+				return hit; 
+				
+			collider = touchPicker.getViewCollision(x - view.x, y - view.y, view);						
+			validTgt = collider ? validTarget(collider.entity) : null;
 			
-			if ((collider) && (validTarget(collider.entity)))
-				{
-					if (target.vto==collider.entity) { 
-					
+			if (validTgt)
+			{
+				if (target == validTgt || target.vto==validTgt) { 				
 					hit = true;
-					//collider.entity.showBounds = true;
-						
-					//trace("",target.vto==collider.entity, target.vto,target.vto.name,target.vto.assetType,collider,collider.entity, collider.entity.name, collider.entity.assetType);
-					//trace("touch manager",x,y,target,target.name, hit,target.view.name, target.view.name,collider,collider.entity, collider.entity.name, collider.entity.assetType, collider.entity.parent,collider.entity.parent.name,collider.entity.parent.parent,collider.entity.parent.parent.id,collider.entity.parent.parent.parent)
 				}
-				}
+			}
 			else hit = false;
 
 			return hit;
