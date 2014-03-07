@@ -154,7 +154,7 @@ package com.gestureworks.away3d
 		}
 		
 
-		private static function onTouchMove(e:GWTouchEvent):GWTouchEvent
+		public static function onTouchMove(e:GWTouchEvent):GWTouchEvent
 		{
 			if (pointTargets.hasOwnProperty(e.touchPointID)) {
 				if (e.target && e.target.parent is View3D) {
@@ -174,7 +174,7 @@ package com.gestureworks.away3d
 			return e;
 		}
 		
-		private static function onTouchEnd(e:GWTouchEvent):GWTouchEvent
+		public static function onTouchEnd(e:GWTouchEvent):GWTouchEvent
 		{
 			if (pointTargets.hasOwnProperty(e.touchPointID)) {
 				if (e.target && e.target.parent is View3D) {
