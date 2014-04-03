@@ -782,6 +782,11 @@ package com.gestureworks.cml.away3d.elements {
 		
 		protected function expandAnimationComplete():void {
 			_graphState.isAnimating = false;
+			updateChildren();
+		}
+		
+		protected function updateChildren():void {
+			
 		}
 		
 		protected function collapseAnimationComplete(hideNodeChildren:Boolean = true):void {
