@@ -71,6 +71,14 @@ package com.gestureworks.cml.away3d.elements {
 		public function get nodePhysics():NodePhysics { return _nodePhysics; }
 		protected var _childrenPositions:Dictionary = new Dictionary();
 		
+		protected var _graphState:NodeGraphState = new NodeGraphState();
+		public function set graphState(state:NodeGraphState):void {
+			_graphState = state;
+		}
+		public function get graphState():NodeGraphState {
+			return _graphState;
+		}
+		
 		public var released:Boolean = true;
 		
 		/**
@@ -101,6 +109,10 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			_root = ancestors.pop();
+			
+			if (_root) {
+				_graphState = _root.graphState;
+			}
 			
 			if (targets)
 				parseTargets();
@@ -248,7 +260,7 @@ package com.gestureworks.cml.away3d.elements {
 		public function expand(levelCnt:int = 1):void {	
 			if (!levelCnt){
 				return;				
-			}	
+			}
 			
 			levelCnt--;
 			for each(var edge:Edge in _edges) {
@@ -258,7 +270,8 @@ package com.gestureworks.cml.away3d.elements {
 			if (expandLayout) {
 				expandLayout.children = Layout3D.getChildren(this, [Node]);
 				expandLayout.tween = true;
-				expandLayout.layout(this);			
+				expandLayout.onComplete = expandAnimationComplete;
+				expandLayout.layout(this);	
 			}
 			if (hideOnCollapse) {
 				hideChildren(false);
@@ -279,7 +292,7 @@ package com.gestureworks.cml.away3d.elements {
 			
 			if (collapseLayout) {
 				if(hideOnCollapse){
-					collapseLayout.onComplete = hideChildren;
+					collapseLayout.onComplete = collapseAnimationComplete;
 					collapseLayout.onCompleteParams = [true];
 				}
 				collapseLayout.layout(this);				
@@ -295,6 +308,12 @@ package com.gestureworks.cml.away3d.elements {
 		 * @inheritDoc
 		 */
 		public function toggle(e:GWGestureEvent=null):void {
+			if (_graphState.isAnimating) {
+				return;
+			}
+			
+			_graphState.isAnimating = true;
+			
 			if (_expanded)
 				collapse();
 			else
@@ -759,6 +778,16 @@ package com.gestureworks.cml.away3d.elements {
 		private function faceCamera(e:Object3DEvent = null):void {
 			if (lookAtCamera)
 				lookAt(View3D(vto.view).camera.scenePosition);
+		}
+		
+		protected function expandAnimationComplete():void {
+			_graphState.isAnimating = false;
+		}
+		
+		protected function collapseAnimationComplete(hideNodeChildren:Boolean = true):void {
+			hideChildren(hideNodeChildren);
+			
+			_graphState.isAnimating = false;
 		}
 		
 		/**

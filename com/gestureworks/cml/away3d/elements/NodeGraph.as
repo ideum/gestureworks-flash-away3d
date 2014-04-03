@@ -7,6 +7,7 @@ package com.gestureworks.cml.away3d.elements {
 	public class NodeGraph extends Container3D {
 		
 		private var _graph:String;
+		private var _graphState:NodeGraphState = new NodeGraphState();
 		
 		public function NodeGraph() {
 			
@@ -47,6 +48,7 @@ package com.gestureworks.cml.away3d.elements {
 				node.x = -1000 + Math.random() * 2000;
 				node.y = -1000 + Math.random() * 2000;
 				node.z = -1000 + Math.random() * 2000;
+				node.graphState = _graphState;
 				addChild(node);
 			}
 						
@@ -75,6 +77,12 @@ package com.gestureworks.cml.away3d.elements {
 			if (!child is Node) {
 				return child;
 			}
+			
+			var node:Node = child as Node;
+			if(node != null) {
+				node.graphState = _graphState;
+			}
+			
 			return super.addChild(child);
 		}
 		
