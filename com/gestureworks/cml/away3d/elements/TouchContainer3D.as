@@ -179,13 +179,15 @@ package com.gestureworks.cml.away3d.elements
 		
 		public function userTouchUpdate():void {
 			// trace("User moved");
-			
+
+			/*
 			if (vto is Node) {
 				var node:Node = vto as Node;
 				if (node != null) {
 					node.userTouchUpdate();
 				}
 			}
+			*/
 		}
 
 		public function userTouchRelease():void {

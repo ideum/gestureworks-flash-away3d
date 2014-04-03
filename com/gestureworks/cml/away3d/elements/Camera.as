@@ -17,6 +17,7 @@ package com.gestureworks.cml.away3d.elements {
 	import com.gestureworks.cml.utils.document;
 	import com.gestureworks.cml.utils.StateUtils;
 	import flash.display.BitmapData;
+	import flash.geom.Vector3D;
 	import flash.utils.Dictionary;
 	
 	/**
@@ -88,8 +89,8 @@ package com.gestureworks.cml.away3d.elements {
 			}
 			
 			if (viewPos) {
-				view.x = viewDim.split(",")[0];
-				view.y = viewDim.split(",")[1];
+				view.x = viewPos.split(",")[0];
+				view.y = viewPos.split(",")[1];
 			}
 		
 			view.background = Cast.bitmapTexture(new BitmapData(2, 2, false, _color));

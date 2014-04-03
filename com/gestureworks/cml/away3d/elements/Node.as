@@ -82,6 +82,8 @@ package com.gestureworks.cml.away3d.elements {
 			material = defaultMaterial;	
 		}
 		
+		public var deltaMovement:Vector3D = new Vector3D();
+		
 		/**
 		 * Initialization function
 		 */
@@ -787,15 +789,6 @@ package com.gestureworks.cml.away3d.elements {
 			invalidateSceneTransform();
 		}
 		
-		private var _deltaMovement:Vector3D = new Vector3D();
-		public function get deltaMovement():Vector3D {
-			return _deltaMovement;
-		}
-		
-		public function set deltaMovement(delta:Vector3D):void {
-			_deltaMovement = delta;
-		}
-		
 		public function setChildPosition(child:*, position:Vector3D):void {
 			if (child == null) {
 				return;
@@ -843,7 +836,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 				
 		public function userBeganTouch():void {
-			trace("Node began touch");
+		//	trace("Node began touch");
 			_nodePhysics.stopUpdatingSpring();
 		}
 		
@@ -852,7 +845,7 @@ package com.gestureworks.cml.away3d.elements {
 		}
 
 		public function userTouchRelease():void {
-			trace("Node touch release");
+			// trace("Node touch release");
 			released = true;
 			if(!isRoot) {
 				_nodePhysics.springToPosition();
