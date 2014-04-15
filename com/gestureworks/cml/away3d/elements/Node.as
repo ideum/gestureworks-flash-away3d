@@ -881,10 +881,10 @@ package com.gestureworks.cml.away3d.elements {
 		public function userTouchRelease():void {
 			// trace("Node touch release");
 			released = true;
-			if(!isRoot) {
-				_nodePhysics.springToPosition();
-				_nodePhysics.startUpdatingSpring();
-			}
+			//if(!isRoot) {
+				//_nodePhysics.springToPosition();
+				//_nodePhysics.startUpdatingSpring();
+			//}
 		}
 	}
 
