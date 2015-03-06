@@ -150,7 +150,7 @@ package com.gestureworks.cml.away3d.textures {
 		/**
 		 * @inheritDoc
 		 */
-		public function tweenState(sId:*= null, tweenTime:Number = 1):void {
+		public function tweenState(sId:*=null, tweenTime:Number = 1, onComplete:Function=null):void {
 			if (StateUtils.tweenState(this, sId, tweenTime)) {
 				_stateId = sId;
 			}
